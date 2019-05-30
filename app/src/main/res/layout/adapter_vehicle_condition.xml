@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="horizontal"
+    android:padding="@dimen/x50">
+
+    <TextView
+        android:id="@+id/tv_vehicle_condition_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rb_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@null"
+            android:drawableEnd="@drawable/select_radio_check"
+            android:drawablePadding="@dimen/x20"
+            android:text="损坏"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <RadioButton
+            android:id="@+id/rb_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/x30"
+            android:button="@null"
+            android:checked="true"
+            android:drawableEnd="@drawable/select_radio_check"
+            android:drawablePadding="@dimen/x20"
+            android:text="正常"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+    </RadioGroup>
+</LinearLayout>

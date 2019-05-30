@@ -1,0 +1,27 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context="com.ipd.jianghuzuchebusiness.fragment.MultipleOrderFragment">
+
+    <View
+        android:id="@+id/view_line"
+        android:layout_width="match_parent"
+        android:layout_height="7dp"
+        android:layout_marginTop="@dimen/y20"
+        android:background="@color/bg_crude_line" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/srl_multiple_order"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_multiple_order"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+</LinearLayout>

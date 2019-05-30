@@ -1,0 +1,135 @@
+<resources>
+    <array name="permissions">
+        <item>@string/permission_recode_audio_hint</item>
+        <item>@string/permission_get_accounts_hint</item>
+        <item>@string/permission_read_phone_hint</item>
+        <item>@string/permission_call_phone_hint</item>
+        <item>@string/permission_camera_hint</item>
+        <item>@string/permission_access_fine_location_hint</item>
+        <item>@string/permission_access_coarse_location_hint</item>
+        <item>@string/permission_read_external_hint</item>
+        <item>@string/permission_white_external_hint</item>
+    </array>
+
+    <string name="permission_get_accounts_hint">没有此权限，无法开启这个功能，请开启权限。PERMISSION_GET_ACCOUNTS</string>
+    <string name="permission_read_phone_hint">没有此权限，无法开启这个功能，请开启权限。PERMISSION_READ_PHONE_STATE</string>
+    <string name="permission_call_phone_hint">没有此权限，无法开启这个功能，请开启权限。PERMISSION_CALL_PHONE</string>
+    <string name="permission_camera_hint">没有此权限，无法开启这个功能，请开启权限。PERMISSION_CAMERA</string>
+    <string name="permission_access_fine_location_hint">没有此权限，无法开启这个功能，请开启权限。PERMISSION_ACCESS_FINE_LOCATION</string>
+    <string name="permission_access_coarse_location_hint">没有此权限，无法开启这个功能，请开启权限。PERMISSION_ACCESS_COARSE_LOCATION</string>
+    <string name="permission_read_external_hint">没有此权限，无法开启这个功能，请开启权限。PERMISSION_READ_EXTERNAL_STORAGE</string>
+    <string name="permission_white_external_hint">没有此权限，无法开启这个功能，请开启权限。PERMISSION_WRITE_EXTERNAL_STORAGE</string>
+    <string name="permission_recode_audio_hint">没有此权限，无法开启这个功能，请开启权限。PERMISSION_RECORD_AUDIO</string>
+    <string name="Toast_permission">权限</string>
+    <string name="Dialog_Multi_Permission">多个权限</string>
+    <string name="permission_illegal_code">非法权限</string>
+
+    <string name="app_name">江湖快车</string>
+    <string name="register">注册</string>
+    <string name="input_phone">请输入手机号码</string>
+    <string name="input_captcha">请输入验证码</string>
+    <string name="obtain_captcha">获取验证码</string>
+    <string name="login">登录</string>
+    <string name="china_unicom">中国联通</string>
+    <string name="commit">提交</string>
+    <string name="captcha">验证码</string>
+    <string name="error_phone_num">手机号码不正确！</string>
+    <string name="error_captcha_num">验证码不正确！</string>
+    <string name="phone_num">手机号码</string>
+    <string name="id_card">身份证</string>
+    <string name="e_mail_address">邮箱地址</string>
+    <string name="sex">性别</string>
+    <string name="cancel">取消</string>
+    <string name="man">男</string>
+    <string name="woman">女</string>
+    <string name="sure">确定</string>
+    <string name="error_pwd">密码错误！</string>
+    <string name="error_login">请选择正确的格式！</string>
+    <string name="error_check_box">请勾选用户协议！</string>
+    <string name="out">退出登录</string>
+    <string name="error_name">用户名格式不正确！</string>
+    <string name="click_out_again">再按一次退出程序</string>
+    <string name="email_error">请输入正确的电子邮箱！</string>
+    <string name="id_card_error">请输入正确的身份证号码！</string>
+    <string name="input_error">输入格式不正确！</string>
+    <string name="loading">正在加载...</string>
+    <string name="open_network">请打开网络</string>
+    <string name="link_timeout">请求超时</string>
+    <string name="link_failed">连接失败</string>
+    <string name="six_length_captcha">验证码必须为6位数字</string>
+    <string name="out_to_login">确定要退出登录吗？</string>
+    <string name="place_order">在线下单</string>
+    <string name="select_order">订单查看</string>
+    <string name="repair">维修保养</string>
+    <string name="jiang_hu_express_train">江湖快车</string>
+    <string name="wallet">我的钱包</string>
+    <string name="maintenance_order">维修订单</string>
+    <string name="customer_service">咨询客服</string>
+    <string name="feedback">意见反馈</string>
+    <string name="coupon">优惠券</string>
+    <string name="notice">租车须知</string>
+    <string name="setting">设置</string>
+    <string name="confirm">确定</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="location_now">当前定位</string>
+    <string name="reset">重新获取</string>
+    <string name="input_select_car_store">请选择取车门店</string>
+    <string name="select_car_store">门店查询</string>
+    <string name="car_store">取车门店</string>
+    <string name="get_car_time">取车时间</string>
+    <string name="use_car_time">租赁时长</string>
+    <string name="input_select_use_car_time">请选择租赁时长</string>
+    <string name="charging_instruction">收费说明</string>
+    <string name="choice_store">选择门店</string>
+    <string name="select_car_now">立即选车</string>
+    <string name="input_select_get_car_time">请选择取车时间</string>
+    <string name="select_car">选车</string>
+    <string name="confirmation_order">确认订单</string>
+    <string name="go_choice_store"><u>导航去门店</u></string>
+    <string name="confirmation_pay">确认支付</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="order_details">订单详情</string>
+    <string name="pwd">密码</string>
+    <string name="forget_pwd"><u>忘记密码?</u></string>
+    <string name="register_now"><u>立即注册</u></string>
+    <string name="get">获取</string>
+    <string name="login_now"><u>立即登录</u></string>
+    <string name="user_agreement"><u>《用户协议》</u></string>
+    <string name="invitation_code">邀请码（选填）</string>
+    <string name="verification_code">验证码</string>
+    <string name="supplement_info">完善信息</string>
+    <string name="confirmation">确认</string>
+    <string name="store_details">门店详情</string>
+    <string name="call_phone"><u>拨打电话</u></string>
+    <string name="pay_type">支付结果</string>
+    <string name="rule_of_withdrawal">《<u>订单说明及退改规则</u>》</string>
+    <string name="select_pay_type">选择支付方式</string>
+    <string name="extend_time">延长租期</string>
+    <string name="return_car_rule">《<u>提前还车规则</u>》</string>
+    <string name="car_details">车辆详情</string>
+    <string name="rule_of_repair_order">《<u>维修订单规则</u>》</string>
+    <string name="personal_data">我的资料</string>
+    <string name="head_img">头像</string>
+    <string name="name">昵称</string>
+    <string name="bank_card">银行卡</string>
+    <string name="cash_withdrawal">提现</string>
+    <string name="feed_back">意见反馈</string>
+    <string name="input_feed_back">请输入反馈内容</string>
+    <string name="settings">设置</string>
+    <string name="msg">消息</string>
+    <string name="store_infor">门店资料</string>
+    <string name="get_car_order">取车订单</string>
+    <string name="out_car_order">退车订单</string>
+    <string name="order_sum">订单统计</string>
+    <string name="finance_sum">财务统计</string>
+    <string name="fill_in_get_car_paper">填写取车单</string>
+    <string name="license_plate_num">车牌号</string>
+    <string name="vehicle_condition">车辆状况</string>
+    <string name="edit_store_infor">编辑门店资料</string>
+    <string name="select_bank">选择银行卡</string>
+    <string name="add_bank">添加银行卡</string>
+
+</resources>

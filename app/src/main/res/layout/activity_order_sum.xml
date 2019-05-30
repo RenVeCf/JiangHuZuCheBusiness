@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.ipd.jianghuzuchebusiness.activity.OrderSumActivity">
+
+    <com.ipd.jianghuzuchebusiness.common.view.TopView
+        android:id="@+id/tv_order_sum_top"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        android:gravity="bottom"
+        app:is_back="true"
+        app:is_order_sum="true" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="7dp"
+        android:background="@color/bg_crude_line" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_order_sum_start"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/y135"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="选择起始日期"
+            android:textColor="@color/tx_bottom_navigation"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/x50"
+            app:srcCompat="@drawable/ic_calendar" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="@dimen/y135"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:text="～"
+            android:textColor="@color/tx_bottom_navigation"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_order_sum_end"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/y135"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="选择结束日期"
+            android:textColor="@color/tx_bottom_navigation"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/x50"
+            app:srcCompat="@drawable/ic_calendar" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="7dp"
+        android:background="@color/bg_crude_line" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_order_sum"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/x20"
+        android:background="@color/tx_bottom_navigation" />
+
+    <TextView
+        android:id="@+id/tv_day_order"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/x50"
+        android:layout_marginTop="@dimen/y30"
+        android:textColor="@color/tx_bottom_navigation_select" />
+
+    <TextView
+        android:id="@+id/tv_day_order_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/x50"
+        android:layout_marginTop="@dimen/y30"
+        android:textColor="@color/tx_bottom_navigation_select" />
+
+    <TextView
+        android:id="@+id/tv_total_order"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/x50"
+        android:layout_marginTop="@dimen/y30"
+        android:textColor="@color/tx_bottom_navigation_select" />
+
+    <TextView
+        android:id="@+id/tv_total_order_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/x50"
+        android:layout_marginTop="@dimen/y30"
+        android:textColor="@color/tx_bottom_navigation_select" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/bg_crude_line" />
+
+    <LinearLayout
+        android:id="@+id/ll_order_sum"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/bt_order_sum"
+            android:layout_width="@dimen/x400"
+            android:layout_height="@dimen/y135"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/y20"
+            android:layout_marginTop="@dimen/y20"
+            android:background="@drawable/bg_confirm_bt"
+            android:text="查看全部订单"
+            android:textColor="@color/white" />
+    </LinearLayout>
+</LinearLayout>

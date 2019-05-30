@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.ipd.jianghuzuchebusiness.activity.VehicleConditionActivity">
+
+    <com.ipd.jianghuzuchebusiness.common.view.TopView
+        android:id="@+id/tv_vehicle_condition_top"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        android:gravity="bottom"
+        app:is_back="true"
+        app:title="@string/vehicle_condition" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="7dp"
+        android:background="@color/bg_crude_line" />
+
+    <com.ipd.jianghuzuchebusiness.common.view.NavitationFollowScrollLayoutText
+        android:id="@+id/nl_vehicle_condition"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_vehicle_condition"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y1000" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/bg_crude_line"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/bt_vehicle_condition"
+            android:layout_width="@dimen/x400"
+            android:layout_height="@dimen/y135"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/y20"
+            android:layout_marginTop="@dimen/y20"
+            android:background="@drawable/bg_confirm_bt"
+            android:text="@string/confirm"
+            android:textColor="@color/white" />
+    </LinearLayout>
+</LinearLayout>

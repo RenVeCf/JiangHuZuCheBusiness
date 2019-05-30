@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.ipd.jianghuzuchebusiness.activity.MultipleOrderActivity">
+
+    <com.ipd.jianghuzuchebusiness.common.view.TopView
+        android:id="@+id/tv_multiple_order_top"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        android:gravity="bottom"
+        app:is_back="true" />
+
+    <View
+        android:id="@+id/view_line"
+        android:layout_width="match_parent"
+        android:layout_height="7dp"
+        android:background="@color/bg_crude_line" />
+
+    <RelativeLayout
+        android:id="@+id/rl_order_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="@dimen/x1000"
+            android:layout_height="@dimen/y100"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/y20"
+            android:layout_marginTop="@dimen/y20"
+            android:background="@drawable/bg_search_bt"
+            android:gravity="center_vertical"
+            android:hint="请输入订单号或手机号"
+            android:paddingStart="@dimen/x50"
+            android:textColor="@color/tx_bottom_navigation"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/iv_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/x100"
+            app:srcCompat="@drawable/ic_search" />
+    </RelativeLayout>
+
+    <com.ipd.jianghuzuchebusiness.common.view.NavitationLayout
+        android:id="@+id/nl_multiple_order"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_multiple_order"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>
