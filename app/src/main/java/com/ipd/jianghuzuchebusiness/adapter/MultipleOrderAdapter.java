@@ -89,7 +89,10 @@ public class MultipleOrderAdapter extends BaseMultiItemQuickAdapter<VehicleCondi
                         .addOnClickListener(R.id.rb_end);
                 break;
             case 4:
-                helper.setText(R.id.cb_store_infor, item.getStatusName());
+                if (item.getStatusName() == null)
+                    helper.setGone(R.id.cb_store_infor, false);
+                else
+                    helper.setText(R.id.cb_store_infor, item.getStatusName());
                 break;
         }
     }

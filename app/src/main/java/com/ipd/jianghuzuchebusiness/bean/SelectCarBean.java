@@ -145,6 +145,7 @@ public class SelectCarBean {
              * userId : null
              * createTime : 2019-05-28 17:53:59
              * type : null
+             * vehicleType : ""
              */
 
             private int orstatusId;
@@ -156,6 +157,15 @@ public class SelectCarBean {
             private Object userId;
             private String createTime;
             private Object type;
+            private int vehicleType;
+
+            public int getVehicleType() {
+                return vehicleType;
+            }
+
+            public void setVehicleType(int vehicleType) {
+                this.vehicleType = vehicleType;
+            }
 
             public int getOrstatusId() {
                 return orstatusId;

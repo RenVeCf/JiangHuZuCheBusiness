@@ -38,22 +38,43 @@
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
             android:background="@color/white"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/ic_store_infor" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/y20"
-                android:text="@string/store_infor"
-                android:textColor="@color/black"
-                android:textSize="16dp" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/y70"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/ic_store_infor" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/y20"
+                    android:layout_weight="1"
+                    android:text="@string/store_infor"
+                    android:textColor="@color/black"
+                    android:textSize="16dp" />
+
+                <View
+                    android:layout_width="@dimen/x300"
+                    android:layout_height="0.5dp"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:background="@color/tx_bottom_navigation" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="0.5dp"
+                android:layout_height="@dimen/y200"
+                android:layout_gravity="center_vertical|end"
+                android:background="@color/tx_bottom_navigation" />
         </LinearLayout>
 
         <LinearLayout
@@ -69,16 +90,24 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y70"
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/ic_get_car_order" />
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_marginTop="@dimen/y20"
+                android:layout_weight="1"
                 android:text="@string/get_car_order"
                 android:textColor="@color/black"
                 android:textSize="16dp" />
+
+            <View
+                android:layout_width="@dimen/x300"
+                android:layout_height="0.5dp"
+                android:layout_gravity="center_horizontal|bottom"
+                android:background="@color/tx_bottom_navigation" />
         </LinearLayout>
 
         <LinearLayout
@@ -88,22 +117,43 @@
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
             android:background="@color/white"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/ic_out_car_order" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/y20"
-                android:text="@string/out_car_order"
-                android:textColor="@color/black"
-                android:textSize="16dp" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/y70"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/ic_out_car_order" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/y20"
+                    android:layout_weight="1"
+                    android:text="@string/out_car_order"
+                    android:textColor="@color/black"
+                    android:textSize="16dp" />
+
+                <View
+                    android:layout_width="@dimen/x300"
+                    android:layout_height="0.5dp"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:background="@color/tx_bottom_navigation" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="0.5dp"
+                android:layout_height="@dimen/y200"
+                android:layout_gravity="center_vertical|end"
+                android:background="@color/tx_bottom_navigation" />
         </LinearLayout>
 
         <LinearLayout
@@ -119,16 +169,24 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y70"
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/ic_maintenance_order" />
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_marginTop="@dimen/y20"
+                android:layout_weight="1"
                 android:text="@string/maintenance_order"
                 android:textColor="@color/black"
                 android:textSize="16dp" />
+
+            <View
+                android:layout_width="@dimen/x300"
+                android:layout_height="0.5dp"
+                android:layout_gravity="center_horizontal|bottom"
+                android:background="@color/tx_bottom_navigation" />
         </LinearLayout>
 
         <LinearLayout
@@ -139,21 +197,37 @@
             android:layout_rowWeight="1"
             android:background="@color/white"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/ic_order_sum" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/y20"
-                android:text="@string/order_sum"
-                android:textColor="@color/black"
-                android:textSize="16dp" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/y70"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/ic_order_sum" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/y20"
+                    android:layout_weight="1"
+                    android:text="@string/order_sum"
+                    android:textColor="@color/black"
+                    android:textSize="16dp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="0.5dp"
+                android:layout_height="@dimen/y200"
+                android:layout_gravity="center_vertical|end"
+                android:background="@color/tx_bottom_navigation" />
         </LinearLayout>
 
         <LinearLayout

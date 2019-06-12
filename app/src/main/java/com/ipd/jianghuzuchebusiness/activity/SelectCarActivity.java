@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
@@ -47,6 +48,8 @@ public class SelectCarActivity extends BaseActivity<SelectCarContract.View, Sele
     LinearLayout llCarContract;
     @BindView(R.id.rv_car_photo)
     RecyclerView rvCarPhoto;
+    @BindView(R.id.tv_car_code)
+    TextView tvCarCode;
 
     private VehicleConditionAdapter vehicleConditionAdapter;
     private CarPhotoAdapter carPhotoAdapter;
@@ -54,6 +57,7 @@ public class SelectCarActivity extends BaseActivity<SelectCarContract.View, Sele
     private SelectCarBean.DataBean.VehiclePicBean vehiclePicBean;
     private List<String> imgList;
     private String orderId;
+    private int vehicleType;
 
     @Override
     public int getLayoutId() {
@@ -94,10 +98,11 @@ public class SelectCarActivity extends BaseActivity<SelectCarContract.View, Sele
         rvCarPhoto.setItemAnimator(new DefaultItemAnimator()); //默认动画
 
         orderId = getIntent().getStringExtra("order_id");
+        vehicleType = getIntent().getIntExtra("vehicleType", 0);
         vehicleOrstatusBean = new ArrayList<>();
         vehiclePicBean = new SelectCarBean.DataBean.VehiclePicBean();
 
-        vehicleConditionAdapter = new VehicleConditionAdapter(vehicleOrstatusBean);
+        vehicleConditionAdapter = new VehicleConditionAdapter(vehicleOrstatusBean, vehicleType);
         rvSelectCar.setAdapter(vehicleConditionAdapter);
 
         imgList = new ArrayList<>();
@@ -137,6 +142,7 @@ public class SelectCarActivity extends BaseActivity<SelectCarContract.View, Sele
 //            ImmersionBar.setTitleBar(this, tvNullSelectCarTop);
         } else {
             vehiclePicBean = data.getData().getVehiclePic();
+            tvCarCode.setText(vehiclePicBean.getPlateNumber());
             String[] strs = vehiclePicBean.getPicPath().split(",");
             for (int i = 0, len = strs.length; i < len; i++) {
                 imgList.add(strs[i].toString());

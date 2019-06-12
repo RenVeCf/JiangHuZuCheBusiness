@@ -3,6 +3,7 @@ package com.ipd.jianghuzuchebusiness.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.ipd.jianghuzuchebusiness.base.BaseActivity;
 import com.ipd.jianghuzuchebusiness.bean.ChargeBean;
 import com.ipd.jianghuzuchebusiness.bean.RepairProjectHorizontalBean;
 import com.ipd.jianghuzuchebusiness.bean.StoreInforBean;
+import com.ipd.jianghuzuchebusiness.common.view.AutoHeightViewPager;
 import com.ipd.jianghuzuchebusiness.common.view.NavitationLayout;
 import com.ipd.jianghuzuchebusiness.common.view.TopView;
 import com.ipd.jianghuzuchebusiness.contract.StoreDetailsContract;
@@ -24,6 +26,7 @@ import com.ipd.jianghuzuchebusiness.fragment.MultipleOrderFragment;
 import com.ipd.jianghuzuchebusiness.presenter.StoreDetailsPresenter;
 import com.ipd.jianghuzuchebusiness.utils.ApplicationUtil;
 import com.ipd.jianghuzuchebusiness.utils.SPUtil;
+import com.ipd.jianghuzuchebusiness.utils.ToastUtil;
 import com.ryane.banner.AdPageInfo;
 import com.ryane.banner.AdPlayBanner;
 
@@ -35,6 +38,8 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.ObservableTransformer;
 
+import static com.ipd.jianghuzuchebusiness.common.config.IConstants.CITY;
+import static com.ipd.jianghuzuchebusiness.common.config.IConstants.REQUEST_CODE_106;
 import static com.ipd.jianghuzuchebusiness.common.config.IConstants.USER_ID;
 import static com.ipd.jianghuzuchebusiness.common.config.UrlConfig.BASE_LOCAL_URL;
 import static com.ryane.banner.AdPlayBanner.ImageLoaderType.GLIDE;
@@ -60,7 +65,7 @@ public class StoreInforActivity extends BaseActivity<StoreDetailsContract.View, 
     @BindView(R.id.nl_store_infor)
     NavitationLayout nlStoreInfor;
     @BindView(R.id.vp_store_infor)
-    ViewPager vpStoreInfor;
+    public AutoHeightViewPager vpStoreInfor;
     @BindView(R.id.bt_store_infor)
     Button btStoreInfor;
     @BindView(R.id.ll_charge_frist)
@@ -89,6 +94,7 @@ public class StoreInforActivity extends BaseActivity<StoreDetailsContract.View, 
     private List<AdPageInfo> images;
     private List<ChargeBean.DataBean.ChargeListBean> chargeListBean;
     private StoreInforBean.DataBean.SelectStoreBean selectStoreBean;
+    private int storeInfor_positions = 0;
 
     @Override
     public int getLayoutId() {
@@ -121,23 +127,43 @@ public class StoreInforActivity extends BaseActivity<StoreDetailsContract.View, 
 
     @Override
     public void initListener() {
+        vpStoreInfor.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+            }
+
+            @Override
+            public void onPageSelected(final int position) {
+                // 切换到当前页面，重置高度
+                vpStoreInfor.resetHeight(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        vpStoreInfor.resetHeight(0);
     }
 
     @Override
     public void initData() {
-        TreeMap<String, String> storeInforMap = new TreeMap<>();
-        storeInforMap.put("userId", SPUtil.get(this, USER_ID, "") + "");
-        getPresenter().getStoreInfor(storeInforMap, false, false);
-        TreeMap<String, String> repairProjectHorizontalMap = new TreeMap<>();
-        repairProjectHorizontalMap.put("city", "上海市");
-        getPresenter().getRepairProjectHorizontal(repairProjectHorizontalMap, false, false);
-        getPresenter().getCharge(false, false);
+        if (!SPUtil.get(this, CITY, "").equals("")) {
+            TreeMap<String, String> storeInforMap = new TreeMap<>();
+            storeInforMap.put("userId", SPUtil.get(this, USER_ID, "") + "");
+            getPresenter().getStoreInfor(storeInforMap, false, false);
+            TreeMap<String, String> repairProjectHorizontalMap = new TreeMap<>();
+            repairProjectHorizontalMap.put("city", SPUtil.get(this, CITY, "") + "");
+            getPresenter().getRepairProjectHorizontal(repairProjectHorizontalMap, false, false);
+            getPresenter().getCharge(false, false);
+        } else
+            ToastUtil.showShortToast("请重新获取定位...");
     }
 
     @OnClick(R.id.bt_store_infor)
     public void onViewClicked() {
-        startActivity(new Intent(this, EditStoreInforActivity.class).putExtra("select_store_bean", selectStoreBean).putParcelableArrayListExtra("charge_list", (ArrayList<? extends Parcelable>) chargeListBean));
+        startActivityForResult(new Intent(this, EditStoreInforActivity.class).putExtra("select_store_bean", selectStoreBean).putParcelableArrayListExtra("charge_list", (ArrayList<? extends Parcelable>) chargeListBean), REQUEST_CODE_106);
     }
 
     @Override
@@ -177,6 +203,7 @@ public class StoreInforActivity extends BaseActivity<StoreDetailsContract.View, 
             args.putInt("multiple_fm_type", 4);
             args.putParcelableArrayList("store_infor", (ArrayList<? extends Parcelable>) data.getData().getRepairType());
             args.putInt("status_position", i);
+            args.putInt("storeInfor_positions", storeInfor_positions);
             fm.setArguments(args);
             fragments.add(fm);
         }
@@ -187,10 +214,11 @@ public class StoreInforActivity extends BaseActivity<StoreDetailsContract.View, 
 
         viewPagerAdapter = new ViewPagerAdapter(this.getSupportFragmentManager(), fragments);
         vpStoreInfor.setAdapter(viewPagerAdapter);
+        vpStoreInfor.setOffscreenPageLimit(titles.length);
     }
 
     @Override
-    public void resultCharge(ChargeBean data) { //FIXME
+    public void resultCharge(ChargeBean data) {
         chargeListBean.addAll(data.getData().getChargeList());
         if (chargeListBean.size() < 1) {
             llCharge.setVisibility(View.GONE);
@@ -212,6 +240,18 @@ public class StoreInforActivity extends BaseActivity<StoreDetailsContract.View, 
             tvChargeSecondFee.setText("费用" + chargeListBean.get(1).getCost() + "元");
             tvChargeThree.setText(chargeListBean.get(2).getTitle());
             tvChargeThreeFee.setText("费用" + chargeListBean.get(2).getCost() + "元");
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data != null) {
+            switch (requestCode) {
+                case REQUEST_CODE_106:
+                    initData();
+                    break;
+            }
         }
     }
 

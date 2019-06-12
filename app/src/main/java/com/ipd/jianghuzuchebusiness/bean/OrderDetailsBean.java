@@ -45,24 +45,24 @@ public class OrderDetailsBean {
 
     public static class DataBean {
         /**
-         * picPath : picture/vehicle/JYJY190252536720190522172345.jpeg,picture/vehicle/JYJY190292864020190522172349.jpeg,picture/vehicle/JYJY190323473320190522172352.jpeg
+         * picPath : {"vehicleInfoId":8,"picPath":"picture/vehicle/JYJY192112721820190528175331.jpeg,picture/vehicle/JYJY192156841020190528175335.jpeg,picture/vehicle/JYJY192337588720190528175353.jpeg","plateNumber":"8888","orderId":16,"createTime":null,"type":null}
          * vehicleOrstatus : [{"orstatusId":43,"vestatusName":"头部","damagedCost":11,"status":2,"orderId":32,"statusId":2,"userId":null,"createTime":"2019-05-22 17:23:57","type":null},{"orstatusId":44,"vestatusName":"尾部","damagedCost":11,"status":2,"orderId":32,"statusId":3,"userId":null,"createTime":"2019-05-22 17:23:57","type":null},{"orstatusId":45,"vestatusName":"头部","damagedCost":11,"status":1,"orderId":32,"statusId":5,"userId":null,"createTime":"2019-05-22 17:23:57","type":null},{"orstatusId":46,"vestatusName":"尾部","damagedCost":11,"status":1,"orderId":32,"statusId":6,"userId":null,"createTime":"2019-05-22 17:23:57","type":null},{"orstatusId":47,"vestatusName":"测试服务","damagedCost":1111,"status":2,"orderId":32,"statusId":26,"userId":null,"createTime":"2019-05-22 17:23:57","type":null},{"orstatusId":48,"vestatusName":"测试01","damagedCost":111,"status":1,"orderId":32,"statusId":24,"userId":null,"createTime":"2019-05-22 17:23:57","type":null},{"orstatusId":49,"vestatusName":"测试01","damagedCost":0,"status":1,"orderId":32,"statusId":25,"userId":null,"createTime":"2019-05-22 17:23:57","type":null},{"orstatusId":50,"vestatusName":"测试01","damagedCost":111,"status":2,"orderId":32,"statusId":28,"userId":null,"createTime":"2019-05-22 17:23:57","type":null},{"orstatusId":51,"vestatusName":"测试01","damagedCost":111,"status":1,"orderId":32,"statusId":27,"userId":null,"createTime":"2019-05-22 17:23:57","type":null},{"orstatusId":52,"vestatusName":"测试01","damagedCost":111,"status":2,"orderId":32,"statusId":23,"userId":null,"createTime":"2019-05-22 17:23:57","type":null},{"orstatusId":53,"vestatusName":"测试01","damagedCost":111,"status":1,"orderId":32,"statusId":29,"userId":null,"createTime":"2019-05-22 17:23:57","type":null},{"orstatusId":54,"vestatusName":"111","damagedCost":12313,"status":2,"orderId":32,"statusId":21,"userId":null,"createTime":"2019-05-22 17:23:57","type":null},{"orstatusId":55,"vestatusName":"测试","damagedCost":22,"status":2,"orderId":32,"statusId":22,"userId":null,"createTime":"2019-05-22 17:23:57","type":null}]
          * vehicleCost : [{"costId":37,"deposit":1000,"equipCost":100,"tenancyService":300,"total":1350,"orderId":32,"coupon":"50.00","createTime":"2019-05-22 15:15:31","vehicleRent":50,"chargeMoney":null,"rentDuration":1}]
          * storeStatus : 2
          * order : {"orderId":32,"userId":7,"orderNo":"1933144987","successTime":"2019-05-22 15:15:31","payWay":2,"payTime":"2019-05-22 15:15:31","payStatus":2,"vehicleId":11,"storeId":7,"takevehicleTime":"2019-05-22","rentDuration":1,"status":4,"createTime":"2019-05-22","telPhone":"18502994087","week":"周三","takeStatus":2,"descStatus":null,"vehicleName":"小刀电动车","vehicleModel":"xs25445","vehicleLogo":"picture/profile/JYJY192842740420190522151444.jpg","storeName":"阳阳车行","descAddress":"上海市青浦区明珠路","payMoney":1350,"revehicleTime":null,"expireTime":"2019-06-21","storeStatus":null,"city":"上海市","params":{}}
          */
 
-        private String picPath;
+        private PicPathBean picPath;
         private int storeStatus;
         private OrderBean order;
         private List<VehicleOrstatusBean> vehicleOrstatus;
         private List<VehicleCostBean> vehicleCost;
 
-        public String getPicPath() {
+        public PicPathBean getPicPath() {
             return picPath;
         }
 
-        public void setPicPath(String picPath) {
+        public void setVehiclePic(PicPathBean picPath) {
             this.picPath = picPath;
         }
 
@@ -96,6 +96,72 @@ public class OrderDetailsBean {
 
         public void setVehicleCost(List<VehicleCostBean> vehicleCost) {
             this.vehicleCost = vehicleCost;
+        }
+
+        public static class PicPathBean {
+            /**
+             * vehicleInfoId : 8
+             * picPath : picture/vehicle/JYJY192112721820190528175331.jpeg,picture/vehicle/JYJY192156841020190528175335.jpeg,picture/vehicle/JYJY192337588720190528175353.jpeg
+             * plateNumber : 8888
+             * orderId : 16
+             * createTime : null
+             * type : null
+             */
+
+            private int vehicleInfoId;
+            private String picPath;
+            private String plateNumber;
+            private int orderId;
+            private Object createTime;
+            private Object type;
+
+            public int getVehicleInfoId() {
+                return vehicleInfoId;
+            }
+
+            public void setVehicleInfoId(int vehicleInfoId) {
+                this.vehicleInfoId = vehicleInfoId;
+            }
+
+            public String getPicPath() {
+                return picPath;
+            }
+
+            public void setPicPath(String picPath) {
+                this.picPath = picPath;
+            }
+
+            public String getPlateNumber() {
+                return plateNumber;
+            }
+
+            public void setPlateNumber(String plateNumber) {
+                this.plateNumber = plateNumber;
+            }
+
+            public int getOrderId() {
+                return orderId;
+            }
+
+            public void setOrderId(int orderId) {
+                this.orderId = orderId;
+            }
+
+            public Object getCreateTime() {
+                return createTime;
+            }
+
+            public void setCreateTime(Object createTime) {
+                this.createTime = createTime;
+            }
+
+            public Object getType() {
+                return type;
+            }
+
+            public void setType(Object type) {
+                this.type = type;
+            }
         }
 
         public static class OrderBean {

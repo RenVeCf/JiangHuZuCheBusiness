@@ -1,6 +1,10 @@
 package com.ipd.jianghuzuchebusiness.activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -13,6 +17,7 @@ import com.ipd.jianghuzuchebusiness.common.view.TopView;
 import com.ipd.jianghuzuchebusiness.contract.StoreImgContract;
 import com.ipd.jianghuzuchebusiness.presenter.StoreImgPresenter;
 import com.ipd.jianghuzuchebusiness.utils.ApplicationUtil;
+import com.ipd.jianghuzuchebusiness.utils.BDLocationUtils;
 import com.ipd.jianghuzuchebusiness.utils.SPUtil;
 import com.ipd.jianghuzuchebusiness.utils.ToastUtil;
 import com.ryane.banner.AdPageInfo;
@@ -27,6 +32,7 @@ import butterknife.OnClick;
 import cn.jpush.android.api.JPushInterface;
 import io.reactivex.ObservableTransformer;
 
+import static com.ipd.jianghuzuchebusiness.common.config.IConstants.FIRST_APP;
 import static com.ipd.jianghuzuchebusiness.common.config.IConstants.JPUSH_SEQUENCE;
 import static com.ipd.jianghuzuchebusiness.common.config.IConstants.STORE_ID;
 import static com.ipd.jianghuzuchebusiness.common.config.UrlConfig.BASE_LOCAL_URL;
@@ -61,6 +67,9 @@ public class MainActivity extends BaseActivity<StoreImgContract.View, StoreImgCo
 
     private List<AdPageInfo> images;
     private long firstTime = 0;
+    private static final int PERMISSIONS_REQUEST_CODE = 1003;
+    //定位相关
+    BDLocationUtils bdLocationUtils;
 
     @Override
     public int getLayoutId() {
@@ -84,6 +93,10 @@ public class MainActivity extends BaseActivity<StoreImgContract.View, StoreImgCo
         //防止状态栏和标题重叠
         ImmersionBar.setTitleBar(this, tvMainTop);
 
+        SPUtil.put(this, FIRST_APP, false);
+
+        requestPermission();
+        bdLocationUtils = new BDLocationUtils(this);
         images = new ArrayList<>();
     }
 
@@ -94,9 +107,59 @@ public class MainActivity extends BaseActivity<StoreImgContract.View, StoreImgCo
 
     @Override
     public void initData() {
+        bdLocationUtils.doLocation();//开启定位
+        bdLocationUtils.mLocationClient.start();//开始定位
+
         TreeMap<String, String> returnCarMap = new TreeMap<>();
         returnCarMap.put("storeId", SPUtil.get(this, STORE_ID, "") + "");
         getPresenter().getStoreImg(returnCarMap, true, false);
+    }
+
+    /**
+     * 检查支付宝 SDK 所需的权限，并在必要的时候动态获取。
+     * 在 targetSDK = 23 以上，READ_PHONE_STATE 和 WRITE_EXTERNAL_STORAGE 权限需要应用在运行时获取。
+     * 如果接入支付宝 SDK 的应用 targetSdk 在 23 以下，可以省略这个步骤。
+     */
+    private void requestPermission() {
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                    }, PERMISSIONS_REQUEST_CODE);
+        }
+    }
+
+    /**
+     * 权限获取回调
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_CODE:
+                // 用户取消了权限弹窗
+                if (grantResults.length == 0) {
+                    ToastUtil.showShortToast(getString(R.string.permission_rejected));
+                    return;
+                }
+
+                // 用户拒绝了某些权限
+                for (int x : grantResults) {
+                    if (x == PackageManager.PERMISSION_DENIED) {
+                        ToastUtil.showShortToast(getString(R.string.permission_rejected));
+                        return;
+                    }
+                }
+
+                // 所需的权限均正常获取
+//                ToastUtil.showShortToast(getString(R.string.permission_granted));
+                break;
+        }
     }
 
     /**

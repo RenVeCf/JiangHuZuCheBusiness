@@ -18,6 +18,8 @@ import com.ipd.jianghuzuchebusiness.contract.VehicleConditionHorizontalContract;
 import com.ipd.jianghuzuchebusiness.fragment.MultipleOrderFragment;
 import com.ipd.jianghuzuchebusiness.presenter.VehicleConditionHorizontalPresenter;
 import com.ipd.jianghuzuchebusiness.utils.ApplicationUtil;
+import com.ipd.jianghuzuchebusiness.utils.SPUtil;
+import com.ipd.jianghuzuchebusiness.utils.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +28,9 @@ import java.util.TreeMap;
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.ObservableTransformer;
+
+import static com.ipd.jianghuzuchebusiness.common.config.IConstants.CITY;
+import static com.ipd.jianghuzuchebusiness.common.config.IConstants.USER_ID;
 
 /**
  * Description ：车辆状况
@@ -47,6 +52,8 @@ public class VehicleConditionActivity extends BaseActivity<VehicleConditionHoriz
     private ViewPagerAdapter viewPagerAdapter;
     private List<Fragment> fragments;
     private MultipleOrderFragment fm;
+    private int paperType;
+    private String orderId;
 
     @Override
     public int getLayoutId() {
@@ -70,6 +77,8 @@ public class VehicleConditionActivity extends BaseActivity<VehicleConditionHoriz
         //防止状态栏和标题重叠
         ImmersionBar.setTitleBar(this, tvVehicleConditionTop);
 
+        paperType = getIntent().getIntExtra("paper_type", 0);
+        orderId = getIntent().getStringExtra("order_id");
         fragments = new ArrayList<>();
     }
 
@@ -80,14 +89,19 @@ public class VehicleConditionActivity extends BaseActivity<VehicleConditionHoriz
 
     @Override
     public void initData() {
-        TreeMap<String, String> vehicleConditionHorizontalMap = new TreeMap<>();
-        vehicleConditionHorizontalMap.put("city", "上海市");
-        getPresenter().getVehicleConditionHorizontal(vehicleConditionHorizontalMap, false, false);
+        if (!SPUtil.get(this, CITY, "").equals("")) {
+            TreeMap<String, String> vehicleConditionHorizontalMap = new TreeMap<>();
+            vehicleConditionHorizontalMap.put("userId", SPUtil.get(this, USER_ID, "") + "");
+            vehicleConditionHorizontalMap.put("orderId", orderId);
+            vehicleConditionHorizontalMap.put("type", (paperType + 1) + "");
+            getPresenter().getVehicleConditionHorizontal(vehicleConditionHorizontalMap, false, false);
+        } else
+            ToastUtil.showShortToast("请重新获取定位...");
     }
 
     @OnClick(R.id.bt_vehicle_condition)
     public void onViewClicked() {
-        setResult(RESULT_OK, new Intent().putExtra("status_ids", fm.getLoadStringTwo()));
+        setResult(RESULT_OK, new Intent().putExtra("status_ids", fm.getLoadStringTwo(paperType)));
         finish();
     }
 
@@ -105,6 +119,7 @@ public class VehicleConditionActivity extends BaseActivity<VehicleConditionHoriz
             args.putInt("multiple_fm_type", 3);
             args.putParcelableArrayList("vehicle_type", (ArrayList<? extends Parcelable>) data.getData().getVehicleType());
             args.putInt("status_position", i);
+            args.putInt("paper_type", paperType);
             fm.setArguments(args);
             fragments.add(fm);
         }

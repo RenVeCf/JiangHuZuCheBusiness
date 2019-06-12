@@ -22,4 +22,13 @@
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_vehicle_condition_fee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/x30"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:visibility="gone" />
 </LinearLayout>

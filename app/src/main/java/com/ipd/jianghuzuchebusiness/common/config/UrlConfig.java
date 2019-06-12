@@ -10,8 +10,10 @@ public interface UrlConfig {
     /**
      * 域名
      */
-    String BASE_URL = "http://47.98.36.104:8010/jhzc/";
-    String BASE_LOCAL_URL = "http://47.98.36.104:8010/";
+//    String BASE_URL = "http://47.98.36.104:8010/jhzc/";
+//    String BASE_LOCAL_URL = "http://47.98.36.104:8010/";
+    String BASE_URL = "http://47.93.126.235:8010/jhzc/";
+    String BASE_LOCAL_URL = "http://47.93.126.235:8010/";
 
     /**
      * 登陆
@@ -31,7 +33,7 @@ public interface UrlConfig {
     String GET_CAR_ORDER = "appStore/pickOrder/pickOrder"; //取车订单-列表-状态-4
     String GET_CAR_ORDER_DETAILS = "appStore/pickOrder/pickOrderDesc"; //取车订单详情
     String GET_CAR_CANCEL_ORDER = "appStore/pickOrder/pickCancelOrder"; //取车取消订单
-    String VEHICLE_CONDITION_HORIZONTAL = "appStore/pickOrder/vehicleType"; //车辆状况-类型列表
+    String VEHICLE_CONDITION_HORIZONTAL = "appStore/carReturn/vehicleStatus"; //门店填写推车单-回显车辆状况-单个接口两个数据
     String VEHICLE_CONDITION_VERTICAL = "appStore/pickOrder/vehicleStatus"; //车辆状况-类型-下级数据
     String GET_CAR_COMMIT = "appStore/pickOrder/addPickOrder"; //填写去取车单-提交推送
     String SELECT_CAR = "appStore/pickOrder/selectVehicle"; //订单查看-详情-查看车辆-取车单

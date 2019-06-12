@@ -38,7 +38,7 @@ public class GetCarOrderAdapter extends BaseQuickAdapter<GetCarOrderBean.DataBea
                 .setText(R.id.tv_order_num, item.getOrderNo())
                 .setText(R.id.tv_order_type_brand, item.getVehicleName())
                 .setText(R.id.tv_order_type_introduce, item.getVehicleModel())
-                .setText(R.id.tv_order_type_location, "上海")//FIXME
+                .setText(R.id.tv_order_type_location, item.getCity())
                 .setText(R.id.tv_order_type_store_name, item.getStoreName())
                 .setText(R.id.tv_order_type_get_car_time, item.getTakevehicleTime())
                 .setText(R.id.tv_order_type_use_car_time, item.getRentDuration() + "个月")
@@ -48,9 +48,9 @@ public class GetCarOrderAdapter extends BaseQuickAdapter<GetCarOrderBean.DataBea
         switch (type) {
             case 0:
                 helper.setText(R.id.bt_order_type_start, "取消订单");
-                if (item.getTakeStatus() == 1)
+                if (item.getPickStatus() == 1)
                     helper.setText(R.id.bt_order_type_end, "填写取车单");
-                else if (item.getTakeStatus() == 2)
+                else if (item.getPickStatus() == 2)
                     helper.setText(R.id.bt_order_type_end, "查看车辆");
                 break;
             case 1:

@@ -14,7 +14,7 @@ public class GetCarOrderBean {
     /**
      * code : 200
      * msg : 操作成功
-     * data : {"orderList":[{"orderId":96,"userId":3,"orderNo":"1962631584","successTime":"2019-05-16 14:53:46","payWay":1,"payTime":"2019-05-16 14:53:46","payStatus":2,"vehicleId":17,"storeId":13,"takevehicleTime":"2019-05-16","rentDuration":1,"status":4,"createTime":"2019-05-16","telPhone":"18502994087","week":"周四","takeStatus":1,"descStatus":null,"vehicleName":"小刀电动车","vehicleModel":"xs25445","vehicleLogo":"picture/profile/JYJY193963789020190516143316.jpg","storeName":"万达信息","descAddress":"上海市青浦区华徐公路888号中国梦谷","payMoney":1400,"revehicleTime":null,"expireTime":"2019-06-15","params":{}}]}
+     * data : {"orderList":[{"orderId":17,"userId":44,"orderNo":"1968149569","successTime":"2019-05-31 00:44:53","payWay":1,"payTime":"2019-05-31 00:44:41","payStatus":2,"vehicleId":11,"storeId":7,"takevehicleTime":"2019-05-31","rentDuration":3,"status":4,"createTime":"2019-05-31","telPhone":"15937016358","week":"周五","takeStatus":1,"descStatus":null,"vehicleName":"小刀电动车","vehicleModel":"xs25445","vehicleLogo":"picture/profile/JYJY192842740420190522151444.jpg","storeName":"阳阳车行","descAddress":"诚爱路58号","payMoney":1250,"revehicleTime":null,"expireTime":"2019-08-29","storeStatus":0,"city":"上海市","supId":8,"refundMoney":null,"retuStatus":null,"extendMoney":null,"pickStatus":1,"params":{}},{"orderId":14,"userId":44,"orderNo":"1942747731","successTime":"2019-05-31 00:23:55","payWay":1,"payTime":"2019-05-31 00:23:47","payStatus":2,"vehicleId":11,"storeId":7,"takevehicleTime":"2019-05-31","rentDuration":3,"status":4,"createTime":"2019-05-31","telPhone":"15937016358","week":"周五","takeStatus":2,"descStatus":null,"vehicleName":"小刀电动车","vehicleModel":"xs25445","vehicleLogo":"picture/profile/JYJY192842740420190522151444.jpg","storeName":"阳阳车行","descAddress":"诚爱路58号","payMoney":1250,"revehicleTime":null,"expireTime":"2019-08-29","storeStatus":0,"city":"上海市","supId":8,"refundMoney":null,"retuStatus":null,"extendMoney":null,"pickStatus":null,"params":{}},{"orderId":3,"userId":7,"orderNo":"1979457023","successTime":"2019-05-30 22:50:00","payWay":1,"payTime":"2019-05-30 22:49:54","payStatus":2,"vehicleId":11,"storeId":7,"takevehicleTime":"2019-05-30","rentDuration":8,"status":4,"createTime":"2019-05-30","telPhone":"18502994087","week":"周四","takeStatus":2,"descStatus":null,"vehicleName":"小刀电动车","vehicleModel":"xs25445","vehicleLogo":"picture/profile/JYJY192842740420190522151444.jpg","storeName":"阳阳车行","descAddress":"诚爱路58号","payMoney":1480,"revehicleTime":null,"expireTime":"2020-01-25","storeStatus":0,"city":"上海市","supId":8,"refundMoney":null,"retuStatus":null,"extendMoney":null,"pickStatus":null,"params":{}}]}
      */
 
     private int code;
@@ -58,31 +58,38 @@ public class GetCarOrderBean {
 
         public static class OrderListBean implements MultiItemEntity{
             /**
-             * orderId : 96
-             * userId : 3
-             * orderNo : 1962631584
-             * successTime : 2019-05-16 14:53:46
+             * orderId : 17
+             * userId : 44
+             * orderNo : 1968149569
+             * successTime : 2019-05-31 00:44:53
              * payWay : 1
-             * payTime : 2019-05-16 14:53:46
+             * payTime : 2019-05-31 00:44:41
              * payStatus : 2
-             * vehicleId : 17
-             * storeId : 13
-             * takevehicleTime : 2019-05-16
-             * rentDuration : 1
+             * vehicleId : 11
+             * storeId : 7
+             * takevehicleTime : 2019-05-31
+             * rentDuration : 3
              * status : 4
-             * createTime : 2019-05-16
-             * telPhone : 18502994087
-             * week : 周四
+             * createTime : 2019-05-31
+             * telPhone : 15937016358
+             * week : 周五
              * takeStatus : 1
              * descStatus : null
              * vehicleName : 小刀电动车
              * vehicleModel : xs25445
-             * vehicleLogo : picture/profile/JYJY193963789020190516143316.jpg
-             * storeName : 万达信息
-             * descAddress : 上海市青浦区华徐公路888号中国梦谷
-             * payMoney : 1400.0
+             * vehicleLogo : picture/profile/JYJY192842740420190522151444.jpg
+             * storeName : 阳阳车行
+             * descAddress : 诚爱路58号
+             * payMoney : 1250.0
              * revehicleTime : null
-             * expireTime : 2019-06-15
+             * expireTime : 2019-08-29
+             * storeStatus : 0
+             * city : 上海市
+             * supId : 8
+             * refundMoney : null
+             * retuStatus : null
+             * extendMoney : null
+             * pickStatus : 1
              * params : {}
              */
 
@@ -113,27 +120,16 @@ public class GetCarOrderBean {
             private String expireTime;
             private int storeStatus;
             private String city;
-            private ParamsBean params;
+            private int supId;
+            private Object refundMoney;
+            private Object retuStatus;
+            private Object extendMoney;
+            private int pickStatus;
             private int itemType;
-
-            public String getCity() {
-                return city;
-            }
-
-            public void setCity(String city) {
-                this.city = city;
-            }
+            private ParamsBean params;
 
             public void setItemType(int itemType) {
                 this.itemType = itemType;
-            }
-
-            public int getStoreStatus() {
-                return storeStatus;
-            }
-
-            public void setStoreStatus(int storeStatus) {
-                this.storeStatus = storeStatus;
             }
 
             public int getOrderId() {
@@ -334,6 +330,62 @@ public class GetCarOrderBean {
 
             public void setExpireTime(String expireTime) {
                 this.expireTime = expireTime;
+            }
+
+            public int getStoreStatus() {
+                return storeStatus;
+            }
+
+            public void setStoreStatus(int storeStatus) {
+                this.storeStatus = storeStatus;
+            }
+
+            public String getCity() {
+                return city;
+            }
+
+            public void setCity(String city) {
+                this.city = city;
+            }
+
+            public int getSupId() {
+                return supId;
+            }
+
+            public void setSupId(int supId) {
+                this.supId = supId;
+            }
+
+            public Object getRefundMoney() {
+                return refundMoney;
+            }
+
+            public void setRefundMoney(Object refundMoney) {
+                this.refundMoney = refundMoney;
+            }
+
+            public Object getRetuStatus() {
+                return retuStatus;
+            }
+
+            public void setRetuStatus(Object retuStatus) {
+                this.retuStatus = retuStatus;
+            }
+
+            public Object getExtendMoney() {
+                return extendMoney;
+            }
+
+            public void setExtendMoney(Object extendMoney) {
+                this.extendMoney = extendMoney;
+            }
+
+            public int getPickStatus() {
+                return pickStatus;
+            }
+
+            public void setPickStatus(int pickStatus) {
+                this.pickStatus = pickStatus;
             }
 
             public ParamsBean getParams() {

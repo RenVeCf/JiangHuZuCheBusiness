@@ -54,11 +54,20 @@ public class ReturnOrderDescBean {
          */
 
         private VehicleCostBean vehicleCost;
-        private String vehiclePic;
+        private VehiclePicBean vehiclePic;
         private int status;
         private OrderBean order;
         private List<?> vehicleEndcost;
         private List<VehicleOrstatusBean> vehicleOrstatus;
+
+
+        public VehiclePicBean getVehiclePic() {
+            return vehiclePic;
+        }
+
+        public void setVehiclePic(VehiclePicBean vehiclePic) {
+            this.vehiclePic = vehiclePic;
+        }
 
         public VehicleCostBean getVehicleCost() {
             return vehicleCost;
@@ -66,14 +75,6 @@ public class ReturnOrderDescBean {
 
         public void setVehicleCost(VehicleCostBean vehicleCost) {
             this.vehicleCost = vehicleCost;
-        }
-
-        public String getVehiclePic() {
-            return vehiclePic;
-        }
-
-        public void setVehiclePic(String vehiclePic) {
-            this.vehiclePic = vehiclePic;
         }
 
         public int getStatus() {
@@ -106,6 +107,72 @@ public class ReturnOrderDescBean {
 
         public void setVehicleOrstatus(List<VehicleOrstatusBean> vehicleOrstatus) {
             this.vehicleOrstatus = vehicleOrstatus;
+        }
+
+        public static class VehiclePicBean {
+            /**
+             * vehicleInfoId : 8
+             * picPath : picture/vehicle/JYJY192112721820190528175331.jpeg,picture/vehicle/JYJY192156841020190528175335.jpeg,picture/vehicle/JYJY192337588720190528175353.jpeg
+             * plateNumber : 8888
+             * orderId : 16
+             * createTime : null
+             * type : null
+             */
+
+            private int vehicleInfoId;
+            private String picPath;
+            private String plateNumber;
+            private int orderId;
+            private Object createTime;
+            private Object type;
+
+            public int getVehicleInfoId() {
+                return vehicleInfoId;
+            }
+
+            public void setVehicleInfoId(int vehicleInfoId) {
+                this.vehicleInfoId = vehicleInfoId;
+            }
+
+            public String getPicPath() {
+                return picPath;
+            }
+
+            public void setPicPath(String picPath) {
+                this.picPath = picPath;
+            }
+
+            public String getPlateNumber() {
+                return plateNumber;
+            }
+
+            public void setPlateNumber(String plateNumber) {
+                this.plateNumber = plateNumber;
+            }
+
+            public int getOrderId() {
+                return orderId;
+            }
+
+            public void setOrderId(int orderId) {
+                this.orderId = orderId;
+            }
+
+            public Object getCreateTime() {
+                return createTime;
+            }
+
+            public void setCreateTime(Object createTime) {
+                this.createTime = createTime;
+            }
+
+            public Object getType() {
+                return type;
+            }
+
+            public void setType(Object type) {
+                this.type = type;
+            }
         }
 
         public static class VehicleCostBean {

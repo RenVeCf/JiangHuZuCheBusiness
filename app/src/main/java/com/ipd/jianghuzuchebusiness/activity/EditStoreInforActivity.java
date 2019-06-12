@@ -228,6 +228,7 @@ public class EditStoreInforActivity extends BaseActivity<EditStoreInforContract.
     @Override
     public void resultEditStoreInfor(CaptchaBean data) {
         ToastUtil.showShortToast(data.getMsg());
+        setResult(RESULT_OK, new Intent().putExtra("refresh", 1));
         finish();
     }
 

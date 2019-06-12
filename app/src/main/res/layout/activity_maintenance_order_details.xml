@@ -156,7 +156,8 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/y50"
-        android:paddingTop="@dimen/y50">
+        android:paddingTop="@dimen/y50"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="0dp"

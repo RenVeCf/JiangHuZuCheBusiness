@@ -118,14 +118,22 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsContract.View
     RecyclerView rvOrderDetails;
     @BindView(R.id.rv_car_photo)
     RecyclerView rvCarPhoto;
+    @BindView(R.id.tv_car_code)
+    TextView tvCarCode;
+    @BindView(R.id.ll_car_code)
+    LinearLayout llCarCode;
+    @BindView(R.id.view_car_code)
+    View viewCarCode;
 
     private int type;
     private String orderId;
     private int statusGet;
     private int statusOut;
+    private int status;
     private List<SelectCarBean.DataBean.VehicleOrstatusBean> vehicleOrstatusBean;
     private List<OrderDetailsBean.DataBean.VehicleOrstatusBean> orderDetailsBean;
     private List<ReturnOrderDescBean.DataBean.VehicleOrstatusBean> returnOrderDescBean;
+    private OrderDetailsBean.DataBean.PicPathBean picPathBean;
     private VehicleConditionAdapter vehicleConditionAdapter;
     private CarPhotoAdapter carPhotoAdapter;
     private List<String> imgList;
@@ -156,15 +164,21 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsContract.View
         orderId = getIntent().getStringExtra("order_id");
         statusGet = getIntent().getIntExtra("status_get", 0);
         statusOut = getIntent().getIntExtra("status_out", 0);
+        status = getIntent().getIntExtra("status", 0);
 
         switch (type) {
             case 0:
                 tvUseCarMoneyType.setText("已支付");
                 btCancelOrder.setText("取消订单");
-                if (statusGet == 1)
+                if (statusGet == 1) {
+                    llCarCode.setVisibility(View.GONE);
+                    viewCarCode.setVisibility(View.GONE);
                     btSelectOrder.setText("填写取车单");
-                else if (statusGet == 2)
+                } else if (statusGet == 2)
                     btSelectOrder.setText("查看车辆");
+                if (status == 5 || status == 2) {
+                    llBottomTwo.setVisibility(View.GONE);
+                }
                 break;
             case 1:
                 tvUseCarMoneyType.setText("已支付");
@@ -173,21 +187,9 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsContract.View
                     btSelectOrder.setText("填写退车单");
                 else if (statusOut == 2)
                     btSelectOrder.setText("查看车辆");
-                break;
-            case 2:
-                tvUseCarMoneyType.setText("待付款");
-                btCancelOrder.setText("取消订单");
-                btSelectOrder.setText("填写取车单");
-                break;
-            case 3:
-                tvUseCarMoneyType.setText("待付款");
-                btCancelOrder.setText("取消订单");
-                btSelectOrder.setText("填写取车单");
-                break;
-            case 4:
-                tvUseCarMoneyType.setText("待付款");
-                btCancelOrder.setText("取消订单");
-                btSelectOrder.setText("填写取车单");
+                if (status == 8 || status == 2) {
+                    llBottomTwo.setVisibility(View.GONE);
+                }
                 break;
         }
 
@@ -210,7 +212,8 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsContract.View
         returnOrderDescBean = new ArrayList<>();
         orderDetailsBean = new ArrayList<>();
         vehicleOrstatusBean = new ArrayList<>();
-        vehicleConditionAdapter = new VehicleConditionAdapter(vehicleOrstatusBean);
+        picPathBean = new OrderDetailsBean.DataBean.PicPathBean();
+        vehicleConditionAdapter = new VehicleConditionAdapter(vehicleOrstatusBean, type + 1);
         rvOrderDetails.setAdapter(vehicleConditionAdapter);
 
         imgList = new ArrayList<>();
@@ -321,13 +324,27 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsContract.View
                 setDocumentsReceivedDialog();
                 break;
             case R.id.bt_select_order:
-                if (statusGet == 2)
-                    startActivity(new Intent(this, SelectCarActivity.class).putExtra("order_id", orderId));
-                else if (statusOut == 2)
-                    startActivity(new Intent(this, SelectCarActivity.class).putExtra("order_id", orderId));
-                else {
-                    startActivity(new Intent(this, FillInPaperActivity.class).putExtra("order_id", orderId).putExtra("paper_type", type));
-                    finish();
+                switch (type) {
+                    case 0:
+                        if (statusGet == 2)
+                            startActivity(new Intent(this, SelectCarActivity.class).putExtra("order_id", orderId).putExtra("vehicleType", 1));
+                        else {
+                            startActivity(new Intent(this, FillInPaperActivity.class).putExtra("order_id", orderId).putExtra("paper_type", type));
+                            setResult(RESULT_OK, new Intent()
+                                    .putExtra("get_car_result", "1"));
+                            finish();
+                        }
+                        break;
+                    case 1:
+                        if (statusOut == 2)
+                            startActivity(new Intent(this, SelectCarActivity.class).putExtra("order_id", orderId).putExtra("vehicleType", 2));
+                        else {
+                            startActivity(new Intent(this, FillInPaperActivity.class).putExtra("order_id", orderId).putExtra("paper_type", type));
+                            setResult(RESULT_OK, new Intent()
+                                    .putExtra("get_car_result", "1"));
+                            finish();
+                        }
+                        break;
                 }
                 break;
         }
@@ -360,11 +377,13 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsContract.View
                 vehicleOrstatusBean.add(new SelectCarBean.DataBean.VehicleOrstatusBean());
                 vehicleOrstatusBean.get(i).setVestatusName(orderDetailsBean.get(i).getVestatusName());
                 vehicleOrstatusBean.get(i).setStatus(orderDetailsBean.get(i).getStatus());
+                vehicleOrstatusBean.get(i).setVehicleType(1);//取车单
             }
             vehicleConditionAdapter.setNewData(vehicleOrstatusBean);
 
-
-            String[] strs = data.getData().getPicPath().split(",");
+            picPathBean = data.getData().getPicPath();
+            tvCarCode.setText(picPathBean.getPlateNumber());
+            String[] strs = picPathBean.getPicPath().split(",");
             for (int i = 0, len = strs.length; i < len; i++) {
                 imgList.add(strs[i].toString());
             }
@@ -409,10 +428,12 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsContract.View
                 vehicleOrstatusBean.add(new SelectCarBean.DataBean.VehicleOrstatusBean());
                 vehicleOrstatusBean.get(i).setVestatusName(returnOrderDescBean.get(i).getVestatusName());
                 vehicleOrstatusBean.get(i).setStatus(returnOrderDescBean.get(i).getStatus());
+                vehicleOrstatusBean.get(i).setVehicleType(2);//退车单
             }
             vehicleConditionAdapter.setNewData(vehicleOrstatusBean);
 
-            String[] strs = data.getData().getVehiclePic().split(",");
+            tvCarCode.setText(data.getData().getVehiclePic().getPlateNumber());
+            String[] strs = data.getData().getVehiclePic().getPicPath().split(",");
             for (int i = 0, len = strs.length; i < len; i++) {
                 imgList.add(strs[i].toString());
             }

@@ -11,13 +11,13 @@ import java.util.List;
  * Description ：
  * Author ： MengYang
  * Email ： 942685687@qq.com
- * Time ： 2019/5/14.
+ * Time ： 2019/5/30.
  */
-public class RepairProjectHorizontalBean implements Parcelable {
+public class RepairProjectHorizontalBean implements Parcelable{
     /**
      * code : 200
      * msg : 操作成功
-     * data : {"repairType":[{"repairId":1,"repairCost":null,"repairName":"大灯","status":null,"createTime":"2019-05-20 10:00:47","selectStatus":0,"params":{},"parentId":0,"appRepairs":[{"repairId":2,"repairCost":99,"repairName":"灯头","status":null,"createTime":"2019-05-20 10:00:58","selectStatus":0,"params":{},"parentId":1,"appRepairs":null},{"repairId":3,"repairCost":99,"repairName":"灯尾","status":null,"createTime":"2019-05-20 10:01:09","selectStatus":0,"params":{},"parentId":1,"appRepairs":null}]},{"repairId":4,"repairCost":null,"repairName":"轮胎","status":null,"createTime":"2019-05-20 10:01:22","selectStatus":0,"params":{},"parentId":0,"appRepairs":[{"repairId":5,"repairCost":99,"repairName":"轮胎01","status":null,"createTime":"2019-05-20 10:01:46","selectStatus":0,"params":{},"parentId":4,"appRepairs":null},{"repairId":6,"repairCost":99,"repairName":"轮胎02","status":null,"createTime":"2019-05-20 10:01:56","selectStatus":0,"params":{},"parentId":4,"appRepairs":null}]},{"repairId":7,"repairCost":null,"repairName":"玻璃","status":null,"createTime":"2019-05-20 21:08:02","selectStatus":0,"params":{},"parentId":0,"appRepairs":[{"repairId":8,"repairCost":99,"repairName":"钢化玻璃","status":null,"createTime":"2019-05-20 21:08:14","selectStatus":0,"params":{},"parentId":7,"appRepairs":null},{"repairId":9,"repairCost":99,"repairName":"普通玻璃","status":null,"createTime":"2019-05-20 21:08:22","selectStatus":0,"params":{},"parentId":7,"appRepairs":null}]},{"repairId":10,"repairCost":null,"repairName":"车牌","status":null,"createTime":"2019-05-20 21:08:31","selectStatus":0,"params":{},"parentId":0,"appRepairs":[{"repairId":11,"repairCost":99,"repairName":"普通车牌","status":null,"createTime":"2019-05-20 21:10:56","selectStatus":0,"params":{},"parentId":10,"appRepairs":null},{"repairId":12,"repairCost":99,"repairName":"高级车牌","status":null,"createTime":"2019-05-20 21:11:03","selectStatus":0,"params":{},"parentId":10,"appRepairs":null}]},{"repairId":13,"repairCost":null,"repairName":"外观件","status":null,"createTime":"2019-05-21 20:11:12","selectStatus":0,"params":{},"parentId":0,"appRepairs":[{"repairId":14,"repairCost":65,"repairName":"前泥瓦","status":null,"createTime":"2019-05-21 20:11:51","selectStatus":0,"params":{},"parentId":13,"appRepairs":null}]},{"repairId":15,"repairCost":null,"repairName":"机油","status":null,"createTime":"2019-05-22 17:27:43","selectStatus":0,"params":{},"parentId":0,"appRepairs":[]},{"repairId":16,"repairCost":null,"repairName":"机油","status":null,"createTime":"2019-05-22 17:28:48","selectStatus":0,"params":{},"parentId":0,"appRepairs":[]}]}
+     * data : {"repairType":[{"repairId":2,"repairCost":null,"repairName":"灯尾","status":null,"createTime":"2019-05-30 22:15:51","selectStatus":0,"params":{},"parentId":0,"appRepairs":[{"repairId":4,"repairCost":99,"repairName":"大灯2","status":null,"createTime":"2019-05-30 22:16:09","selectStatus":0,"params":{},"parentId":2,"appRepairs":null,"region":null,"province":null,"city":null,"area":null},{"repairId":3,"repairCost":100,"repairName":"大灯","status":null,"createTime":"2019-05-30 22:16:03","selectStatus":0,"params":{},"parentId":2,"appRepairs":null,"region":null,"province":null,"city":null,"area":null}],"region":null,"province":"上海","city":"上海市","area":null},{"repairId":1,"repairCost":null,"repairName":"大灯","status":null,"createTime":"2019-05-30 22:15:42","selectStatus":0,"params":{},"parentId":0,"appRepairs":[{"repairId":6,"repairCost":99,"repairName":"机油","status":null,"createTime":"2019-05-30 22:16:19","selectStatus":0,"params":{},"parentId":1,"appRepairs":null,"region":null,"province":null,"city":null,"area":null},{"repairId":5,"repairCost":99,"repairName":"机油","status":null,"createTime":"2019-05-30 22:16:16","selectStatus":0,"params":{},"parentId":1,"appRepairs":null,"region":null,"province":null,"city":null,"area":null}],"region":null,"province":"上海","city":"上海市","area":null}]}
      */
 
     private int code;
@@ -76,7 +76,7 @@ public class RepairProjectHorizontalBean implements Parcelable {
         dest.writeString(msg);
     }
 
-    public static class DataBean implements Parcelable {
+    public static class DataBean implements Parcelable{
         private List<RepairTypeBean> repairType;
 
         protected DataBean(Parcel in) {
@@ -111,17 +111,21 @@ public class RepairProjectHorizontalBean implements Parcelable {
         public void writeToParcel(Parcel dest, int flags) {
         }
 
-        public static class RepairTypeBean implements Parcelable {
+        public static class RepairTypeBean implements Parcelable{
             /**
-             * repairId : 1
+             * repairId : 2
              * repairCost : null
-             * repairName : 大灯
+             * repairName : 灯尾
              * status : null
-             * createTime : 2019-05-20 10:00:47
+             * createTime : 2019-05-30 22:15:51
              * selectStatus : 0
              * params : {}
              * parentId : 0
-             * appRepairs : [{"repairId":2,"repairCost":99,"repairName":"灯头","status":null,"createTime":"2019-05-20 10:00:58","selectStatus":0,"params":{},"parentId":1,"appRepairs":null},{"repairId":3,"repairCost":99,"repairName":"灯尾","status":null,"createTime":"2019-05-20 10:01:09","selectStatus":0,"params":{},"parentId":1,"appRepairs":null}]
+             * appRepairs : [{"repairId":4,"repairCost":99,"repairName":"大灯2","status":null,"createTime":"2019-05-30 22:16:09","selectStatus":0,"params":{},"parentId":2,"appRepairs":null,"region":null,"province":null,"city":null,"area":null},{"repairId":3,"repairCost":100,"repairName":"大灯","status":null,"createTime":"2019-05-30 22:16:03","selectStatus":0,"params":{},"parentId":2,"appRepairs":null,"region":null,"province":null,"city":null,"area":null}]
+             * region : null
+             * province : 上海
+             * city : 上海市
+             * area : null
              */
 
             private int repairId;
@@ -132,6 +136,10 @@ public class RepairProjectHorizontalBean implements Parcelable {
             private int selectStatus;
             private ParamsBean params;
             private int parentId;
+            private Object region;
+            private String province;
+            private String city;
+            private Object area;
             private List<AppRepairsBean> appRepairs;
 
             protected RepairTypeBean(Parcel in) {
@@ -140,6 +148,24 @@ public class RepairProjectHorizontalBean implements Parcelable {
                 createTime = in.readString();
                 selectStatus = in.readInt();
                 parentId = in.readInt();
+                province = in.readString();
+                city = in.readString();
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeInt(repairId);
+                dest.writeString(repairName);
+                dest.writeString(createTime);
+                dest.writeInt(selectStatus);
+                dest.writeInt(parentId);
+                dest.writeString(province);
+                dest.writeString(city);
+            }
+
+            @Override
+            public int describeContents() {
+                return 0;
             }
 
             public static final Creator<RepairTypeBean> CREATOR = new Creator<RepairTypeBean>() {
@@ -218,6 +244,38 @@ public class RepairProjectHorizontalBean implements Parcelable {
                 this.parentId = parentId;
             }
 
+            public Object getRegion() {
+                return region;
+            }
+
+            public void setRegion(Object region) {
+                this.region = region;
+            }
+
+            public String getProvince() {
+                return province;
+            }
+
+            public void setProvince(String province) {
+                this.province = province;
+            }
+
+            public String getCity() {
+                return city;
+            }
+
+            public void setCity(String city) {
+                this.city = city;
+            }
+
+            public Object getArea() {
+                return area;
+            }
+
+            public void setArea(Object area) {
+                this.area = area;
+            }
+
             public List<AppRepairsBean> getAppRepairs() {
                 return appRepairs;
             }
@@ -226,21 +284,7 @@ public class RepairProjectHorizontalBean implements Parcelable {
                 this.appRepairs = appRepairs;
             }
 
-            @Override
-            public int describeContents() {
-                return 0;
-            }
-
-            @Override
-            public void writeToParcel(Parcel dest, int flags) {
-                dest.writeInt(repairId);
-                dest.writeString(repairName);
-                dest.writeString(createTime);
-                dest.writeInt(selectStatus);
-                dest.writeInt(parentId);
-            }
-
-            public static class ParamsBean implements Parcelable {
+            public static class ParamsBean implements Parcelable{
                 protected ParamsBean(Parcel in) {
                 }
 
@@ -268,15 +312,19 @@ public class RepairProjectHorizontalBean implements Parcelable {
 
             public static class AppRepairsBean implements Parcelable, MultiItemEntity {
                 /**
-                 * repairId : 2
+                 * repairId : 4
                  * repairCost : 99.0
-                 * repairName : 灯头
+                 * repairName : 大灯2
                  * status : null
-                 * createTime : 2019-05-20 10:00:58
+                 * createTime : 2019-05-30 22:16:09
                  * selectStatus : 0
                  * params : {}
-                 * parentId : 1
+                 * parentId : 2
                  * appRepairs : null
+                 * region : null
+                 * province : null
+                 * city : null
+                 * area : null
                  */
 
                 private int repairId;
@@ -288,6 +336,10 @@ public class RepairProjectHorizontalBean implements Parcelable {
                 private ParamsBeanX params;
                 private int parentId;
                 private Object appRepairs;
+                private Object region;
+                private Object province;
+                private Object city;
+                private Object area;
                 private int itemType;
 
                 public void setItemType(int itemType) {
@@ -387,6 +439,38 @@ public class RepairProjectHorizontalBean implements Parcelable {
                     this.appRepairs = appRepairs;
                 }
 
+                public Object getRegion() {
+                    return region;
+                }
+
+                public void setRegion(Object region) {
+                    this.region = region;
+                }
+
+                public Object getProvince() {
+                    return province;
+                }
+
+                public void setProvince(Object province) {
+                    this.province = province;
+                }
+
+                public Object getCity() {
+                    return city;
+                }
+
+                public void setCity(Object city) {
+                    this.city = city;
+                }
+
+                public Object getArea() {
+                    return area;
+                }
+
+                public void setArea(Object area) {
+                    this.area = area;
+                }
+
                 @Override
                 public int describeContents() {
                     return 0;
@@ -407,7 +491,7 @@ public class RepairProjectHorizontalBean implements Parcelable {
                     return itemType;
                 }
 
-                public static class ParamsBeanX implements Parcelable {
+                public static class ParamsBeanX implements Parcelable{
                     protected ParamsBeanX(Parcel in) {
                     }
 

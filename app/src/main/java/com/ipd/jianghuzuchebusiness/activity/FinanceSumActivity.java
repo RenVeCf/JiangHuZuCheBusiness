@@ -1,12 +1,14 @@
 package com.ipd.jianghuzuchebusiness.activity;
 
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
 import com.ipd.jianghuzuchebusiness.R;
 import com.ipd.jianghuzuchebusiness.adapter.FinanceSumAdapter;
@@ -34,7 +36,7 @@ import static com.ipd.jianghuzuchebusiness.common.config.IConstants.USER_ID;
  * Email ： 942685687@qq.com
  * Time ： 2019/5/13.
  */
-public class FinanceSumActivity extends BaseActivity<FinanceSumContract.View, FinanceSumContract.Presenter> implements FinanceSumContract.View {
+public class FinanceSumActivity extends BaseActivity<FinanceSumContract.View, FinanceSumContract.Presenter> implements FinanceSumContract.View, BaseQuickAdapter.RequestLoadMoreListener {
 
     @BindView(R.id.tv_finance_sum_top)
     TopView tvFinanceSumTop;
@@ -50,9 +52,12 @@ public class FinanceSumActivity extends BaseActivity<FinanceSumContract.View, Fi
     RecyclerView rvFinanceSum;
     @BindView(R.id.bt_finance_sum)
     Button btFinanceSum;
+    @BindView(R.id.srl_finance_sum)
+    SwipeRefreshLayout srlFinanceSum;
 
     private FinanceSumAdapter financeSumAdapter;
     private List<FinanceSumBean.DataBean.UserDetailedBean> financeSumBean;
+    private int page = 0;
 
     @Override
     public int getLayoutId() {
@@ -91,14 +96,21 @@ public class FinanceSumActivity extends BaseActivity<FinanceSumContract.View, Fi
 
     @Override
     public void initListener() {
-
+        srlFinanceSum.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                page = 0;
+                initData();
+                srlFinanceSum.setRefreshing(false);
+            }
+        });
     }
 
     @Override
     public void initData() {
         TreeMap<String, String> financeSumMap = new TreeMap<>();
         financeSumMap.put("userId", SPUtil.get(this, USER_ID, "") + "");
-        financeSumMap.put("page", "0");
+        financeSumMap.put("page", page + "");
         getPresenter().getFinanceSum(financeSumMap, false, false);
     }
 
@@ -114,13 +126,34 @@ public class FinanceSumActivity extends BaseActivity<FinanceSumContract.View, Fi
         tvFinanceSumTwo.setText(data.getData().getUserData().getDayMoney() + "");
         tvFinanceSumThree.setText(data.getData().getUserData().getMonthMoney() + "");
 
-        financeSumBean.clear();
-        financeSumBean.addAll(data.getData().getUserDetailed());
-        financeSumAdapter.setNewData(financeSumBean);
+        if (page == 0) {
+            financeSumBean.clear();
+            financeSumBean.addAll(data.getData().getUserDetailed());
+            financeSumAdapter.setNewData(financeSumBean);
+            if (data.getData().getUserDetailed().size() > 0) {
+                page += 1;
+                financeSumAdapter.setOnLoadMoreListener(this, rvFinanceSum);
+            } else {
+                financeSumAdapter.loadMoreEnd();
+            }
+        } else {
+            if (data.getData().getUserDetailed().size() > 0) {
+                page += 1;
+                financeSumAdapter.addData(data.getData().getUserDetailed());
+                financeSumAdapter.loadMoreComplete();
+            } else {
+                financeSumAdapter.loadMoreEnd();
+            }
+        }
     }
 
     @Override
     public <T> ObservableTransformer<T, T> bindLifecycle() {
         return this.bindToLifecycle();
+    }
+
+    @Override
+    public void onLoadMoreRequested() {
+        initData();
     }
 }

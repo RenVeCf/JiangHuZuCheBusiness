@@ -24,7 +24,7 @@
     <string name="Dialog_Multi_Permission">多个权限</string>
     <string name="permission_illegal_code">非法权限</string>
 
-    <string name="app_name">江湖快车</string>
+    <string name="app_name">江湖快车(门店)</string>
     <string name="register">注册</string>
     <string name="input_phone">请输入手机号码</string>
     <string name="input_captcha">请输入验证码</string>
@@ -131,5 +131,11 @@
     <string name="edit_store_infor">编辑门店资料</string>
     <string name="select_bank">选择银行卡</string>
     <string name="add_bank">添加银行卡</string>
+
+    <string name="permission_location">无法获取定位所需的权限, 请到系统设置开启</string>
+    <string name="permission_location_granted">定位所需的权限已经正常获取</string>
+    <string name="permission_already_granted">已有所需的权限</string>
+    <string name="permission_rejected">无法获取所需的权限, 请到系统设置开启</string>
+    <string name="permission_granted">所需的权限已经正常获取</string>
 
 </resources>

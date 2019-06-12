@@ -81,6 +81,7 @@ public class MaintenanceOrderDetailsActivity extends BaseActivity<MultipleOrderC
     private int orderId;
     private String repairs;
     private String charges;
+    private int status;
     private List<RepairDetailsBean.DataBean.CostListBean> costListBean;
     private MaintenanceOrderDetailsAdapter maintenanceOrderDetailsAdapter;
 
@@ -109,6 +110,11 @@ public class MaintenanceOrderDetailsActivity extends BaseActivity<MultipleOrderC
         orderId = getIntent().getIntExtra("order_id", 0);
         repairs = getIntent().getStringExtra("repairs");
         charges = getIntent().getStringExtra("charges");
+        status = getIntent().getIntExtra("status", 0);
+        if (status == 4)
+            llBottomTwo.setVisibility(View.VISIBLE);
+        else
+            llBottomTwo.setVisibility(View.GONE);
 
         // 设置管理器
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);

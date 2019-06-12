@@ -23,6 +23,7 @@ public interface IConstants {
     String PHONE = "phone"; //用户手机号码
     String AVATAR = "avatar"; //头像
     String STORE_ID = "store_id"; //门店id
+    String CITY = "city"; //城市
     int JPUSH_SEQUENCE = 101; //极光精准推送序列
     //------------非公用共享参数（仅为传值方便）------------------
     String STORE_NAME = "StoreName"; //门店名称

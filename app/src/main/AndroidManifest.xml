@@ -7,6 +7,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- 允许程序设置内置sd卡的写权限 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- 允许程序设置内置sd卡的读权限 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <!-- 允许程序获取网络状态 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- 允许程序访问WiFi网络信息 -->
@@ -65,7 +67,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon, android:allowBackup, theme, label">
-        <activity android:name=".activity.LoginActivity">
+        <activity android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -78,28 +80,87 @@
             android:process=":multiprocess"
             tools:node="replace" />
 
-        <activity android:name=".activity.MainActivity" />
-        <activity android:name=".activity.ForgetPasswordActivity" />
-        <activity android:name=".activity.GetCarOrderActivity" />
-        <activity android:name=".activity.FillInPaperActivity" />
-        <activity android:name=".activity.OrderDetailsActivity" />
-        <activity android:name=".activity.LicensePlateNumActivity" />
-        <activity android:name=".activity.VehicleConditionActivity" />
-        <activity android:name=".activity.FinishTypeActivity" />
-        <activity android:name=".activity.MultipleOrderActivity" />
-        <activity android:name=".activity.MaintenanceOrderDetailsActivity" />
-        <activity android:name=".activity.OrderSumActivity" />
-        <activity android:name=".activity.StoreInforActivity" />
-        <activity android:name=".activity.EditStoreInforActivity" />
-        <activity android:name=".activity.FinanceSumActivity" />
-        <activity android:name=".activity.BigImageActivity" />
-        <activity android:name=".activity.SelectCarActivity" />
-        <activity android:name=".activity.InputActivity" />
-        <activity android:name=".activity.AddBankAvtivity" />
-        <activity android:name=".activity.CashWithdrawalActivity" />
-        <activity android:name=".activity.SelectBankActivity" />
-        <activity android:name=".activity.SelectBankTwoActivity" />
-        <activity android:name=".activity.WebViewActivity" />
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="IYXUHk5wpudQmzoQwUDqrHgomnDWvISL" />
+
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" />
+
+        <activity
+            android:name=".activity.MainActivity"
+            android:screenOrientation="sensorPortrait" />
+        <activity
+            android:name=".activity.ForgetPasswordActivity"
+            android:screenOrientation="sensorPortrait" />
+        <activity
+            android:name=".activity.GetCarOrderActivity"
+            android:screenOrientation="sensorPortrait" />
+        <activity
+            android:name=".activity.FillInPaperActivity"
+            android:screenOrientation="sensorPortrait" />
+        <activity
+            android:name=".activity.OrderDetailsActivity"
+            android:screenOrientation="sensorPortrait" />
+        <activity
+            android:name=".activity.LicensePlateNumActivity"
+            android:screenOrientation="sensorPortrait" />
+        <activity
+            android:name=".activity.VehicleConditionActivity"
+            android:screenOrientation="sensorPortrait" />
+        <activity
+            android:name=".activity.FinishTypeActivity"
+            android:screenOrientation="sensorPortrait" />
+        <activity
+            android:name=".activity.MultipleOrderActivity"
+            android:screenOrientation="sensorPortrait" />
+        <activity
+            android:name=".activity.MaintenanceOrderDetailsActivity"
+            android:screenOrientation="sensorPortrait" />
+        <activity
+            android:name=".activity.OrderSumActivity"
+            android:screenOrientation="sensorPortrait" />
+        <activity
+            android:name=".activity.StoreInforActivity"
+            android:screenOrientation="sensorPortrait" />
+        <activity
+            android:name=".activity.EditStoreInforActivity"
+            android:screenOrientation="sensorPortrait" />
+        <activity
+            android:name=".activity.FinanceSumActivity"
+            android:screenOrientation="sensorPortrait" />
+        <activity
+            android:name=".activity.BigImageActivity"
+            android:screenOrientation="sensorPortrait" />
+        <activity
+            android:name=".activity.SelectCarActivity"
+            android:screenOrientation="sensorPortrait" />
+        <activity
+            android:name=".activity.InputActivity"
+            android:screenOrientation="sensorPortrait" />
+        <activity
+            android:name=".activity.AddBankAvtivity"
+            android:screenOrientation="sensorPortrait" />
+        <activity
+            android:name=".activity.CashWithdrawalActivity"
+            android:screenOrientation="sensorPortrait" />
+        <activity
+            android:name=".activity.SelectBankActivity"
+            android:screenOrientation="sensorPortrait" />
+        <activity
+            android:name=".activity.SelectBankTwoActivity"
+            android:screenOrientation="sensorPortrait" />
+        <activity
+            android:name=".activity.WebViewActivity"
+            android:screenOrientation="sensorPortrait" />
+        <activity
+            android:name=".activity.LoginActivity"
+            android:screenOrientation="sensorPortrait" />
+        <activity
+            android:name=".activity.LoadingActivity"
+            android:screenOrientation="sensorPortrait" />
     </application>
 
 </manifest>

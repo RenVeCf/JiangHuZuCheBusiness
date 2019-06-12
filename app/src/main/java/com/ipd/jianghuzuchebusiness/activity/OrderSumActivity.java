@@ -131,10 +131,10 @@ public class OrderSumActivity extends BaseActivity<OrderSumContract.View, OrderS
         orderSumAdapter = new OrderSumAdapter(datas);
         rvOrderSum.setAdapter(orderSumAdapter);
 
-        tvDayOrder.setVisibility(View.GONE);
-        tvDayOrderMoney.setVisibility(View.GONE);
-        tvTotalOrder.setVisibility(View.GONE);
-        tvTotalOrderMoney.setVisibility(View.GONE);
+//        tvDayOrder.setVisibility(View.GONE);
+//        tvDayOrderMoney.setVisibility(View.GONE);
+//        tvTotalOrder.setVisibility(View.GONE);
+//        tvTotalOrderMoney.setVisibility(View.GONE);
     }
 
     @Override
@@ -144,6 +144,13 @@ public class OrderSumActivity extends BaseActivity<OrderSumContract.View, OrderS
 
     @Override
     public void initData() {
+        TreeMap<String, String> carRentalOrderMap = new TreeMap<>();
+        carRentalOrderMap.put("userId", SPUtil.get(this, USER_ID, "") + "");
+        getPresenter().getCarRentalOrder(carRentalOrderMap, false, false);
+
+        TreeMap<String, String> repairOrderMap = new TreeMap<>();
+        repairOrderMap.put("userId", SPUtil.get(this, USER_ID, "") + "");
+        getPresenter().getRepairOrder(repairOrderMap, false, false);
     }
 
     //时间选择器
@@ -173,7 +180,16 @@ public class OrderSumActivity extends BaseActivity<OrderSumContract.View, OrderS
                 }
 
                 if (!tvOrderSumStart.getText().toString().trim().equals("选择起始日期") && !tvOrderSumEnd.getText().toString().trim().equals("选择结束日期")) {
-                    llOrderSum.setVisibility(View.VISIBLE);
+                    if (rbOrderSumStart.isChecked())
+                        selectOrder(0);
+                    else
+                        selectOrder(1);
+//                    llOrderSum.setVisibility(View.VISIBLE);
+                } else if (tvOrderSumStart.getText().toString().trim().equals("选择起始日期") && tvOrderSumEnd.getText().toString().trim().equals("选择结束日期")) {
+                    if (rbOrderSumStart.isChecked())
+                        selectOrder(2);
+                    else
+                        selectOrder(3);
                 }
             }
         })
@@ -212,122 +228,176 @@ public class OrderSumActivity extends BaseActivity<OrderSumContract.View, OrderS
         pvTime.show();
     }
 
+    private void selectOrder(int type) {
+        switch (type) {
+            case 0:
+                TreeMap<String, String> carRentalOrderMap = new TreeMap<>();
+                carRentalOrderMap.put("userId", SPUtil.get(this, USER_ID, "") + "");
+                carRentalOrderMap.put("params[beginTime]", tvOrderSumStart.getText().toString().trim());
+                carRentalOrderMap.put("params[endTime]", tvOrderSumEnd.getText().toString().trim());
+                getPresenter().getCarRentalOrder(carRentalOrderMap, false, false);
+                break;
+            case 1:
+                TreeMap<String, String> repairOrderMap = new TreeMap<>();
+                repairOrderMap.put("userId", SPUtil.get(this, USER_ID, "") + "");
+                repairOrderMap.put("params[beginTime]", tvOrderSumStart.getText().toString().trim());
+                repairOrderMap.put("params[endTime]", tvOrderSumEnd.getText().toString().trim());
+                getPresenter().getRepairOrder(repairOrderMap, false, false);
+                break;
+            case 2:
+                TreeMap<String, String> carRentalOrderMap1 = new TreeMap<>();
+                carRentalOrderMap1.put("userId", SPUtil.get(this, USER_ID, "") + "");
+                getPresenter().getCarRentalOrder(carRentalOrderMap1, false, false);
+                break;
+            case 3:
+                TreeMap<String, String> repairOrderMap1 = new TreeMap<>();
+                repairOrderMap1.put("userId", SPUtil.get(this, USER_ID, "") + "");
+                getPresenter().getRepairOrder(repairOrderMap1, false, false);
+                break;
+        }
+    }
+
     @OnClick({R.id.rb_order_sum_start, R.id.rb_order_sum_end, R.id.tv_order_sum_start, R.id.tv_order_sum_end, R.id.bt_order_sum})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rb_order_sum_start:
-                if (carRentalOrderBean != null) {
-                    NotUseList = null;
-                    NotUseList = new GridLayoutManager(this, 5);
-                    rvOrderSum.setLayoutManager(NotUseList);
-                    datas.clear();
-                    datas.add("");
-                    datas.add("门店收益");
-                    datas.add("取车订单");
-                    datas.add("还车订单");
-                    datas.add("未完成订单");
-                    datas.add("数量");
-                    datas.add(carRentalOrderBean.getProfitCount() + "");
-                    datas.add(carRentalOrderBean.getPickOrder() + "");
-                    datas.add(carRentalOrderBean.getReturnOrder() + "");
-                    datas.add(carRentalOrderBean.getNoOkOrder() + "");
-                    datas.add("金额");
-                    datas.add("¥" + carRentalOrderBean.getProfitMoney());
-                    datas.add("¥" + carRentalOrderBean.getPickMoney());
-                    datas.add("¥" + carRentalOrderBean.getReturnMoney());
-                    datas.add("¥" + carRentalOrderBean.getNoOkOrderMoney());
-                    orderSumAdapter.setNewData(datas);
-
-                    tvDayOrder.setVisibility(View.VISIBLE);
-                    tvDayOrderMoney.setVisibility(View.VISIBLE);
-                    tvTotalOrder.setVisibility(View.VISIBLE);
-                    tvTotalOrderMoney.setVisibility(View.VISIBLE);
-
-                    tvDayOrder.setText("当日订单数量: " + carRentalOrderBean.getDayOrder());
-                    tvDayOrderMoney.setText("当日订单金额: ¥" + carRentalOrderBean.getDayOrderMoney());
-                    tvTotalOrder.setText("合计订单数量: " + carRentalOrderBean.getTotalOrder());
-                    tvTotalOrderMoney.setText("合计订单金额: ¥" + carRentalOrderBean.getTotalOrderMoney());
-                } else {
-                    NotUseList = null;
-                    NotUseList = new GridLayoutManager(this, 5);
-                    rvOrderSum.setLayoutManager(NotUseList);
-                    datas.clear();
-                    datas.add("");
-                    datas.add("门店收益");
-                    datas.add("取车订单");
-                    datas.add("还车订单");
-                    datas.add("未完成订单");
-                    datas.add("数量");
-                    datas.add("-");
-                    datas.add("-");
-                    datas.add("-");
-                    datas.add("-");
-                    datas.add("金额");
-                    datas.add("-");
-                    datas.add("-");
-                    datas.add("-");
-                    datas.add("-");
-                    orderSumAdapter.setNewData(datas);
-
-                    tvDayOrder.setVisibility(View.GONE);
-                    tvDayOrderMoney.setVisibility(View.GONE);
-                    tvTotalOrder.setVisibility(View.GONE);
-                    tvTotalOrderMoney.setVisibility(View.GONE);
+                if (!tvOrderSumStart.getText().toString().trim().equals("选择起始日期") && !tvOrderSumEnd.getText().toString().trim().equals("选择结束日期")) {
+                    if (rbOrderSumStart.isChecked())
+                        selectOrder(0);
+                    else
+                        selectOrder(1);
+//                    llOrderSum.setVisibility(View.VISIBLE);
+                } else if (tvOrderSumStart.getText().toString().trim().equals("选择起始日期") && tvOrderSumEnd.getText().toString().trim().equals("选择结束日期")) {
+                    if (rbOrderSumStart.isChecked())
+                        selectOrder(2);
+                    else
+                        selectOrder(3);
                 }
+
+//                if (carRentalOrderBean != null) {
+//                    NotUseList = null;
+//                    NotUseList = new GridLayoutManager(this, 5);
+//                    rvOrderSum.setLayoutManager(NotUseList);
+//                    datas.clear();
+//                    datas.add("");
+//                    datas.add("门店收益");
+//                    datas.add("取车订单");
+//                    datas.add("还车订单");
+//                    datas.add("未完成订单");
+//                    datas.add("数量");
+//                    datas.add(carRentalOrderBean.getProfitCount() + "");
+//                    datas.add(carRentalOrderBean.getPickOrder() + "");
+//                    datas.add(carRentalOrderBean.getReturnOrder() + "");
+//                    datas.add(carRentalOrderBean.getNoOkOrder() + "");
+//                    datas.add("金额");
+//                    datas.add("¥" + carRentalOrderBean.getProfitMoney());
+//                    datas.add("¥" + carRentalOrderBean.getPickMoney());
+//                    datas.add("¥" + carRentalOrderBean.getReturnMoney());
+//                    datas.add("¥" + carRentalOrderBean.getNoOkOrderMoney());
+//                    orderSumAdapter.setNewData(datas);
+//
+//                    tvDayOrder.setVisibility(View.VISIBLE);
+//                    tvDayOrderMoney.setVisibility(View.VISIBLE);
+//                    tvTotalOrder.setVisibility(View.VISIBLE);
+//                    tvTotalOrderMoney.setVisibility(View.VISIBLE);
+//
+//                    tvDayOrder.setText("当日订单数量: " + carRentalOrderBean.getDayOrder());
+//                    tvDayOrderMoney.setText("当日订单金额: ¥" + carRentalOrderBean.getDayOrderMoney());
+//                    tvTotalOrder.setText("合计订单数量: " + carRentalOrderBean.getTotalOrder());
+//                    tvTotalOrderMoney.setText("合计订单金额: ¥" + carRentalOrderBean.getTotalOrderMoney());
+//                } else {
+//                    NotUseList = null;
+//                    NotUseList = new GridLayoutManager(this, 5);
+//                    rvOrderSum.setLayoutManager(NotUseList);
+//                    datas.clear();
+//                    datas.add("");
+//                    datas.add("门店收益");
+//                    datas.add("取车订单");
+//                    datas.add("还车订单");
+//                    datas.add("未完成订单");
+//                    datas.add("数量");
+//                    datas.add("-");
+//                    datas.add("-");
+//                    datas.add("-");
+//                    datas.add("-");
+//                    datas.add("金额");
+//                    datas.add("-");
+//                    datas.add("-");
+//                    datas.add("-");
+//                    datas.add("-");
+//                    orderSumAdapter.setNewData(datas);
+//
+////                    tvDayOrder.setVisibility(View.GONE);
+////                    tvDayOrderMoney.setVisibility(View.GONE);
+////                    tvTotalOrder.setVisibility(View.GONE);
+////                    tvTotalOrderMoney.setVisibility(View.GONE);
+//                }
                 break;
             case R.id.rb_order_sum_end:
-                if (repairOrderBean != null) {
-                    NotUseList = null;
-                    NotUseList = new GridLayoutManager(this, 4);
-                    rvOrderSum.setLayoutManager(NotUseList);
-                    datas.clear();
-                    datas.add("");
-                    datas.add("门店收益");
-                    datas.add("已完成订单");
-                    datas.add("未完成订单");
-                    datas.add("数量");
-                    datas.add(repairOrderBean.getProfitCount() + "");
-                    datas.add(repairOrderBean.getOkOrderCount() + "");
-                    datas.add(repairOrderBean.getNotOkOrderCount() + "");
-                    datas.add("金额");
-                    datas.add("¥" + repairOrderBean.getProfitMoney());
-                    datas.add("¥" + repairOrderBean.getOkOrderMoney());
-                    datas.add("¥" + repairOrderBean.getNotOkOrderMoney());
-                    orderSumAdapter.setNewData(datas);
-
-                    tvDayOrder.setVisibility(View.VISIBLE);
-                    tvDayOrderMoney.setVisibility(View.VISIBLE);
-                    tvTotalOrder.setVisibility(View.VISIBLE);
-                    tvTotalOrderMoney.setVisibility(View.VISIBLE);
-
-                    tvDayOrder.setText("当日订单数量: " + repairOrderBean.getDayOrderCount());
-                    tvDayOrderMoney.setText("当日订单金额: ¥" + repairOrderBean.getDayOrderMoney());
-                    tvTotalOrder.setText("合计订单数量: " + repairOrderBean.getTotalOrderCount());
-                    tvTotalOrderMoney.setText("合计订单金额: ¥" + repairOrderBean.getTotalOrderMoney());
-                } else {
-                    NotUseList = null;
-                    NotUseList = new GridLayoutManager(this, 4);
-                    rvOrderSum.setLayoutManager(NotUseList);
-                    datas.clear();
-                    datas.add("");
-                    datas.add("门店收益");
-                    datas.add("已完成订单");
-                    datas.add("未完成订单");
-                    datas.add("数量");
-                    datas.add("-");
-                    datas.add("-");
-                    datas.add("-");
-                    datas.add("金额");
-                    datas.add("-");
-                    datas.add("-");
-                    datas.add("-");
-                    orderSumAdapter.setNewData(datas);
-
-                    tvDayOrder.setVisibility(View.GONE);
-                    tvDayOrderMoney.setVisibility(View.GONE);
-                    tvTotalOrder.setVisibility(View.GONE);
-                    tvTotalOrderMoney.setVisibility(View.GONE);
+                if (!tvOrderSumStart.getText().toString().trim().equals("选择起始日期") && !tvOrderSumEnd.getText().toString().trim().equals("选择结束日期")) {
+                    if (rbOrderSumStart.isChecked())
+                        selectOrder(0);
+                    else
+                        selectOrder(1);
+//                    llOrderSum.setVisibility(View.VISIBLE);
+                } else if (tvOrderSumStart.getText().toString().trim().equals("选择起始日期") && tvOrderSumEnd.getText().toString().trim().equals("选择结束日期")) {
+                    if (rbOrderSumStart.isChecked())
+                        selectOrder(2);
+                    else
+                        selectOrder(3);
                 }
+//                if (repairOrderBean != null) {
+//                    NotUseList = null;
+//                    NotUseList = new GridLayoutManager(this, 4);
+//                    rvOrderSum.setLayoutManager(NotUseList);
+//                    datas.clear();
+//                    datas.add("");
+//                    datas.add("门店收益");
+//                    datas.add("已完成订单");
+//                    datas.add("未完成订单");
+//                    datas.add("数量");
+//                    datas.add(repairOrderBean.getProfitCount() + "");
+//                    datas.add(repairOrderBean.getOkOrderCount() + "");
+//                    datas.add(repairOrderBean.getNotOkOrderCount() + "");
+//                    datas.add("金额");
+//                    datas.add("¥" + repairOrderBean.getProfitMoney());
+//                    datas.add("¥" + repairOrderBean.getOkOrderMoney());
+//                    datas.add("¥" + repairOrderBean.getNotOkOrderMoney());
+//                    orderSumAdapter.setNewData(datas);
+//
+//                    tvDayOrder.setVisibility(View.VISIBLE);
+//                    tvDayOrderMoney.setVisibility(View.VISIBLE);
+//                    tvTotalOrder.setVisibility(View.VISIBLE);
+//                    tvTotalOrderMoney.setVisibility(View.VISIBLE);
+//
+//                    tvDayOrder.setText("当日订单数量: " + repairOrderBean.getDayOrderCount());
+//                    tvDayOrderMoney.setText("当日订单金额: ¥" + repairOrderBean.getDayOrderMoney());
+//                    tvTotalOrder.setText("合计订单数量: " + repairOrderBean.getTotalOrderCount());
+//                    tvTotalOrderMoney.setText("合计订单金额: ¥" + repairOrderBean.getTotalOrderMoney());
+//                } else {
+//                    NotUseList = null;
+//                    NotUseList = new GridLayoutManager(this, 4);
+//                    rvOrderSum.setLayoutManager(NotUseList);
+//                    datas.clear();
+//                    datas.add("");
+//                    datas.add("门店收益");
+//                    datas.add("已完成订单");
+//                    datas.add("未完成订单");
+//                    datas.add("数量");
+//                    datas.add("-");
+//                    datas.add("-");
+//                    datas.add("-");
+//                    datas.add("金额");
+//                    datas.add("-");
+//                    datas.add("-");
+//                    datas.add("-");
+//                    orderSumAdapter.setNewData(datas);
+//
+////                    tvDayOrder.setVisibility(View.GONE);
+////                    tvDayOrderMoney.setVisibility(View.GONE);
+////                    tvTotalOrder.setVisibility(View.GONE);
+////                    tvTotalOrderMoney.setVisibility(View.GONE);
+//                }
                 break;
             case R.id.tv_order_sum_start:
                 selectTime(0);
@@ -336,19 +406,24 @@ public class OrderSumActivity extends BaseActivity<OrderSumContract.View, OrderS
                 selectTime(1);
                 break;
             case R.id.bt_order_sum:
-                if (rbOrderSumStart.isChecked()) {
-                    TreeMap<String, String> carRentalOrderMap = new TreeMap<>();
-                    carRentalOrderMap.put("userId", SPUtil.get(this, USER_ID, "") + "");
-                    carRentalOrderMap.put("params[beginTime]", tvOrderSumStart.getText().toString().trim());
-                    carRentalOrderMap.put("params[endTime]", tvOrderSumEnd.getText().toString().trim());
-                    getPresenter().getCarRentalOrder(carRentalOrderMap, false, false);
-                } else {
-                    TreeMap<String, String> repairOrderMap = new TreeMap<>();
-                    repairOrderMap.put("userId", SPUtil.get(this, USER_ID, "") + "");
-                    repairOrderMap.put("params[beginTime]", tvOrderSumStart.getText().toString().trim());
-                    repairOrderMap.put("params[endTime]", tvOrderSumEnd.getText().toString().trim());
-                    getPresenter().getRepairOrder(repairOrderMap, false, false);
-                }
+                tvOrderSumStart.setText("选择起始日期");
+                tvOrderSumStart.setTextColor(getResources().getColor(R.color.tx_bottom_navigation));
+                tvOrderSumEnd.setText("选择结束日期");
+                tvOrderSumEnd.setTextColor(getResources().getColor(R.color.tx_bottom_navigation));
+                initData();
+//                if (rbOrderSumStart.isChecked()) {
+//                    TreeMap<String, String> carRentalOrderMap = new TreeMap<>();
+//                    carRentalOrderMap.put("userId", SPUtil.get(this, USER_ID, "") + "");
+//                    carRentalOrderMap.put("params[beginTime]", tvOrderSumStart.getText().toString().trim());
+//                    carRentalOrderMap.put("params[endTime]", tvOrderSumEnd.getText().toString().trim());
+//                    getPresenter().getCarRentalOrder(carRentalOrderMap, false, false);
+//                } else {
+//                    TreeMap<String, String> repairOrderMap = new TreeMap<>();
+//                    repairOrderMap.put("userId", SPUtil.get(this, USER_ID, "") + "");
+//                    repairOrderMap.put("params[beginTime]", tvOrderSumStart.getText().toString().trim());
+//                    repairOrderMap.put("params[endTime]", tvOrderSumEnd.getText().toString().trim());
+//                    getPresenter().getRepairOrder(repairOrderMap, false, false);
+//                }
                 break;
         }
     }

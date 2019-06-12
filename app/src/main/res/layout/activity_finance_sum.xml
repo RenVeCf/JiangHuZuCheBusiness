@@ -153,11 +153,18 @@
             android:text="对账单"
             android:textColor="@color/tx_bottom_navigation" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_finance_sum"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/srl_finance_sum"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white" />
+            android:scrollbars="none">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_finance_sum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white" />
+        </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
 
     <RelativeLayout

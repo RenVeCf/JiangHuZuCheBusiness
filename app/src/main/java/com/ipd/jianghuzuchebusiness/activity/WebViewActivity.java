@@ -34,6 +34,8 @@ import java.util.Date;
 
 import butterknife.BindView;
 
+import static com.ipd.jianghuzuchebusiness.common.config.UrlConfig.BASE_LOCAL_URL;
+
 public class WebViewActivity extends BaseActivity {
 
     @BindView(R.id.tv_webview_top)
@@ -79,25 +81,25 @@ public class WebViewActivity extends BaseActivity {
         h5Type = getIntent().getIntExtra("h5Type", 0);
         switch (h5Type) {
             case 0: //用户须知
-                h5Url = "H5/document/userNotice.html";
+                h5Url = BASE_LOCAL_URL + "H5/document/userNotice.html";
                 break;
             case 1: //提前还车规则
-                h5Url = "H5/document/returncarRule.html";
+                h5Url = BASE_LOCAL_URL + "H5/document/returncarRule.html";
                 break;
             case 2: //租车合同
-                h5Url = "H5/document/vehicleContract.html";
+                h5Url = BASE_LOCAL_URL + "H5/document/vehicleContract.html";
                 break;
             case 3: //租车须知
-                h5Url = "H5/document/vehicleNotice.html";
+                h5Url = BASE_LOCAL_URL + "H5/document/vehicleNotice.html";
                 break;
             case 4: //收费说明
-                h5Url = "H5/document/chargingInstruction.html";
+                h5Url = BASE_LOCAL_URL + "H5/document/chargingInstruction.html";
                 break;
             case 5: //订单说明及其该退规则
-                h5Url = "H5/document/ddsmjqgtgz.html";
+                h5Url = BASE_LOCAL_URL + "H5/document/ddsmjqgtgz.html";
                 break;
             case 6: //维修订单规则
-                h5Url = "H5/document/maintenanceOrder .html";
+                h5Url = BASE_LOCAL_URL + "H5/document/maintenanceOrder .html";
                 break;
         }
         WebSettings webSettings = wvContent.getSettings();

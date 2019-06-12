@@ -1,7 +1,9 @@
 package com.ipd.jianghuzuchebusiness.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.EditText;
@@ -98,7 +100,6 @@ public class MultipleOrderActivity extends BaseActivity {
                 rlOrderSearch.setVisibility(View.GONE);
                 break;
         }
-
         //向集合添加Fragment
         fragments = new ArrayList<>();
         for (int i = 0; i < titles.length; i++) {
@@ -137,7 +138,6 @@ public class MultipleOrderActivity extends BaseActivity {
 
             }
         });
-
     }
 
     @Override
@@ -147,6 +147,9 @@ public class MultipleOrderActivity extends BaseActivity {
 
     @OnClick(R.id.iv_search)
     public void onViewClicked() {
-        fm.Search(etSearch.getText().toString().trim(), positions);
+        Intent intent = new Intent("android.ipd.action");
+        intent.putExtra("positions", positions);
+        intent.putExtra("content", etSearch.getText().toString().trim());
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 }

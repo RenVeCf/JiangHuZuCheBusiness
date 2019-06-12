@@ -31,6 +31,8 @@ public class LicensePlateNumActivity extends BaseActivity {
     @BindView(R.id.bt_license_plate_num)
     Button btLicensePlateNum;
 
+    private String carNum = "";
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_license_plate_num;
@@ -52,6 +54,10 @@ public class LicensePlateNumActivity extends BaseActivity {
         ApplicationUtil.getManager().addActivity(this);
         //防止状态栏和标题重叠
         ImmersionBar.setTitleBar(this, tvLicensePlateNumTop);
+
+        carNum = getIntent().getStringExtra("car_num");
+        if (!carNum.equals(""))
+            etLicensePlateNum.setText(carNum);
     }
 
     @Override
