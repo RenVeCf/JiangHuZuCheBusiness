@@ -28,6 +28,7 @@ import com.ipd.jianghuzuchebusiness.presenter.EditStoreInforPresenter;
 import com.ipd.jianghuzuchebusiness.utils.ApplicationUtil;
 import com.ipd.jianghuzuchebusiness.utils.SPUtil;
 import com.ipd.jianghuzuchebusiness.utils.ToastUtil;
+import com.ipd.jianghuzuchebusiness.utils.isClickUtil;
 import com.wildma.pictureselector.PictureSelector;
 
 import java.util.ArrayList;
@@ -244,49 +245,60 @@ public class EditStoreInforActivity extends BaseActivity<EditStoreInforContract.
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_store_name:
-                startActivityForResult(new Intent(this, InputActivity.class).putExtra("type", 0).putExtra("input", selectStoreBean.getStoreName()), REQUEST_CODE_93);
+                if (isClickUtil.isFastClick()) {
+
+                    startActivityForResult(new Intent(this, InputActivity.class).putExtra("type", 0).putExtra("input", selectStoreBean.getStoreName()), REQUEST_CODE_93);
+                }
                 break;
             case R.id.ll_store_path:
-                startActivityForResult(new Intent(this, InputActivity.class).putExtra("type", 1).putExtra("input", selectStoreBean.getDescAddress()), REQUEST_CODE_94);
+                if (isClickUtil.isFastClick()) {
+
+                    startActivityForResult(new Intent(this, InputActivity.class).putExtra("type", 1).putExtra("input", selectStoreBean.getDescAddress()), REQUEST_CODE_94);
+                }
                 break;
             case R.id.ll_store_phone:
-                startActivityForResult(new Intent(this, InputActivity.class).putExtra("type", 2).putExtra("input", selectStoreBean.getContactsPhone()), REQUEST_CODE_95);
+                if (isClickUtil.isFastClick()) {
+
+                    startActivityForResult(new Intent(this, InputActivity.class).putExtra("type", 2).putExtra("input", selectStoreBean.getContactsPhone()), REQUEST_CODE_95);
+                }
                 break;
             case R.id.bt_edit_store_infor:
-                if (list.size() < 4 || list.size() > 10) {
-                    ToastUtil.showShortToast("最小上传图片为3张，最大为9张！");
-                } else {
-                    list.remove(list.size() - 1);
-                    for (int i = 0; i < list.size(); i++) {
-                        if (i < list.size() - 1)
-                            imgPaths.append(list.get(i).getName() + ",");
-                        else
-                            imgPaths.append(list.get(i).getName());
-                    }
+                if (isClickUtil.isFastClick()) {
+                    if (list.size() < 4 || list.size() > 10) {
+                        ToastUtil.showShortToast("最小上传图片为3张，最大为9张！");
+                    } else {
+                        list.remove(list.size() - 1);
+                        for (int i = 0; i < list.size(); i++) {
+                            if (i < list.size() - 1)
+                                imgPaths.append(list.get(i).getName() + ",");
+                            else
+                                imgPaths.append(list.get(i).getName());
+                        }
 
-                    List<String> charge = new ArrayList<>();
-                    if (cbChargeOne.isChecked())
-                        charge.add(chargeListBean.get(0).getChargeId() + "");
-                    if (cbChargeOne.isChecked())
-                        charge.add(chargeListBean.get(1).getChargeId() + "");
-                    if (cbChargeOne.isChecked())
-                        charge.add(chargeListBean.get(2).getChargeId() + "");
+                        List<String> charge = new ArrayList<>();
+                        if (cbChargeOne.isChecked())
+                            charge.add(chargeListBean.get(0).getChargeId() + "");
+                        if (cbChargeOne.isChecked())
+                            charge.add(chargeListBean.get(1).getChargeId() + "");
+                        if (cbChargeOne.isChecked())
+                            charge.add(chargeListBean.get(2).getChargeId() + "");
 
-                    for (int i = 0; i < charge.size(); i++) {
-                        if (i < charge.size() - 1)
-                            chargePaths.append(charge.get(i) + ",");
-                        else
-                            chargePaths.append(charge.get(i));
+                        for (int i = 0; i < charge.size(); i++) {
+                            if (i < charge.size() - 1)
+                                chargePaths.append(charge.get(i) + ",");
+                            else
+                                chargePaths.append(charge.get(i));
+                        }
+                        TreeMap<String, String> returnCarMap = new TreeMap<>();
+                        returnCarMap.put("userId", SPUtil.get(this, USER_ID, "") + "");
+                        returnCarMap.put("storeId", SPUtil.get(this, STORE_ID, "") + "");
+                        returnCarMap.put("storeName", tvStoreName.getText().toString().trim());
+                        returnCarMap.put("descAddress", tvStorePath.getText().toString().trim());
+                        returnCarMap.put("contactsPhone", tvStorePhone.getText().toString().trim());
+                        returnCarMap.put("chargeId", chargePaths + "");
+                        returnCarMap.put("picPath", imgPaths + "");
+                        getPresenter().getEditStoreInfor(returnCarMap, true, false);
                     }
-                    TreeMap<String, String> returnCarMap = new TreeMap<>();
-                    returnCarMap.put("userId", SPUtil.get(this, USER_ID, "") + "");
-                    returnCarMap.put("storeId", SPUtil.get(this, STORE_ID, "") + "");
-                    returnCarMap.put("storeName", tvStoreName.getText().toString().trim());
-                    returnCarMap.put("descAddress", tvStorePath.getText().toString().trim());
-                    returnCarMap.put("contactsPhone", tvStorePhone.getText().toString().trim());
-                    returnCarMap.put("chargeId", chargePaths + "");
-                    returnCarMap.put("picPath", imgPaths + "");
-                    getPresenter().getEditStoreInfor(returnCarMap, true, false);
                 }
                 break;
         }

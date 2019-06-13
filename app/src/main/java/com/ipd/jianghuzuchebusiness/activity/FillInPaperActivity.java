@@ -250,60 +250,64 @@ public class FillInPaperActivity extends BaseActivity<FillInPaperContract.View, 
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_license_plate_num:
-                if (!licensePlateNum.equals(""))
-                    startActivityForResult(new Intent(this, LicensePlateNumActivity.class).putExtra("car_num", licensePlateNum), REQUEST_CODE_90);
-                else
-                    startActivityForResult(new Intent(this, LicensePlateNumActivity.class).putExtra("car_num", ""), REQUEST_CODE_90);
+                if (isClickUtil.isFastClick()) {
+                    if (!licensePlateNum.equals(""))
+                        startActivityForResult(new Intent(this, LicensePlateNumActivity.class).putExtra("car_num", licensePlateNum), REQUEST_CODE_90);
+                    else
+                        startActivityForResult(new Intent(this, LicensePlateNumActivity.class).putExtra("car_num", ""), REQUEST_CODE_90);
+                }
                 break;
             case R.id.ll_vehicle_condition:
                 startActivityForResult(new Intent(this, VehicleConditionActivity.class).putExtra("order_id", orderId).putExtra("paper_type", paperType), REQUEST_CODE_91);
                 break;
             case R.id.bt_confirmation_order:
-                if (list.size() < 4 || list.size() > 10) {
-                    ToastUtil.showShortToast("最小上传图片为3张，最大为9张！");
-                } else {
-                    switch (paperType) {
-                        case 0:
-                            if (!licensePlateNum.equals("") && !statusIds.equals("")) {
-                                list.remove(list.size() - 1);
-                                for (int i = 0; i < list.size(); i++) {
-                                    if (i < list.size() - 1)
-                                        imgPaths.append(list.get(i).getName() + ",");
-                                    else
-                                        imgPaths.append(list.get(i).getName());
-                                }
+                if (isClickUtil.isFastClick()) {
+                    if (list.size() < 4 || list.size() > 10) {
+                        ToastUtil.showShortToast("最小上传图片为3张，最大为9张！");
+                    } else {
+                        switch (paperType) {
+                            case 0:
+                                if (!licensePlateNum.equals("") && !statusIds.equals("")) {
+                                    list.remove(list.size() - 1);
+                                    for (int i = 0; i < list.size(); i++) {
+                                        if (i < list.size() - 1)
+                                            imgPaths.append(list.get(i).getName() + ",");
+                                        else
+                                            imgPaths.append(list.get(i).getName());
+                                    }
 
-                                TreeMap<String, String> loginMap = new TreeMap<>();
-                                loginMap.put("userId", SPUtil.get(this, USER_ID, "") + "");
-                                loginMap.put("orderId", orderId + "");
-                                loginMap.put("plateNumber", licensePlateNum);
-                                loginMap.put("statusIds", statusIds);
-                                loginMap.put("picPath", imgPaths + "");
-                                loginMap.put("storeId", SPUtil.get(this, STORE_ID, "") + "");
-                                getPresenter().getGetCarCommit(loginMap, true, false);
-                            } else
-                                ToastUtil.showShortToast("请将资料填写完整");
-                            break;
-                        case 1:
-                            if (!statusIds.equals("")) {
-                                list.remove(list.size() - 1);
-                                for (int i = 0; i < list.size(); i++) {
-                                    if (i < list.size() - 1)
-                                        imgPaths.append(list.get(i).getName() + ",");
-                                    else
-                                        imgPaths.append(list.get(i).getName());
-                                }
+                                    TreeMap<String, String> loginMap = new TreeMap<>();
+                                    loginMap.put("userId", SPUtil.get(this, USER_ID, "") + "");
+                                    loginMap.put("orderId", orderId + "");
+                                    loginMap.put("plateNumber", licensePlateNum);
+                                    loginMap.put("statusIds", statusIds);
+                                    loginMap.put("picPath", imgPaths + "");
+                                    loginMap.put("storeId", SPUtil.get(this, STORE_ID, "") + "");
+                                    getPresenter().getGetCarCommit(loginMap, true, false);
+                                } else
+                                    ToastUtil.showShortToast("请将资料填写完整");
+                                break;
+                            case 1:
+                                if (!statusIds.equals("")) {
+                                    list.remove(list.size() - 1);
+                                    for (int i = 0; i < list.size(); i++) {
+                                        if (i < list.size() - 1)
+                                            imgPaths.append(list.get(i).getName() + ",");
+                                        else
+                                            imgPaths.append(list.get(i).getName());
+                                    }
 
-                                TreeMap<String, String> returnCarMap = new TreeMap<>();
-                                returnCarMap.put("userId", SPUtil.get(this, USER_ID, "") + "");
-                                returnCarMap.put("orderId", orderId + "");
-                                returnCarMap.put("statusIds", statusIds);
-                                returnCarMap.put("picPath", imgPaths + "");
-                                returnCarMap.put("storeId", SPUtil.get(this, STORE_ID, "") + "");
-                                getPresenter().getReturnCarCommit(returnCarMap, true, false);
-                            } else
-                                ToastUtil.showShortToast("请将资料填写完整");
-                            break;
+                                    TreeMap<String, String> returnCarMap = new TreeMap<>();
+                                    returnCarMap.put("userId", SPUtil.get(this, USER_ID, "") + "");
+                                    returnCarMap.put("orderId", orderId + "");
+                                    returnCarMap.put("statusIds", statusIds);
+                                    returnCarMap.put("picPath", imgPaths + "");
+                                    returnCarMap.put("storeId", SPUtil.get(this, STORE_ID, "") + "");
+                                    getPresenter().getReturnCarCommit(returnCarMap, true, false);
+                                } else
+                                    ToastUtil.showShortToast("请将资料填写完整");
+                                break;
+                        }
                     }
                 }
                 break;

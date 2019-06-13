@@ -1,7 +1,6 @@
 package com.ipd.jianghuzuchebusiness.activity;
 
 import android.content.Intent;
-import android.support.v4.view.ViewPager;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +24,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 import static com.ipd.jianghuzuchebusiness.common.config.IConstants.FIRST_APP;
+import static com.ipd.jianghuzuchebusiness.common.config.IConstants.IS_LOGIN;
 
 /**
  * Description ：引导页
@@ -66,7 +66,7 @@ public class LoadingActivity extends BaseActivity {
         // 判断是否是第一次开启应用
         boolean isFirstOpen = (boolean) SPUtil.get(this, FIRST_APP, true);
         if (!isFirstOpen) {
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, LoginActivity.class));
             finish();
             return;
         }
@@ -78,26 +78,6 @@ public class LoadingActivity extends BaseActivity {
         adapter = new ContentAdapter(viewList, null);
         lvpLoading.setSwipeable(true);
         lvpLoading.setAdapter(adapter);
-        lvpLoading.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-//                if (position == 1) {
-                    ibLoadingLogin.setVisibility(View.VISIBLE);
-//                } else {
-                    ibLoadingLogin.setVisibility(View.GONE);
-//                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
         lvpLoading.setOnTouchListener(new View.OnTouchListener() {
             float startX;
             float startY;//没有用到
@@ -116,8 +96,10 @@ public class LoadingActivity extends BaseActivity {
                         endY = motionEvent.getY();
                         //首先要确定的是，是否到了最后一页，然后判断是否向左滑动，并且滑动距离是否符合，我这里的判断距离是屏幕宽度的4分之一（这里可以适当控制）
                         if (currentItem == (viewList.size() - 1) && startX - endX >= (DisplayUtils.getScreenWidth(LoadingActivity.this) / 4)) {
-                            Intent intent = new Intent(LoadingActivity.this, MainActivity.class);
-                            startActivity(intent);
+                            if (SPUtil.get(LoadingActivity.this, IS_LOGIN, "").equals(""))
+                                startActivity(new Intent(LoadingActivity.this, LoginActivity.class));
+                            else
+                                startActivity(new Intent(LoadingActivity.this, MainActivity.class));
                             finish();
                         }
                         break;
@@ -150,7 +132,10 @@ public class LoadingActivity extends BaseActivity {
 
     @OnClick(R.id.ib_loading_login)
     public void onViewClicked() {
-        startActivity(new Intent(LoadingActivity.this, MainActivity.class));
+        if (SPUtil.get(LoadingActivity.this, IS_LOGIN, "").equals(""))
+            startActivity(new Intent(LoadingActivity.this, LoginActivity.class));
+        else
+            startActivity(new Intent(LoadingActivity.this, MainActivity.class));
         finish();
     }
 }

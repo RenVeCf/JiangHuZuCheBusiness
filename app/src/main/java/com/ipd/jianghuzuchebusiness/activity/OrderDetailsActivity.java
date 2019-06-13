@@ -35,6 +35,7 @@ import com.ipd.jianghuzuchebusiness.presenter.OrderDetailsPresenter;
 import com.ipd.jianghuzuchebusiness.utils.ApplicationUtil;
 import com.ipd.jianghuzuchebusiness.utils.SPUtil;
 import com.ipd.jianghuzuchebusiness.utils.ToastUtil;
+import com.ipd.jianghuzuchebusiness.utils.isClickUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -264,29 +265,32 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsContract.View
         root.findViewById(R.id.dialog_center_confirm).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (type) {
-                    case 0:
-                        TreeMap<String, String> getCarOrderMap = new TreeMap<>();
-                        getCarOrderMap.put("userId", SPUtil.get(OrderDetailsActivity.this, USER_ID, "") + "");
-                        getCarOrderMap.put("orderId", orderId);
-                        getCarOrderMap.put("storeId", SPUtil.get(OrderDetailsActivity.this, STORE_ID, "") + "");
-                        getPresenter().getGetCarCancelOrder(getCarOrderMap, false, false);
-                        break;
-                    case 1:
-                        TreeMap<String, String> returnCarCancelOrderMap = new TreeMap<>();
-                        returnCarCancelOrderMap.put("userId", SPUtil.get(OrderDetailsActivity.this, USER_ID, "") + "");
-                        returnCarCancelOrderMap.put("orderId", orderId);
-                        returnCarCancelOrderMap.put("storeId", SPUtil.get(OrderDetailsActivity.this, STORE_ID, "") + "");
-                        getPresenter().getReturnCarCancelOrder(returnCarCancelOrderMap, false, false);
-                        break;
-                    case 2:
-                        break;
-                    case 3:
-                        break;
-                    case 4:
-                        break;
+                if (isClickUtil.isFastClick()) {
+
+                    switch (type) {
+                        case 0:
+                            TreeMap<String, String> getCarOrderMap = new TreeMap<>();
+                            getCarOrderMap.put("userId", SPUtil.get(OrderDetailsActivity.this, USER_ID, "") + "");
+                            getCarOrderMap.put("orderId", orderId);
+                            getCarOrderMap.put("storeId", SPUtil.get(OrderDetailsActivity.this, STORE_ID, "") + "");
+                            getPresenter().getGetCarCancelOrder(getCarOrderMap, false, false);
+                            break;
+                        case 1:
+                            TreeMap<String, String> returnCarCancelOrderMap = new TreeMap<>();
+                            returnCarCancelOrderMap.put("userId", SPUtil.get(OrderDetailsActivity.this, USER_ID, "") + "");
+                            returnCarCancelOrderMap.put("orderId", orderId);
+                            returnCarCancelOrderMap.put("storeId", SPUtil.get(OrderDetailsActivity.this, STORE_ID, "") + "");
+                            getPresenter().getReturnCarCancelOrder(returnCarCancelOrderMap, false, false);
+                            break;
+                        case 2:
+                            break;
+                        case 3:
+                            break;
+                        case 4:
+                            break;
+                    }
+                    mCameraDialog.dismiss();
                 }
-                mCameraDialog.dismiss();
             }
         });
 
@@ -324,27 +328,29 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsContract.View
                 setDocumentsReceivedDialog();
                 break;
             case R.id.bt_select_order:
-                switch (type) {
-                    case 0:
-                        if (statusGet == 2)
-                            startActivity(new Intent(this, SelectCarActivity.class).putExtra("order_id", orderId).putExtra("vehicleType", 1));
-                        else {
-                            startActivity(new Intent(this, FillInPaperActivity.class).putExtra("order_id", orderId).putExtra("paper_type", type));
-                            setResult(RESULT_OK, new Intent()
-                                    .putExtra("get_car_result", "1"));
-                            finish();
-                        }
-                        break;
-                    case 1:
-                        if (statusOut == 2)
-                            startActivity(new Intent(this, SelectCarActivity.class).putExtra("order_id", orderId).putExtra("vehicleType", 2));
-                        else {
-                            startActivity(new Intent(this, FillInPaperActivity.class).putExtra("order_id", orderId).putExtra("paper_type", type));
-                            setResult(RESULT_OK, new Intent()
-                                    .putExtra("get_car_result", "1"));
-                            finish();
-                        }
-                        break;
+                if (isClickUtil.isFastClick()) {
+                    switch (type) {
+                        case 0:
+                            if (statusGet == 2)
+                                startActivity(new Intent(this, SelectCarActivity.class).putExtra("order_id", orderId).putExtra("vehicleType", 1));
+                            else {
+                                startActivity(new Intent(this, FillInPaperActivity.class).putExtra("order_id", orderId).putExtra("paper_type", type));
+                                setResult(RESULT_OK, new Intent()
+                                        .putExtra("get_car_result", "1"));
+                                finish();
+                            }
+                            break;
+                        case 1:
+                            if (statusOut == 2)
+                                startActivity(new Intent(this, SelectCarActivity.class).putExtra("order_id", orderId).putExtra("vehicleType", 2));
+                            else {
+                                startActivity(new Intent(this, FillInPaperActivity.class).putExtra("order_id", orderId).putExtra("paper_type", type));
+                                setResult(RESULT_OK, new Intent()
+                                        .putExtra("get_car_result", "1"));
+                                finish();
+                            }
+                            break;
+                    }
                 }
                 break;
         }

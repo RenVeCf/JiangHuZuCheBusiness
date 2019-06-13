@@ -32,6 +32,7 @@ import com.ipd.jianghuzuchebusiness.presenter.MultipleOrderPresenter;
 import com.ipd.jianghuzuchebusiness.utils.ApplicationUtil;
 import com.ipd.jianghuzuchebusiness.utils.SPUtil;
 import com.ipd.jianghuzuchebusiness.utils.ToastUtil;
+import com.ipd.jianghuzuchebusiness.utils.isClickUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -191,12 +192,14 @@ public class MaintenanceOrderDetailsActivity extends BaseActivity<MultipleOrderC
         root.findViewById(R.id.dialog_center_confirm).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TreeMap<String, String> repairFinishMap = new TreeMap<>();
-                repairFinishMap.put("userId", SPUtil.get(MaintenanceOrderDetailsActivity.this, USER_ID, "") + "");
-                repairFinishMap.put("orderId", orderId + "");
-                repairFinishMap.put("storeId", SPUtil.get(MaintenanceOrderDetailsActivity.this, STORE_ID, "") + "");
-                getPresenter().getRepairCancel(repairFinishMap, true, false);
-                mCameraDialog.dismiss();
+                if (isClickUtil.isFastClick()) {
+                    TreeMap<String, String> repairFinishMap = new TreeMap<>();
+                    repairFinishMap.put("userId", SPUtil.get(MaintenanceOrderDetailsActivity.this, USER_ID, "") + "");
+                    repairFinishMap.put("orderId", orderId + "");
+                    repairFinishMap.put("storeId", SPUtil.get(MaintenanceOrderDetailsActivity.this, STORE_ID, "") + "");
+                    getPresenter().getRepairCancel(repairFinishMap, true, false);
+                    mCameraDialog.dismiss();
+                }
             }
         });
 
@@ -243,11 +246,13 @@ public class MaintenanceOrderDetailsActivity extends BaseActivity<MultipleOrderC
                 setDocumentsReceivedDialog();
                 break;
             case R.id.bt_repair_finish:
-                TreeMap<String, String> repairFinishMap = new TreeMap<>();
-                repairFinishMap.put("userId", SPUtil.get(MaintenanceOrderDetailsActivity.this, USER_ID, "") + "");
-                repairFinishMap.put("orderId", orderId + "");
-                repairFinishMap.put("storeId", SPUtil.get(MaintenanceOrderDetailsActivity.this, STORE_ID, "") + "");
-                getPresenter().getRepairFinish(repairFinishMap, true, false);
+                if (isClickUtil.isFastClick()) {
+                    TreeMap<String, String> repairFinishMap = new TreeMap<>();
+                    repairFinishMap.put("userId", SPUtil.get(MaintenanceOrderDetailsActivity.this, USER_ID, "") + "");
+                    repairFinishMap.put("orderId", orderId + "");
+                    repairFinishMap.put("storeId", SPUtil.get(MaintenanceOrderDetailsActivity.this, STORE_ID, "") + "");
+                    getPresenter().getRepairFinish(repairFinishMap, true, false);
+                }
                 break;
         }
     }

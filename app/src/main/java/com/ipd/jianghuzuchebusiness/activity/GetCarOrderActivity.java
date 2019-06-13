@@ -28,6 +28,7 @@ import com.ipd.jianghuzuchebusiness.presenter.GetCarOrderPresenter;
 import com.ipd.jianghuzuchebusiness.utils.ApplicationUtil;
 import com.ipd.jianghuzuchebusiness.utils.SPUtil;
 import com.ipd.jianghuzuchebusiness.utils.ToastUtil;
+import com.ipd.jianghuzuchebusiness.utils.isClickUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -125,30 +126,34 @@ public class GetCarOrderActivity extends BaseActivity<GetCarOrderContract.View, 
         getCarOrderAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                startActivityForResult(new Intent(GetCarOrderActivity.this, OrderDetailsActivity.class).putExtra("type", orderType).putExtra("order_id", getCarOrderBean.get(position).getOrderId() + "").putExtra("status_get", getCarOrderBean.get(position).getPickStatus()).putExtra("status_out", getCarOrderBean.get(position).getStoreStatus()), REQUEST_CODE_92);
+                if (isClickUtil.isFastClick()) {
+                    startActivityForResult(new Intent(GetCarOrderActivity.this, OrderDetailsActivity.class).putExtra("type", orderType).putExtra("order_id", getCarOrderBean.get(position).getOrderId() + "").putExtra("status_get", getCarOrderBean.get(position).getPickStatus()).putExtra("status_out", getCarOrderBean.get(position).getStoreStatus()), REQUEST_CODE_92);
+                }
             }
         });
 
         getCarOrderAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                switch (view.getId()) {
-                    case R.id.bt_order_type_start:
-                        setDocumentsReceivedDialog(getCarOrderBean.get(position).getOrderId());
-                        break;
-                    case R.id.bt_order_type_end:
-                        if (orderType == 0) {
-                            if (getCarOrderBean.get(position).getPickStatus() == 2)
-                                startActivity(new Intent(GetCarOrderActivity.this, SelectCarActivity.class).putExtra("order_id", getCarOrderBean.get(position).getOrderId() + "").putExtra("vehicleType", 1));
-                            else
-                                startActivityForResult(new Intent(GetCarOrderActivity.this, FillInPaperActivity.class).putExtra("paper_type", orderType).putExtra("order_id", getCarOrderBean.get(position).getOrderId() + ""), REQUEST_CODE_102);
-                        } else {
-                            if (getCarOrderBean.get(position).getStoreStatus() == 2)
-                                startActivity(new Intent(GetCarOrderActivity.this, SelectCarActivity.class).putExtra("order_id", getCarOrderBean.get(position).getOrderId() + "").putExtra("vehicleType", 2));
-                            else
-                                startActivityForResult(new Intent(GetCarOrderActivity.this, FillInPaperActivity.class).putExtra("paper_type", orderType).putExtra("order_id", getCarOrderBean.get(position).getOrderId() + ""), REQUEST_CODE_103);
-                        }
-                        break;
+                if (isClickUtil.isFastClick()) {
+                    switch (view.getId()) {
+                        case R.id.bt_order_type_start:
+                            setDocumentsReceivedDialog(getCarOrderBean.get(position).getOrderId());
+                            break;
+                        case R.id.bt_order_type_end:
+                            if (orderType == 0) {
+                                if (getCarOrderBean.get(position).getPickStatus() == 2)
+                                    startActivity(new Intent(GetCarOrderActivity.this, SelectCarActivity.class).putExtra("order_id", getCarOrderBean.get(position).getOrderId() + "").putExtra("vehicleType", 1));
+                                else
+                                    startActivityForResult(new Intent(GetCarOrderActivity.this, FillInPaperActivity.class).putExtra("paper_type", orderType).putExtra("order_id", getCarOrderBean.get(position).getOrderId() + ""), REQUEST_CODE_102);
+                            } else {
+                                if (getCarOrderBean.get(position).getStoreStatus() == 2)
+                                    startActivity(new Intent(GetCarOrderActivity.this, SelectCarActivity.class).putExtra("order_id", getCarOrderBean.get(position).getOrderId() + "").putExtra("vehicleType", 2));
+                                else
+                                    startActivityForResult(new Intent(GetCarOrderActivity.this, FillInPaperActivity.class).putExtra("paper_type", orderType).putExtra("order_id", getCarOrderBean.get(position).getOrderId() + ""), REQUEST_CODE_103);
+                            }
+                            break;
+                    }
                 }
             }
         });
@@ -252,7 +257,9 @@ public class GetCarOrderActivity extends BaseActivity<GetCarOrderContract.View, 
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_top_history:
-                startActivity(new Intent(this, MultipleOrderActivity.class).putExtra("multiple_type", orderType));
+                if (isClickUtil.isFastClick()) {
+                    startActivity(new Intent(this, MultipleOrderActivity.class).putExtra("multiple_type", orderType));
+                }
                 break;
         }
     }

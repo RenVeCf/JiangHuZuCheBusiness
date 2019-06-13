@@ -51,7 +51,6 @@ public class AutoHeightViewPager extends ViewPager {
         this.current = current;
         if (mChildrenViews.size() > current) {
             FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) getLayoutParams();
-//       LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) getLayoutParams();
             if (layoutParams == null) {
                 layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, height);
             } else {

@@ -49,6 +49,7 @@ import com.ipd.jianghuzuchebusiness.contract.MultipleOrderContract;
 import com.ipd.jianghuzuchebusiness.presenter.MultipleOrderPresenter;
 import com.ipd.jianghuzuchebusiness.utils.SPUtil;
 import com.ipd.jianghuzuchebusiness.utils.ToastUtil;
+import com.ipd.jianghuzuchebusiness.utils.isClickUtil;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 
 import java.util.ArrayList;
@@ -174,7 +175,7 @@ public class MultipleOrderFragment extends BaseFragment<MultipleOrderContract.Vi
             returnCarAdapter = new ReturnCarAdapter(vehicleTypeBean.get(statusPosition).getVehicleOrstatus());
 
             storeInforActivity = (StoreInforActivity) getActivity();
-//            storeInforActivity.vpStoreInfor.setObjectForPosition(getView(), storeInfor_positions);
+//            storeInforActivity.vpStoreInfor.setObjectForPosition("Fragment的View", storeInfor_positions);
         } else if (multipleFmType == 3) { //车辆状况
             // 设置管理器
             LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -233,17 +234,19 @@ public class MultipleOrderFragment extends BaseFragment<MultipleOrderContract.Vi
             multipleOrderAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
                 @Override
                 public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                    switch (view.getId()) {
-                        case R.id.rb_start:
-                            rbStart = (RadioButton) view;
-                            if (rbStart.isChecked())
-                                vehicleTypeBean.get(statusPosition).getAppVehicleStatus().get(position).setStatus(2);
-                            break;
-                        case R.id.rb_end:
-                            rbEnd = (RadioButton) view;
-                            if (rbEnd.isChecked())
-                                vehicleTypeBean.get(statusPosition).getAppVehicleStatus().get(position).setStatus(1);
-                            break;
+                    if (isClickUtil.isFastClick()) {
+                        switch (view.getId()) {
+                            case R.id.rb_start:
+                                rbStart = (RadioButton) view;
+                                if (rbStart.isChecked())
+                                    vehicleTypeBean.get(statusPosition).getAppVehicleStatus().get(position).setStatus(2);
+                                break;
+                            case R.id.rb_end:
+                                rbEnd = (RadioButton) view;
+                                if (rbEnd.isChecked())
+                                    vehicleTypeBean.get(statusPosition).getAppVehicleStatus().get(position).setStatus(1);
+                                break;
+                        }
                     }
                 }
             });
@@ -251,17 +254,19 @@ public class MultipleOrderFragment extends BaseFragment<MultipleOrderContract.Vi
             returnCarAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
                 @Override
                 public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                    switch (view.getId()) {
-                        case R.id.rb_start:
-                            rbStart = (RadioButton) view;
-                            if (rbStart.isChecked())
-                                vehicleTypeBean.get(statusPosition).getVehicleOrstatus().get(position).setStatus(2);
-                            break;
-                        case R.id.rb_end:
-                            rbEnd = (RadioButton) view;
-                            if (rbEnd.isChecked())
-                                vehicleTypeBean.get(statusPosition).getVehicleOrstatus().get(position).setStatus(1);
-                            break;
+                    if (isClickUtil.isFastClick()) {
+                        switch (view.getId()) {
+                            case R.id.rb_start:
+                                rbStart = (RadioButton) view;
+                                if (rbStart.isChecked())
+                                    vehicleTypeBean.get(statusPosition).getVehicleOrstatus().get(position).setStatus(2);
+                                break;
+                            case R.id.rb_end:
+                                rbEnd = (RadioButton) view;
+                                if (rbEnd.isChecked())
+                                    vehicleTypeBean.get(statusPosition).getVehicleOrstatus().get(position).setStatus(1);
+                                break;
+                        }
                     }
                 }
             });
@@ -269,24 +274,28 @@ public class MultipleOrderFragment extends BaseFragment<MultipleOrderContract.Vi
             repairOrderAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                    startActivityForResult(new Intent(getActivity(), MaintenanceOrderDetailsActivity.class).putExtra("order_id", repairOrderListBean.get(position).getOrderId()).putExtra("repairs", repairOrderListBean.get(position).getRepairs()).putExtra("charges", repairOrderListBean.get(position).getCharges()).putExtra("status", repairOrderListBean.get(position).getStatus()), REQUEST_CODE_96);
+                    if (isClickUtil.isFastClick()) {
+                        startActivityForResult(new Intent(getActivity(), MaintenanceOrderDetailsActivity.class).putExtra("order_id", repairOrderListBean.get(position).getOrderId()).putExtra("repairs", repairOrderListBean.get(position).getRepairs()).putExtra("charges", repairOrderListBean.get(position).getCharges()).putExtra("status", repairOrderListBean.get(position).getStatus()), REQUEST_CODE_96);
+                    }
                 }
             });
 
             repairOrderAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
                 @Override
                 public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                    switch (view.getId()) {
-                        case R.id.bt_order_type_start:
-                            setDocumentsReceivedDialog(repairOrderListBean.get(position).getOrderId());
-                            break;
-                        case R.id.bt_order_type_end:
-                            TreeMap<String, String> repairFinishMap = new TreeMap<>();
-                            repairFinishMap.put("userId", SPUtil.get(getActivity(), USER_ID, "") + "");
-                            repairFinishMap.put("orderId", repairOrderListBean.get(position).getOrderId() + "");
-                            repairFinishMap.put("storeId", SPUtil.get(getActivity(), STORE_ID, "") + "");
-                            getPresenter().getRepairFinish(repairFinishMap, true, false);
-                            break;
+                    if (isClickUtil.isFastClick()) {
+                        switch (view.getId()) {
+                            case R.id.bt_order_type_start:
+                                setDocumentsReceivedDialog(repairOrderListBean.get(position).getOrderId());
+                                break;
+                            case R.id.bt_order_type_end:
+                                TreeMap<String, String> repairFinishMap = new TreeMap<>();
+                                repairFinishMap.put("userId", SPUtil.get(getActivity(), USER_ID, "") + "");
+                                repairFinishMap.put("orderId", repairOrderListBean.get(position).getOrderId() + "");
+                                repairFinishMap.put("storeId", SPUtil.get(getActivity(), STORE_ID, "") + "");
+                                getPresenter().getRepairFinish(repairFinishMap, true, false);
+                                break;
+                        }
                     }
                 }
             });
@@ -294,30 +303,35 @@ public class MultipleOrderFragment extends BaseFragment<MultipleOrderContract.Vi
             getCarHistoryOrderAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                    startActivity(new Intent(getActivity(), OrderDetailsActivity.class).putExtra("type", multipleFmType).putExtra("order_id", getCarOrderBean.get(position).getOrderId() + "").putExtra("status_get", getCarOrderBean.get(position).getPickStatus()).putExtra("status_out", getCarOrderBean.get(position).getStoreStatus()).putExtra("status", getCarOrderBean.get(position).getStatus()));
+                    if (isClickUtil.isFastClick()) {
+                        startActivity(new Intent(getActivity(), OrderDetailsActivity.class).putExtra("type", multipleFmType).putExtra("order_id", getCarOrderBean.get(position).getOrderId() + "").putExtra("status_get", getCarOrderBean.get(position).getPickStatus()).putExtra("status_out", getCarOrderBean.get(position).getStoreStatus()).putExtra("status", getCarOrderBean.get(position).getStatus()));
+                    }
                 }
             });
 
             getCarHistoryOrderAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
                 @Override
                 public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                    switch (view.getId()) {
-                        case R.id.bt_order_type_start:
-                            setDocumentsReceivedDialog(getCarOrderBean.get(position).getOrderId());
-                            break;
-                        case R.id.bt_order_type_end:
-                            if (multipleFmType == 0) {
-                                if (getCarOrderBean.get(position).getPickStatus() == 2)
-                                    startActivity(new Intent(getActivity(), SelectCarActivity.class).putExtra("order_id", getCarOrderBean.get(position).getOrderId() + "").putExtra("vehicleType", 1));
-                                else
-                                    startActivityForResult(new Intent(getActivity(), FillInPaperActivity.class).putExtra("paper_type", multipleFmType).putExtra("order_id", getCarOrderBean.get(position).getOrderId() + ""), REQUEST_CODE_98);
-                            } else {
-                                if (getCarOrderBean.get(position).getStoreStatus() == 2)
-                                    startActivity(new Intent(getActivity(), SelectCarActivity.class).putExtra("order_id", getCarOrderBean.get(position).getOrderId() + "").putExtra("vehicleType", 2));
-                                else
-                                    startActivityForResult(new Intent(getActivity(), FillInPaperActivity.class).putExtra("paper_type", multipleFmType).putExtra("order_id", getCarOrderBean.get(position).getOrderId() + ""), REQUEST_CODE_101);
-                            }
-                            break;
+                    if (isClickUtil.isFastClick()) {
+
+                        switch (view.getId()) {
+                            case R.id.bt_order_type_start:
+                                setDocumentsReceivedDialog(getCarOrderBean.get(position).getOrderId());
+                                break;
+                            case R.id.bt_order_type_end:
+                                if (multipleFmType == 0) {
+                                    if (getCarOrderBean.get(position).getPickStatus() == 2)
+                                        startActivity(new Intent(getActivity(), SelectCarActivity.class).putExtra("order_id", getCarOrderBean.get(position).getOrderId() + "").putExtra("vehicleType", 1));
+                                    else
+                                        startActivityForResult(new Intent(getActivity(), FillInPaperActivity.class).putExtra("paper_type", multipleFmType).putExtra("order_id", getCarOrderBean.get(position).getOrderId() + ""), REQUEST_CODE_98);
+                                } else {
+                                    if (getCarOrderBean.get(position).getStoreStatus() == 2)
+                                        startActivity(new Intent(getActivity(), SelectCarActivity.class).putExtra("order_id", getCarOrderBean.get(position).getOrderId() + "").putExtra("vehicleType", 2));
+                                    else
+                                        startActivityForResult(new Intent(getActivity(), FillInPaperActivity.class).putExtra("paper_type", multipleFmType).putExtra("order_id", getCarOrderBean.get(position).getOrderId() + ""), REQUEST_CODE_101);
+                                }
+                                break;
+                        }
                     }
                 }
             });
@@ -418,30 +432,32 @@ public class MultipleOrderFragment extends BaseFragment<MultipleOrderContract.Vi
         root.findViewById(R.id.dialog_center_confirm).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (multipleFmType) {
-                    case 0:
-                        TreeMap<String, String> getCarOrderMap = new TreeMap<>();
-                        getCarOrderMap.put("userId", SPUtil.get(getActivity(), USER_ID, "") + "");
-                        getCarOrderMap.put("orderId", orderId + "");
-                        getCarOrderMap.put("storeId", SPUtil.get(getActivity(), STORE_ID, "") + "");
-                        getPresenter().getGetCarCancelOrder(getCarOrderMap, false, false);
-                        break;
-                    case 1:
-                        TreeMap<String, String> returnCarCancelOrderMap = new TreeMap<>();
-                        returnCarCancelOrderMap.put("userId", SPUtil.get(getActivity(), USER_ID, "") + "");
-                        returnCarCancelOrderMap.put("orderId", orderId + "");
-                        returnCarCancelOrderMap.put("storeId", SPUtil.get(getActivity(), STORE_ID, "") + "");
-                        getPresenter().getReturnCarCancelOrder(returnCarCancelOrderMap, false, false);
-                        break;
-                    case 2:
-                        TreeMap<String, String> repairFinishMap = new TreeMap<>();
-                        repairFinishMap.put("userId", SPUtil.get(getActivity(), USER_ID, "") + "");
-                        repairFinishMap.put("orderId", orderId + "");
-                        repairFinishMap.put("storeId", SPUtil.get(getActivity(), STORE_ID, "") + "");
-                        getPresenter().getRepairCancel(repairFinishMap, true, false);
-                        break;
+                if (isClickUtil.isFastClick()) {
+                    switch (multipleFmType) {
+                        case 0:
+                            TreeMap<String, String> getCarOrderMap = new TreeMap<>();
+                            getCarOrderMap.put("userId", SPUtil.get(getActivity(), USER_ID, "") + "");
+                            getCarOrderMap.put("orderId", orderId + "");
+                            getCarOrderMap.put("storeId", SPUtil.get(getActivity(), STORE_ID, "") + "");
+                            getPresenter().getGetCarCancelOrder(getCarOrderMap, false, false);
+                            break;
+                        case 1:
+                            TreeMap<String, String> returnCarCancelOrderMap = new TreeMap<>();
+                            returnCarCancelOrderMap.put("userId", SPUtil.get(getActivity(), USER_ID, "") + "");
+                            returnCarCancelOrderMap.put("orderId", orderId + "");
+                            returnCarCancelOrderMap.put("storeId", SPUtil.get(getActivity(), STORE_ID, "") + "");
+                            getPresenter().getReturnCarCancelOrder(returnCarCancelOrderMap, false, false);
+                            break;
+                        case 2:
+                            TreeMap<String, String> repairFinishMap = new TreeMap<>();
+                            repairFinishMap.put("userId", SPUtil.get(getActivity(), USER_ID, "") + "");
+                            repairFinishMap.put("orderId", orderId + "");
+                            repairFinishMap.put("storeId", SPUtil.get(getActivity(), STORE_ID, "") + "");
+                            getPresenter().getRepairCancel(repairFinishMap, true, false);
+                            break;
+                    }
+                    mCameraDialog.dismiss();
                 }
-                mCameraDialog.dismiss();
             }
         });
 

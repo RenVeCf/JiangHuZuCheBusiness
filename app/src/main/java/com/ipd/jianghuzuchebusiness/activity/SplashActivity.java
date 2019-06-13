@@ -11,6 +11,7 @@ import com.ipd.jianghuzuchebusiness.utils.ApplicationUtil;
 import com.ipd.jianghuzuchebusiness.utils.SPUtil;
 
 import static com.ipd.jianghuzuchebusiness.common.config.IConstants.FIRST_APP;
+import static com.ipd.jianghuzuchebusiness.common.config.IConstants.IS_LOGIN;
 
 /**
  * Description ：启动页
@@ -56,7 +57,10 @@ public class SplashActivity extends BaseActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                if (SPUtil.get(SplashActivity.this, IS_LOGIN, "").equals(""))
+                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                else
+                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 finish();
             }
         }, 2000);

@@ -5,6 +5,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -27,6 +28,7 @@ import com.ipd.jianghuzuchebusiness.presenter.OrderSumPresenter;
 import com.ipd.jianghuzuchebusiness.utils.ApplicationUtil;
 import com.ipd.jianghuzuchebusiness.utils.DateUtils;
 import com.ipd.jianghuzuchebusiness.utils.SPUtil;
+import com.ipd.jianghuzuchebusiness.utils.isClickUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -212,6 +214,7 @@ public class OrderSumActivity extends BaseActivity<OrderSumContract.View, OrderS
                 //                .setContentSize(18)//滚轮文字大小
 //                .setTitleSize(16)//标题文字大小
 //                .setTitleText("请选择起始时间")
+                .setDecorView((ViewGroup) getWindow().getDecorView().findViewById(android.R.id.content))
                 .setOutSideCancelable(true)//点击屏幕，点在控件外部范围时，是否取消显示
                 .isCyclic(false)//是否循环滚动
 //                .setTitleColor(Color.BLACK)//标题文字颜色
@@ -266,72 +269,12 @@ public class OrderSumActivity extends BaseActivity<OrderSumContract.View, OrderS
                         selectOrder(0);
                     else
                         selectOrder(1);
-//                    llOrderSum.setVisibility(View.VISIBLE);
                 } else if (tvOrderSumStart.getText().toString().trim().equals("选择起始日期") && tvOrderSumEnd.getText().toString().trim().equals("选择结束日期")) {
                     if (rbOrderSumStart.isChecked())
                         selectOrder(2);
                     else
                         selectOrder(3);
                 }
-
-//                if (carRentalOrderBean != null) {
-//                    NotUseList = null;
-//                    NotUseList = new GridLayoutManager(this, 5);
-//                    rvOrderSum.setLayoutManager(NotUseList);
-//                    datas.clear();
-//                    datas.add("");
-//                    datas.add("门店收益");
-//                    datas.add("取车订单");
-//                    datas.add("还车订单");
-//                    datas.add("未完成订单");
-//                    datas.add("数量");
-//                    datas.add(carRentalOrderBean.getProfitCount() + "");
-//                    datas.add(carRentalOrderBean.getPickOrder() + "");
-//                    datas.add(carRentalOrderBean.getReturnOrder() + "");
-//                    datas.add(carRentalOrderBean.getNoOkOrder() + "");
-//                    datas.add("金额");
-//                    datas.add("¥" + carRentalOrderBean.getProfitMoney());
-//                    datas.add("¥" + carRentalOrderBean.getPickMoney());
-//                    datas.add("¥" + carRentalOrderBean.getReturnMoney());
-//                    datas.add("¥" + carRentalOrderBean.getNoOkOrderMoney());
-//                    orderSumAdapter.setNewData(datas);
-//
-//                    tvDayOrder.setVisibility(View.VISIBLE);
-//                    tvDayOrderMoney.setVisibility(View.VISIBLE);
-//                    tvTotalOrder.setVisibility(View.VISIBLE);
-//                    tvTotalOrderMoney.setVisibility(View.VISIBLE);
-//
-//                    tvDayOrder.setText("当日订单数量: " + carRentalOrderBean.getDayOrder());
-//                    tvDayOrderMoney.setText("当日订单金额: ¥" + carRentalOrderBean.getDayOrderMoney());
-//                    tvTotalOrder.setText("合计订单数量: " + carRentalOrderBean.getTotalOrder());
-//                    tvTotalOrderMoney.setText("合计订单金额: ¥" + carRentalOrderBean.getTotalOrderMoney());
-//                } else {
-//                    NotUseList = null;
-//                    NotUseList = new GridLayoutManager(this, 5);
-//                    rvOrderSum.setLayoutManager(NotUseList);
-//                    datas.clear();
-//                    datas.add("");
-//                    datas.add("门店收益");
-//                    datas.add("取车订单");
-//                    datas.add("还车订单");
-//                    datas.add("未完成订单");
-//                    datas.add("数量");
-//                    datas.add("-");
-//                    datas.add("-");
-//                    datas.add("-");
-//                    datas.add("-");
-//                    datas.add("金额");
-//                    datas.add("-");
-//                    datas.add("-");
-//                    datas.add("-");
-//                    datas.add("-");
-//                    orderSumAdapter.setNewData(datas);
-//
-////                    tvDayOrder.setVisibility(View.GONE);
-////                    tvDayOrderMoney.setVisibility(View.GONE);
-////                    tvTotalOrder.setVisibility(View.GONE);
-////                    tvTotalOrderMoney.setVisibility(View.GONE);
-//                }
                 break;
             case R.id.rb_order_sum_end:
                 if (!tvOrderSumStart.getText().toString().trim().equals("选择起始日期") && !tvOrderSumEnd.getText().toString().trim().equals("选择结束日期")) {
@@ -339,65 +282,12 @@ public class OrderSumActivity extends BaseActivity<OrderSumContract.View, OrderS
                         selectOrder(0);
                     else
                         selectOrder(1);
-//                    llOrderSum.setVisibility(View.VISIBLE);
                 } else if (tvOrderSumStart.getText().toString().trim().equals("选择起始日期") && tvOrderSumEnd.getText().toString().trim().equals("选择结束日期")) {
                     if (rbOrderSumStart.isChecked())
                         selectOrder(2);
                     else
                         selectOrder(3);
                 }
-//                if (repairOrderBean != null) {
-//                    NotUseList = null;
-//                    NotUseList = new GridLayoutManager(this, 4);
-//                    rvOrderSum.setLayoutManager(NotUseList);
-//                    datas.clear();
-//                    datas.add("");
-//                    datas.add("门店收益");
-//                    datas.add("已完成订单");
-//                    datas.add("未完成订单");
-//                    datas.add("数量");
-//                    datas.add(repairOrderBean.getProfitCount() + "");
-//                    datas.add(repairOrderBean.getOkOrderCount() + "");
-//                    datas.add(repairOrderBean.getNotOkOrderCount() + "");
-//                    datas.add("金额");
-//                    datas.add("¥" + repairOrderBean.getProfitMoney());
-//                    datas.add("¥" + repairOrderBean.getOkOrderMoney());
-//                    datas.add("¥" + repairOrderBean.getNotOkOrderMoney());
-//                    orderSumAdapter.setNewData(datas);
-//
-//                    tvDayOrder.setVisibility(View.VISIBLE);
-//                    tvDayOrderMoney.setVisibility(View.VISIBLE);
-//                    tvTotalOrder.setVisibility(View.VISIBLE);
-//                    tvTotalOrderMoney.setVisibility(View.VISIBLE);
-//
-//                    tvDayOrder.setText("当日订单数量: " + repairOrderBean.getDayOrderCount());
-//                    tvDayOrderMoney.setText("当日订单金额: ¥" + repairOrderBean.getDayOrderMoney());
-//                    tvTotalOrder.setText("合计订单数量: " + repairOrderBean.getTotalOrderCount());
-//                    tvTotalOrderMoney.setText("合计订单金额: ¥" + repairOrderBean.getTotalOrderMoney());
-//                } else {
-//                    NotUseList = null;
-//                    NotUseList = new GridLayoutManager(this, 4);
-//                    rvOrderSum.setLayoutManager(NotUseList);
-//                    datas.clear();
-//                    datas.add("");
-//                    datas.add("门店收益");
-//                    datas.add("已完成订单");
-//                    datas.add("未完成订单");
-//                    datas.add("数量");
-//                    datas.add("-");
-//                    datas.add("-");
-//                    datas.add("-");
-//                    datas.add("金额");
-//                    datas.add("-");
-//                    datas.add("-");
-//                    datas.add("-");
-//                    orderSumAdapter.setNewData(datas);
-//
-////                    tvDayOrder.setVisibility(View.GONE);
-////                    tvDayOrderMoney.setVisibility(View.GONE);
-////                    tvTotalOrder.setVisibility(View.GONE);
-////                    tvTotalOrderMoney.setVisibility(View.GONE);
-//                }
                 break;
             case R.id.tv_order_sum_start:
                 selectTime(0);
@@ -406,24 +296,13 @@ public class OrderSumActivity extends BaseActivity<OrderSumContract.View, OrderS
                 selectTime(1);
                 break;
             case R.id.bt_order_sum:
-                tvOrderSumStart.setText("选择起始日期");
-                tvOrderSumStart.setTextColor(getResources().getColor(R.color.tx_bottom_navigation));
-                tvOrderSumEnd.setText("选择结束日期");
-                tvOrderSumEnd.setTextColor(getResources().getColor(R.color.tx_bottom_navigation));
-                initData();
-//                if (rbOrderSumStart.isChecked()) {
-//                    TreeMap<String, String> carRentalOrderMap = new TreeMap<>();
-//                    carRentalOrderMap.put("userId", SPUtil.get(this, USER_ID, "") + "");
-//                    carRentalOrderMap.put("params[beginTime]", tvOrderSumStart.getText().toString().trim());
-//                    carRentalOrderMap.put("params[endTime]", tvOrderSumEnd.getText().toString().trim());
-//                    getPresenter().getCarRentalOrder(carRentalOrderMap, false, false);
-//                } else {
-//                    TreeMap<String, String> repairOrderMap = new TreeMap<>();
-//                    repairOrderMap.put("userId", SPUtil.get(this, USER_ID, "") + "");
-//                    repairOrderMap.put("params[beginTime]", tvOrderSumStart.getText().toString().trim());
-//                    repairOrderMap.put("params[endTime]", tvOrderSumEnd.getText().toString().trim());
-//                    getPresenter().getRepairOrder(repairOrderMap, false, false);
-//                }
+                if (isClickUtil.isFastClick()) {
+                    tvOrderSumStart.setText("选择起始日期");
+                    tvOrderSumStart.setTextColor(getResources().getColor(R.color.tx_bottom_navigation));
+                    tvOrderSumEnd.setText("选择结束日期");
+                    tvOrderSumEnd.setTextColor(getResources().getColor(R.color.tx_bottom_navigation));
+                    initData();
+                }
                 break;
         }
     }

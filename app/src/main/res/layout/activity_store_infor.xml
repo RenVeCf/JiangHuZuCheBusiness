@@ -126,7 +126,7 @@
             <com.ipd.jianghuzuchebusiness.common.view.AutoHeightViewPager
                 android:id="@+id/vp_store_infor"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="@dimen/y700"
                 android:background="@color/white" />
 
             <LinearLayout

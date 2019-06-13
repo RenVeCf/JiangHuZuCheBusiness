@@ -22,6 +22,7 @@ import com.ipd.jianghuzuchebusiness.contract.SelectCarContract;
 import com.ipd.jianghuzuchebusiness.presenter.SelectCarPresenter;
 import com.ipd.jianghuzuchebusiness.utils.ApplicationUtil;
 import com.ipd.jianghuzuchebusiness.utils.SPUtil;
+import com.ipd.jianghuzuchebusiness.utils.isClickUtil;
 
 import java.util.ArrayList;
 import java.util.List;

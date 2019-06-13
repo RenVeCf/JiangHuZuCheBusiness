@@ -27,6 +27,7 @@ import com.ipd.jianghuzuchebusiness.presenter.StoreDetailsPresenter;
 import com.ipd.jianghuzuchebusiness.utils.ApplicationUtil;
 import com.ipd.jianghuzuchebusiness.utils.SPUtil;
 import com.ipd.jianghuzuchebusiness.utils.ToastUtil;
+import com.ipd.jianghuzuchebusiness.utils.isClickUtil;
 import com.ryane.banner.AdPageInfo;
 import com.ryane.banner.AdPlayBanner;
 
@@ -163,7 +164,9 @@ public class StoreInforActivity extends BaseActivity<StoreDetailsContract.View, 
 
     @OnClick(R.id.bt_store_infor)
     public void onViewClicked() {
-        startActivityForResult(new Intent(this, EditStoreInforActivity.class).putExtra("select_store_bean", selectStoreBean).putParcelableArrayListExtra("charge_list", (ArrayList<? extends Parcelable>) chargeListBean), REQUEST_CODE_106);
+        if (isClickUtil.isFastClick()) {
+            startActivityForResult(new Intent(this, EditStoreInforActivity.class).putExtra("select_store_bean", selectStoreBean).putParcelableArrayListExtra("charge_list", (ArrayList<? extends Parcelable>) chargeListBean), REQUEST_CODE_106);
+        }
     }
 
     @Override

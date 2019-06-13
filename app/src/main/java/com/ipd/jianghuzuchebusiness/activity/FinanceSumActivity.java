@@ -19,6 +19,7 @@ import com.ipd.jianghuzuchebusiness.contract.FinanceSumContract;
 import com.ipd.jianghuzuchebusiness.presenter.FinanceSumPresenter;
 import com.ipd.jianghuzuchebusiness.utils.ApplicationUtil;
 import com.ipd.jianghuzuchebusiness.utils.SPUtil;
+import com.ipd.jianghuzuchebusiness.utils.isClickUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,7 +117,9 @@ public class FinanceSumActivity extends BaseActivity<FinanceSumContract.View, Fi
 
     @OnClick(R.id.bt_finance_sum)
     public void onViewClicked() {
-        startActivity(new Intent(this, CashWithdrawalActivity.class));
+        if (isClickUtil.isFastClick()) {
+            startActivity(new Intent(this, CashWithdrawalActivity.class));
+        }
     }
 
     @Override

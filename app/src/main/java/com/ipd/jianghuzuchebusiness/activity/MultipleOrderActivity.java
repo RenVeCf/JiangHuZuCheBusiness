@@ -21,6 +21,7 @@ import com.ipd.jianghuzuchebusiness.common.view.NavitationLayout;
 import com.ipd.jianghuzuchebusiness.common.view.TopView;
 import com.ipd.jianghuzuchebusiness.fragment.MultipleOrderFragment;
 import com.ipd.jianghuzuchebusiness.utils.ApplicationUtil;
+import com.ipd.jianghuzuchebusiness.utils.isClickUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -147,9 +148,11 @@ public class MultipleOrderActivity extends BaseActivity {
 
     @OnClick(R.id.iv_search)
     public void onViewClicked() {
-        Intent intent = new Intent("android.ipd.action");
-        intent.putExtra("positions", positions);
-        intent.putExtra("content", etSearch.getText().toString().trim());
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        if (isClickUtil.isFastClick()) {
+            Intent intent = new Intent("android.ipd.action");
+            intent.putExtra("positions", positions);
+            intent.putExtra("content", etSearch.getText().toString().trim());
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        }
     }
 }
