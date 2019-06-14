@@ -24,7 +24,11 @@ public class RepairProjectHorizontalBean implements Parcelable{
     private String msg;
     private DataBean data;
 
-    protected RepairProjectHorizontalBean(Parcel in) {
+    public RepairProjectHorizontalBean() {
+        super();
+    }
+
+    public RepairProjectHorizontalBean(Parcel in) {
         code = in.readInt();
         msg = in.readString();
     }

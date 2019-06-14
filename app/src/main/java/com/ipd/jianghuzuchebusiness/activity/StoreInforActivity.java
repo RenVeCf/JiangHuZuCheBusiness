@@ -8,9 +8,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.gyf.barlibrary.ImmersionBar;
 import com.ipd.jianghuzuchebusiness.R;
 import com.ipd.jianghuzuchebusiness.adapter.ViewPagerAdapter;
@@ -89,6 +92,12 @@ public class StoreInforActivity extends BaseActivity<StoreDetailsContract.View, 
     TextView tvChargeThree;
     @BindView(R.id.tv_charge_three_fee)
     TextView tvChargeThreeFee;
+    @BindView(R.id.iv_charge_frist)
+    ImageView ivChargeFrist;
+    @BindView(R.id.iv_charge_second)
+    ImageView ivChargeSecond;
+    @BindView(R.id.iv_charge_three)
+    ImageView ivChargeThree;
 
     private ViewPagerAdapter viewPagerAdapter;
     private List<Fragment> fragments;
@@ -96,6 +105,7 @@ public class StoreInforActivity extends BaseActivity<StoreDetailsContract.View, 
     private List<ChargeBean.DataBean.ChargeListBean> chargeListBean;
     private StoreInforBean.DataBean.SelectStoreBean selectStoreBean;
     private int storeInfor_positions = 0;
+    private List<RepairProjectHorizontalBean.DataBean.RepairTypeBean> repairProjectHorizontalBean = new ArrayList<>();
 
     @Override
     public int getLayoutId() {
@@ -136,8 +146,15 @@ public class StoreInforActivity extends BaseActivity<StoreDetailsContract.View, 
 
             @Override
             public void onPageSelected(final int position) {
+                int o;
+                if (repairProjectHorizontalBean.get(position).getAppRepairs().size() > 4)
+                    o = repairProjectHorizontalBean.get(position).getAppRepairs().size() % 4;
+                else if (repairProjectHorizontalBean.get(position).getAppRepairs().size() < 4 && repairProjectHorizontalBean.get(position).getAppRepairs().size() != 0)
+                    o = 1;
+                else
+                    o = 0;
                 // 切换到当前页面，重置高度
-                vpStoreInfor.resetHeight(position);
+                vpStoreInfor.resetHeight(position, o);
             }
 
             @Override
@@ -145,7 +162,7 @@ public class StoreInforActivity extends BaseActivity<StoreDetailsContract.View, 
 
             }
         });
-        vpStoreInfor.resetHeight(0);
+        vpStoreInfor.resetHeight(0, 0);
     }
 
     @Override
@@ -193,6 +210,7 @@ public class StoreInforActivity extends BaseActivity<StoreDetailsContract.View, 
 
     @Override
     public void resultRepairProjectHorizontal(RepairProjectHorizontalBean data) {
+        repairProjectHorizontalBean.addAll(data.getData().getRepairType());
         List<String> list = new ArrayList<>();
         for (int i = 0; i < data.getData().getRepairType().size(); i++) {
             list.add(data.getData().getRepairType().get(i).getRepairName());
@@ -204,7 +222,7 @@ public class StoreInforActivity extends BaseActivity<StoreDetailsContract.View, 
             final MultipleOrderFragment fm = new MultipleOrderFragment();
             Bundle args = new Bundle();
             args.putInt("multiple_fm_type", 4);
-            args.putParcelableArrayList("store_infor", (ArrayList<? extends Parcelable>) data.getData().getRepairType());
+            args.putParcelableArrayList("store_infor", (ArrayList<? extends Parcelable>) repairProjectHorizontalBean);
             args.putInt("status_position", i);
             args.putInt("storeInfor_positions", storeInfor_positions);
             fm.setArguments(args);
@@ -229,19 +247,25 @@ public class StoreInforActivity extends BaseActivity<StoreDetailsContract.View, 
             llChargeSecond.setVisibility(View.GONE);
             llChargeThree.setVisibility(View.GONE);
             tvChargeFrist.setText(chargeListBean.get(0).getTitle());
+            Glide.with(ApplicationUtil.getContext()).load(BASE_LOCAL_URL + chargeListBean.get(0).getIcon()).apply(new RequestOptions()).apply(new RequestOptions().placeholder(R.drawable.ic_charge)).into(ivChargeFrist);
             tvChargeFristFee.setText("费用" + chargeListBean.get(0).getCost() + "元");
         } else if (chargeListBean.size() < 3) {
             llChargeThree.setVisibility(View.GONE);
             tvChargeFrist.setText(chargeListBean.get(0).getTitle());
+            Glide.with(ApplicationUtil.getContext()).load(BASE_LOCAL_URL + chargeListBean.get(0).getIcon()).apply(new RequestOptions()).apply(new RequestOptions().placeholder(R.drawable.ic_charge)).into(ivChargeFrist);
             tvChargeFristFee.setText("费用" + chargeListBean.get(0).getCost() + "元");
             tvChargeSecond.setText(chargeListBean.get(1).getTitle());
+            Glide.with(ApplicationUtil.getContext()).load(BASE_LOCAL_URL + chargeListBean.get(1).getIcon()).apply(new RequestOptions()).apply(new RequestOptions().placeholder(R.drawable.ic_charge)).into(ivChargeSecond);
             tvChargeSecondFee.setText("费用" + chargeListBean.get(1).getCost() + "元");
         } else {
             tvChargeFrist.setText(chargeListBean.get(0).getTitle());
+            Glide.with(ApplicationUtil.getContext()).load(BASE_LOCAL_URL + chargeListBean.get(0).getIcon()).apply(new RequestOptions()).apply(new RequestOptions().placeholder(R.drawable.ic_charge)).into(ivChargeFrist);
             tvChargeFristFee.setText("费用" + chargeListBean.get(0).getCost() + "元");
             tvChargeSecond.setText(chargeListBean.get(1).getTitle());
+            Glide.with(ApplicationUtil.getContext()).load(BASE_LOCAL_URL + chargeListBean.get(1).getIcon()).apply(new RequestOptions()).apply(new RequestOptions().placeholder(R.drawable.ic_charge)).into(ivChargeSecond);
             tvChargeSecondFee.setText("费用" + chargeListBean.get(1).getCost() + "元");
             tvChargeThree.setText(chargeListBean.get(2).getTitle());
+            Glide.with(ApplicationUtil.getContext()).load(BASE_LOCAL_URL + chargeListBean.get(2).getIcon()).apply(new RequestOptions()).apply(new RequestOptions().placeholder(R.drawable.ic_charge)).into(ivChargeThree);
             tvChargeThreeFee.setText("费用" + chargeListBean.get(2).getCost() + "元");
         }
     }

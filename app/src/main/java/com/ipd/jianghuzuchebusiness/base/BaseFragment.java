@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
+import com.ipd.jianghuzuchebusiness.activity.StoreInforActivity;
+import com.ipd.jianghuzuchebusiness.utils.LogUtils;
 import com.trello.rxlifecycle2.components.support.RxFragment;
 
 import butterknife.ButterKnife;
@@ -43,13 +45,12 @@ public abstract class BaseFragment<V extends BaseView, P extends BasePresenter<V
         if (this.view == null) {
             this.view = createView();
         }
-        if (presenter != null && view != null)
-        {
+        if (presenter != null && view != null) {
             presenter.attachView(this.view);
         }
 
         //初始化本地数据
-        init();
+        init(view);
         //初始化布局监听器
         initListener();
         //初始化网络数据
@@ -77,7 +78,7 @@ public abstract class BaseFragment<V extends BaseView, P extends BasePresenter<V
 
     public abstract V createView();
 
-    public abstract void init();
+    public abstract void init(View view);
 
     public abstract void initListener();
 

@@ -35,6 +35,7 @@ import com.ipd.jianghuzuchebusiness.adapter.GetCarHistoryOrderAdapter;
 import com.ipd.jianghuzuchebusiness.adapter.MultipleOrderAdapter;
 import com.ipd.jianghuzuchebusiness.adapter.RepairOrderAdapter;
 import com.ipd.jianghuzuchebusiness.adapter.ReturnCarAdapter;
+import com.ipd.jianghuzuchebusiness.adapter.StoreInfoRepairAdapter;
 import com.ipd.jianghuzuchebusiness.base.BaseFragment;
 import com.ipd.jianghuzuchebusiness.bean.GetCarCancelOrderBean;
 import com.ipd.jianghuzuchebusiness.bean.GetCarOrderBean;
@@ -87,6 +88,7 @@ public class MultipleOrderFragment extends BaseFragment<MultipleOrderContract.Vi
     private GetCarHistoryOrderAdapter getCarHistoryOrderAdapter;
     private List<GetCarOrderBean.DataBean.OrderListBean> getCarOrderBean;
     private MultipleOrderAdapter multipleOrderAdapter;
+    private StoreInfoRepairAdapter storeInfoRepairAdapter;
     private ReturnCarAdapter returnCarAdapter;
     private List<RepairProjectHorizontalBean.DataBean.RepairTypeBean> repairTypeBean = new ArrayList<>();
     private List<VehicleConditionHorizontalBean.DataBean.VehicleTypeBean> vehicleTypeBean = new ArrayList<>();
@@ -135,9 +137,9 @@ public class MultipleOrderFragment extends BaseFragment<MultipleOrderContract.Vi
     }
 
     @Override
-    public void init() {
+    public void init(View view) {
         Bundle args = getArguments();
-        if (args != null) { //门店资料
+        if (args != null) {
             multipleFmType = args.getInt("multiple_fm_type");
             statusPosition = args.getInt("status_position");
             vehicleTypeBean = args.getParcelableArrayList("vehicle_type");
@@ -156,26 +158,28 @@ public class MultipleOrderFragment extends BaseFragment<MultipleOrderContract.Vi
             rvMultipleOrder.setHasFixedSize(true); //item如果一样的大小，可以设置为true让RecyclerView避免重新计算大小
             rvMultipleOrder.setItemAnimator(new DefaultItemAnimator()); //默认动画
 
-            vehicleTypeBean = new ArrayList<>();
-            for (int i = 0; i < repairTypeBean.size(); i++) {
-                int m = 0;
-                for (int j = 0; j < statusPosition + 1; j++) {
-                    vehicleTypeBean.add(new VehicleConditionHorizontalBean.DataBean.VehicleTypeBean());
-                }
-                vehicleTypeBean.get(statusPosition).setAppVehicleStatus(appVehicleStatusBean);
-                appVehicleStatusBean.add(new VehicleConditionHorizontalBean.DataBean.VehicleTypeBean.AppVehicleStatusBean());
-                vehicleTypeBean.get(statusPosition).getAppVehicleStatus().get(i).setItemType(multipleFmType);
-                if (repairTypeBean.get(statusPosition).getAppRepairs().size() > 0) {
-                    vehicleTypeBean.get(statusPosition).getAppVehicleStatus().get(i).setStatusName(repairTypeBean.get(statusPosition).getAppRepairs().get(m).getRepairName());
-                    m++;
-                }
-            }
-            multipleOrderAdapter = new MultipleOrderAdapter(vehicleTypeBean.get(statusPosition).getAppVehicleStatus());
-            rvMultipleOrder.setAdapter(multipleOrderAdapter);
-            returnCarAdapter = new ReturnCarAdapter(vehicleTypeBean.get(statusPosition).getVehicleOrstatus());
-
+//            vehicleTypeBean = new ArrayList<>();
+//            for (int i = 0; i < repairTypeBean.size(); i++) {
+//                int m = 0;
+//                for (int j = 0; j < statusPosition + 1; j++) {
+//                    vehicleTypeBean.add(new VehicleConditionHorizontalBean.DataBean.VehicleTypeBean());
+//                }
+//                vehicleTypeBean.get(statusPosition).setAppVehicleStatus(appVehicleStatusBean);
+//                appVehicleStatusBean.add(new VehicleConditionHorizontalBean.DataBean.VehicleTypeBean.AppVehicleStatusBean());
+//                vehicleTypeBean.get(statusPosition).getAppVehicleStatus().get(i).setItemType(multipleFmType);
+//                if (repairTypeBean.get(statusPosition).getAppRepairs().size() > 0 && repairTypeBean.get(statusPosition).getAppRepairs().size() > i) {
+//                    vehicleTypeBean.get(statusPosition).getAppVehicleStatus().get(i).setStatusName(repairTypeBean.get(statusPosition).getAppRepairs().get(i).getRepairName());
+//                    m++;
+//                }
+//            }
+//            LogUtils.i("rmy", "size = " + vehicleTypeBean.get(statusPosition).getAppVehicleStatus().size());
+//            multipleOrderAdapter = new MultipleOrderAdapter(vehicleTypeBean.get(statusPosition).getAppVehicleStatus());
+//            rvMultipleOrder.setAdapter(multipleOrderAdapter);
+//            returnCarAdapter = new ReturnCarAdapter(vehicleTypeBean.get(statusPosition).getVehicleOrstatus());
+            storeInfoRepairAdapter = new StoreInfoRepairAdapter(repairTypeBean.get(statusPosition).getAppRepairs());
+            rvMultipleOrder.setAdapter(storeInfoRepairAdapter);
             storeInforActivity = (StoreInforActivity) getActivity();
-//            storeInforActivity.vpStoreInfor.setObjectForPosition("Fragment的View", storeInfor_positions);
+            storeInforActivity.vpStoreInfor.setObjectForPosition(view, statusPosition);
         } else if (multipleFmType == 3) { //车辆状况
             // 设置管理器
             LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -230,7 +234,9 @@ public class MultipleOrderFragment extends BaseFragment<MultipleOrderContract.Vi
 
     @Override
     public void initListener() {
-        if (multipleFmType == 3 || multipleFmType == 4) {
+        if (multipleFmType == 4) {
+
+        } else if (multipleFmType == 3) {
             multipleOrderAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
                 @Override
                 public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
