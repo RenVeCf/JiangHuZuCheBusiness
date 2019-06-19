@@ -24,7 +24,6 @@ import com.ipd.jianghuzuchebusiness.common.view.TopView;
 import com.ipd.jianghuzuchebusiness.contract.FillInPaperContract;
 import com.ipd.jianghuzuchebusiness.presenter.FillInPaperPresenter;
 import com.ipd.jianghuzuchebusiness.utils.ApplicationUtil;
-import com.ipd.jianghuzuchebusiness.utils.SPUtil;
 import com.ipd.jianghuzuchebusiness.utils.ToastUtil;
 import com.ipd.jianghuzuchebusiness.utils.isClickUtil;
 import com.wildma.pictureselector.PictureSelector;
@@ -32,18 +31,14 @@ import com.wildma.pictureselector.PictureSelector;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 import io.reactivex.ObservableTransformer;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
 import static com.ipd.jianghuzuchebusiness.common.config.IConstants.REQUEST_CODE_90;
 import static com.ipd.jianghuzuchebusiness.common.config.IConstants.REQUEST_CODE_91;
-import static com.ipd.jianghuzuchebusiness.common.config.IConstants.STORE_ID;
-import static com.ipd.jianghuzuchebusiness.common.config.IConstants.USER_ID;
 
 /**
  * Description ：填写取/退车单
@@ -77,6 +72,8 @@ public class FillInPaperActivity extends BaseActivity<FillInPaperContract.View, 
     private VehiclePhotoAdapter vehiclePhotoAdapter;
     private List<VehiclePhotoBean> list = new ArrayList<>();
     private StringBuffer imgPaths = new StringBuffer();
+    //    private PhotoAdapter photoAdapter;
+    private ArrayList<String> selectedPhotos = new ArrayList<>();
 
     @Override
     public int getLayoutId() {
@@ -123,10 +120,14 @@ public class FillInPaperActivity extends BaseActivity<FillInPaperContract.View, 
         list.add(getImageData());
         vehiclePhotoAdapter = new VehiclePhotoAdapter(list);
         rvVehiclePhoto.setAdapter(vehiclePhotoAdapter);
+
+//        photoAdapter = new PhotoAdapter(this, selectedPhotos);
     }
 
     @Override
     public void initListener() {
+//        rvVehiclePhoto.addOnItemTouchListener(new RecyclerI);
+
         vehiclePhotoAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
@@ -135,6 +136,11 @@ public class FillInPaperActivity extends BaseActivity<FillInPaperContract.View, 
                     switch (view.getId()) {
                         case R.id.iv_household_registration:
                             if (TextUtils.isEmpty(clickDataBean.getName())) {
+//                                PhotoPicker.builder()
+//                                        .setPhotoCount(9)
+//                                        .setShowCamera(false)
+//                                        .setPreviewEnabled(false)
+//                                        .start(FillInPaperActivity.this);
                                 selectPhoto();
                             } else {
                                 BigImageActivity.launch(FillInPaperActivity.this, clickDataBean.getName());
@@ -159,6 +165,22 @@ public class FillInPaperActivity extends BaseActivity<FillInPaperContract.View, 
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null) {
+//            if (resultCode == RESULT_OK &&
+//                    (requestCode == PhotoPicker.REQUEST_CODE || requestCode == PhotoPreview.REQUEST_CODE)) {
+//
+//                List<String> photos = null;
+//                if (data != null) {
+//                    photos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
+//                }
+//                selectedPhotos.clear();
+//
+//                if (photos != null) {
+//
+//                    selectedPhotos.addAll(photos);
+//                }
+//                photoAdapter.notifyDataSetChanged();
+//            }
+
             switch (requestCode) {
                 case REQUEST_CODE_90:
                     licensePlateNum = data.getStringExtra("license_plate_num");
@@ -167,12 +189,12 @@ public class FillInPaperActivity extends BaseActivity<FillInPaperContract.View, 
                 case REQUEST_CODE_91:
                     statusIds = data.getStringExtra("status_ids");
                     break;
-                case PictureSelector.SELECT_REQUEST_CODE:
-                    String picturePath = data.getStringExtra(PictureSelector.PICTURE_PATH);
-                    TreeMap<String, RequestBody> map = new TreeMap<>();
-                    map.put("file\";filename=\"" + ".jpeg", getImageRequestBody(picturePath));
-                    getPresenter().getUploadImg("3", map, true, false);
-                    break;
+//                case PictureSelector.SELECT_REQUEST_CODE:
+//                    String picturePath = data.getStringExtra(PictureSelector.PICTURE_PATH);
+//                    TreeMap<String, RequestBody> map = new TreeMap<>();
+//                    map.put("file\";filename=\"" + ".jpeg", getImageRequestBody(picturePath));
+//                    getPresenter().getUploadImg("3", map, true, false);
+//                    break;
             }
         }
     }
@@ -203,9 +225,9 @@ public class FillInPaperActivity extends BaseActivity<FillInPaperContract.View, 
 
 //    private void selectPhoto() {
 //        // 进入相册 以下是例子：用不到的api可以不写
-//        PictureSelector.create(this)
+//        PictureSelector.create(FillInPaperActivity.this)
 //                .openGallery(ofImage())//全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
-//                .theme(R.style.picture.white.style)//主题样式(不设置为默认样式) 也可参考demo values/styles下 例如：R.style.picture.white.style
+////                .theme(R.style.picture.white.style)//主题样式(不设置为默认样式) 也可参考demo values/styles下 例如：R.style.picture.white.style
 //                .maxSelectNum(9)// 最大图片选择数量 int
 ////                .minSelectNum()// 最小选择数量 int
 //                .imageSpanCount(4)// 每行显示个数 int
@@ -224,13 +246,13 @@ public class FillInPaperActivity extends BaseActivity<FillInPaperContract.View, 
 //                .withAspectRatio(16, 9)// int 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
 //                .hideBottomControls(false)// 是否显示uCrop工具栏，默认不显示 true or false
 //                .isGif(false)// 是否显示gif图片 true or false
-//                .compressSavePath(getPath())//压缩图片保存地址
+//                .compressSavePath("/yasuo/CustomPath")//压缩图片保存地址
 ////                .freeStyleCropEnabled()// 裁剪框是否可拖拽 true or false
 //                .circleDimmedLayer(false)// 是否圆形裁剪 true or false
 ////                .showCropFrame()// 是否显示裁剪矩形边框 圆形裁剪时建议设为false   true or false
 ////                .showCropGrid()// 是否显示裁剪矩形网格 圆形裁剪时建议设为false    true or false
 //                .openClickSound(true)// 是否开启点击声音 true or false
-//                .selectionMedia()// 是否传入已选图片 List<LocalMedia> list
+////                .selectionMedia()// 是否传入已选图片 List<LocalMedia> list
 //                .previewEggs(true)// 预览图片时 是否增强左右滑动图片体验(图片滑动一半即可看到上一张是否选中) true or false
 ////                .cropCompressQuality()// 裁剪压缩质量 默认90 int
 //                .minimumCompressSize(100)// 小于100kb的图片不压缩
@@ -245,74 +267,74 @@ public class FillInPaperActivity extends BaseActivity<FillInPaperContract.View, 
 ////                .isDragFrame(false)// 是否可拖动裁剪框(固定)
 //                .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
 //    }
-
-    @OnClick({R.id.ll_license_plate_num, R.id.ll_vehicle_condition, R.id.bt_confirmation_order})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.ll_license_plate_num:
-                if (isClickUtil.isFastClick()) {
-                    if (!licensePlateNum.equals(""))
-                        startActivityForResult(new Intent(this, LicensePlateNumActivity.class).putExtra("car_num", licensePlateNum), REQUEST_CODE_90);
-                    else
-                        startActivityForResult(new Intent(this, LicensePlateNumActivity.class).putExtra("car_num", ""), REQUEST_CODE_90);
-                }
-                break;
-            case R.id.ll_vehicle_condition:
-                startActivityForResult(new Intent(this, VehicleConditionActivity.class).putExtra("order_id", orderId).putExtra("paper_type", paperType), REQUEST_CODE_91);
-                break;
-            case R.id.bt_confirmation_order:
-                if (isClickUtil.isFastClick()) {
-                    if (list.size() < 4 || list.size() > 10) {
-                        ToastUtil.showShortToast("最小上传图片为3张，最大为9张！");
-                    } else {
-                        switch (paperType) {
-                            case 0:
-                                if (!licensePlateNum.equals("") && !statusIds.equals("")) {
-                                    list.remove(list.size() - 1);
-                                    for (int i = 0; i < list.size(); i++) {
-                                        if (i < list.size() - 1)
-                                            imgPaths.append(list.get(i).getName() + ",");
-                                        else
-                                            imgPaths.append(list.get(i).getName());
-                                    }
-
-                                    TreeMap<String, String> loginMap = new TreeMap<>();
-                                    loginMap.put("userId", SPUtil.get(this, USER_ID, "") + "");
-                                    loginMap.put("orderId", orderId + "");
-                                    loginMap.put("plateNumber", licensePlateNum);
-                                    loginMap.put("statusIds", statusIds);
-                                    loginMap.put("picPath", imgPaths + "");
-                                    loginMap.put("storeId", SPUtil.get(this, STORE_ID, "") + "");
-                                    getPresenter().getGetCarCommit(loginMap, true, false);
-                                } else
-                                    ToastUtil.showShortToast("请将资料填写完整");
-                                break;
-                            case 1:
-                                if (!statusIds.equals("")) {
-                                    list.remove(list.size() - 1);
-                                    for (int i = 0; i < list.size(); i++) {
-                                        if (i < list.size() - 1)
-                                            imgPaths.append(list.get(i).getName() + ",");
-                                        else
-                                            imgPaths.append(list.get(i).getName());
-                                    }
-
-                                    TreeMap<String, String> returnCarMap = new TreeMap<>();
-                                    returnCarMap.put("userId", SPUtil.get(this, USER_ID, "") + "");
-                                    returnCarMap.put("orderId", orderId + "");
-                                    returnCarMap.put("statusIds", statusIds);
-                                    returnCarMap.put("picPath", imgPaths + "");
-                                    returnCarMap.put("storeId", SPUtil.get(this, STORE_ID, "") + "");
-                                    getPresenter().getReturnCarCommit(returnCarMap, true, false);
-                                } else
-                                    ToastUtil.showShortToast("请将资料填写完整");
-                                break;
-                        }
-                    }
-                }
-                break;
-        }
-    }
+//
+//    @OnClick({R.id.ll_license_plate_num, R.id.ll_vehicle_condition, R.id.bt_confirmation_order})
+//    public void onViewClicked(View view) {
+//        switch (view.getId()) {
+//            case R.id.ll_license_plate_num:
+//                if (isClickUtil.isFastClick()) {
+//                    if (!licensePlateNum.equals(""))
+//                        startActivityForResult(new Intent(this, LicensePlateNumActivity.class).putExtra("car_num", licensePlateNum), REQUEST_CODE_90);
+//                    else
+//                        startActivityForResult(new Intent(this, LicensePlateNumActivity.class).putExtra("car_num", ""), REQUEST_CODE_90);
+//                }
+//                break;
+//            case R.id.ll_vehicle_condition:
+//                startActivityForResult(new Intent(this, VehicleConditionActivity.class).putExtra("order_id", orderId).putExtra("paper_type", paperType), REQUEST_CODE_91);
+//                break;
+//            case R.id.bt_confirmation_order:
+//                if (isClickUtil.isFastClick()) {
+//                    if (list.size() < 4 || list.size() > 10) {
+//                        ToastUtil.showShortToast("最小上传图片为3张，最大为9张！");
+//                    } else {
+//                        switch (paperType) {
+//                            case 0:
+//                                if (!licensePlateNum.equals("") && !statusIds.equals("")) {
+//                                    list.remove(list.size() - 1);
+//                                    for (int i = 0; i < list.size(); i++) {
+//                                        if (i < list.size() - 1)
+//                                            imgPaths.append(list.get(i).getName() + ",");
+//                                        else
+//                                            imgPaths.append(list.get(i).getName());
+//                                    }
+//
+//                                    TreeMap<String, String> loginMap = new TreeMap<>();
+//                                    loginMap.put("userId", SPUtil.get(this, USER_ID, "") + "");
+//                                    loginMap.put("orderId", orderId + "");
+//                                    loginMap.put("plateNumber", licensePlateNum);
+//                                    loginMap.put("statusIds", statusIds);
+//                                    loginMap.put("picPath", imgPaths + "");
+//                                    loginMap.put("storeId", SPUtil.get(this, STORE_ID, "") + "");
+//                                    getPresenter().getGetCarCommit(loginMap, true, false);
+//                                } else
+//                                    ToastUtil.showShortToast("请将资料填写完整");
+//                                break;
+//                            case 1:
+//                                if (!statusIds.equals("")) {
+//                                    list.remove(list.size() - 1);
+//                                    for (int i = 0; i < list.size(); i++) {
+//                                        if (i < list.size() - 1)
+//                                            imgPaths.append(list.get(i).getName() + ",");
+//                                        else
+//                                            imgPaths.append(list.get(i).getName());
+//                                    }
+//
+//                                    TreeMap<String, String> returnCarMap = new TreeMap<>();
+//                                    returnCarMap.put("userId", SPUtil.get(this, USER_ID, "") + "");
+//                                    returnCarMap.put("orderId", orderId + "");
+//                                    returnCarMap.put("statusIds", statusIds);
+//                                    returnCarMap.put("picPath", imgPaths + "");
+//                                    returnCarMap.put("storeId", SPUtil.get(this, STORE_ID, "") + "");
+//                                    getPresenter().getReturnCarCommit(returnCarMap, true, false);
+//                                } else
+//                                    ToastUtil.showShortToast("请将资料填写完整");
+//                                break;
+//                        }
+//                    }
+//                }
+//                break;
+//        }
+//    }
 
     @Override
     public void resultGetCarCommit(GetCarCommitBean data) {

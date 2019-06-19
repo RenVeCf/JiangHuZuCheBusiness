@@ -1,5 +1,6 @@
 package com.ipd.jianghuzuchebusiness.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -7,6 +8,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
@@ -119,26 +121,30 @@ public class EditStoreInforActivity extends BaseActivity<EditStoreInforContract.
         tvStoreName.setText(selectStoreBean.getStoreName());
         tvStorePath.setText(selectStoreBean.getDescAddress());
         tvStorePhone.setText(selectStoreBean.getContactsPhone());
-        cbChargeOne.setText(chargeListBean.get(0).getTitle());
-        cbChargeTwo.setText(chargeListBean.get(1).getTitle());
-        cbChargeThree.setText(chargeListBean.get(2).getTitle());
+        if (chargeListBean.size() > 0)
+            cbChargeOne.setText(chargeListBean.get(0).getTitle());
+        if (chargeListBean.size() > 1)
+            cbChargeTwo.setText(chargeListBean.get(1).getTitle());
+        if (chargeListBean.size() > 2)
+            cbChargeThree.setText(chargeListBean.get(2).getTitle());
 
         String[] chargeId = selectStoreBean.getChargeId().split(",");
-        if (!selectStoreBean.getChargeId().equals("")) {
+        if (chargeId.length < 1 || selectStoreBean.getChargeId().equals("")) {
+
+        } else {
             for (int i = 0; i < chargeId.length; i++) {
-                if (chargeId[i].equals(chargeListBean.get(i).getChargeId() + "")) {
-                    switch (i) {
-                        case 0:
-                            cbChargeOne.setChecked(true);
-                            break;
-                        case 1:
-                            cbChargeTwo.setChecked(true);
-                            break;
-                        case 2:
-                            cbChargeThree.setChecked(true);
-                            break;
+                if (chargeListBean.size() > 0)
+                    if (chargeId[i].equals(chargeListBean.get(0).getChargeId() + "")) {
+                        cbChargeOne.setChecked(true);
                     }
-                }
+                if (chargeListBean.size() > 1)
+                    if (chargeId[i].equals(chargeListBean.get(1).getChargeId() + "")) {
+                        cbChargeTwo.setChecked(true);
+                    }
+                if (chargeListBean.size() > 2)
+                    if (chargeId[i].equals(chargeListBean.get(2).getChargeId() + "")) {
+                        cbChargeThree.setChecked(true);
+                    }
             }
         }
 
@@ -229,8 +235,18 @@ public class EditStoreInforActivity extends BaseActivity<EditStoreInforContract.
     @Override
     public void resultEditStoreInfor(CaptchaBean data) {
         ToastUtil.showShortToast(data.getMsg());
-        setResult(RESULT_OK, new Intent().putExtra("refresh", 1));
+//        setResult(RESULT_OK, new Intent().putExtra("refresh", 1));
+        startActivity(new Intent(this, StoreInforActivity.class));
         finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(this, StoreInforActivity.class));
+        finish();
+        if (getCurrentFocus() != null) {
+            ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
     }
 
     @Override
@@ -246,19 +262,16 @@ public class EditStoreInforActivity extends BaseActivity<EditStoreInforContract.
         switch (view.getId()) {
             case R.id.ll_store_name:
                 if (isClickUtil.isFastClick()) {
-
                     startActivityForResult(new Intent(this, InputActivity.class).putExtra("type", 0).putExtra("input", selectStoreBean.getStoreName()), REQUEST_CODE_93);
                 }
                 break;
             case R.id.ll_store_path:
                 if (isClickUtil.isFastClick()) {
-
                     startActivityForResult(new Intent(this, InputActivity.class).putExtra("type", 1).putExtra("input", selectStoreBean.getDescAddress()), REQUEST_CODE_94);
                 }
                 break;
             case R.id.ll_store_phone:
                 if (isClickUtil.isFastClick()) {
-
                     startActivityForResult(new Intent(this, InputActivity.class).putExtra("type", 2).putExtra("input", selectStoreBean.getContactsPhone()), REQUEST_CODE_95);
                 }
                 break;
@@ -278,9 +291,9 @@ public class EditStoreInforActivity extends BaseActivity<EditStoreInforContract.
                         List<String> charge = new ArrayList<>();
                         if (cbChargeOne.isChecked())
                             charge.add(chargeListBean.get(0).getChargeId() + "");
-                        if (cbChargeOne.isChecked())
+                        if (cbChargeTwo.isChecked())
                             charge.add(chargeListBean.get(1).getChargeId() + "");
-                        if (cbChargeOne.isChecked())
+                        if (cbChargeThree.isChecked())
                             charge.add(chargeListBean.get(2).getChargeId() + "");
 
                         for (int i = 0; i < charge.size(); i++) {

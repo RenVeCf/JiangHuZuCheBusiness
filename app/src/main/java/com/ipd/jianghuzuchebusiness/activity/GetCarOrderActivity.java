@@ -26,6 +26,7 @@ import com.ipd.jianghuzuchebusiness.common.view.TopView;
 import com.ipd.jianghuzuchebusiness.contract.GetCarOrderContract;
 import com.ipd.jianghuzuchebusiness.presenter.GetCarOrderPresenter;
 import com.ipd.jianghuzuchebusiness.utils.ApplicationUtil;
+import com.ipd.jianghuzuchebusiness.utils.CacheUtil;
 import com.ipd.jianghuzuchebusiness.utils.SPUtil;
 import com.ipd.jianghuzuchebusiness.utils.ToastUtil;
 import com.ipd.jianghuzuchebusiness.utils.isClickUtil;
@@ -88,6 +89,8 @@ public class GetCarOrderActivity extends BaseActivity<GetCarOrderContract.View, 
         ApplicationUtil.getManager().addActivity(this);
         //防止状态栏和标题重叠
         ImmersionBar.setTitleBar(this, tvGetCarOrderTop);
+
+        CacheUtil.clearAllCache(this);
 
         orderType = getIntent().getIntExtra("order_type", 0);
         switch (orderType) {

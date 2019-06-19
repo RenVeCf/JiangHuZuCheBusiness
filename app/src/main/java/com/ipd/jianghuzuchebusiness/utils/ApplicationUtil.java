@@ -3,6 +3,11 @@ package com.ipd.jianghuzuchebusiness.utils;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
+//import com.guoxiaoxing.phoenix.core.listener.ImageLoader;
+//import com.guoxiaoxing.phoenix.picker.Phoenix;
 
 import java.lang.ref.WeakReference;
 import java.util.Iterator;
@@ -26,6 +31,17 @@ public class ApplicationUtil extends Application {
 
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
+
+//        Phoenix.config()
+//                .imageLoader(new ImageLoader() {
+//                    @Override
+//                    public void loadImage(Context mContext, ImageView imageView
+//                            , String imagePath, int type) {
+//                        Glide.with(mContext)
+//                                .load(imagePath)
+//                                .into(imageView);
+//                    }
+//                });
     }
 
     public static Context getContext() {

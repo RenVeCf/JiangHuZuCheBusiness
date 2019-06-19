@@ -1,0 +1,91 @@
+package com.ipd.jianghuzuchebusiness.adapter;
+
+/**
+ * Description ：
+ * Author ： MengYang
+ * Email ： 942685687@qq.com
+ * Time ： 2019/6/19.
+ */
+//public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHolder> {
+//    private ArrayList<String> photoPaths = new ArrayList<String>();
+//    private LayoutInflater inflater;
+//
+//    private Context mContext;
+//
+//    final static int TYPE_ADD = 1;
+//    final static int TYPE_PHOTO = 2;
+//
+//    final static int MAX = 9;
+//
+//    public PhotoAdapter(Context mContext, ArrayList<String> photoPaths) {
+//        this.photoPaths = photoPaths;
+//        this.mContext = mContext;
+//        inflater = LayoutInflater.from(mContext);
+//
+//    }
+//
+//
+//    @Override
+//    public PhotoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+//        View itemView = null;
+//        switch (viewType) {
+//            case TYPE_ADD:
+//                itemView = inflater.inflate(R.layout.adapter_picker_item_add, parent, false);
+//                break;
+//            case TYPE_PHOTO:
+//                itemView = inflater.inflate(R.layout.__picker_item_photo, parent, false);
+//                break;
+//        }
+//        return new PhotoViewHolder(itemView);
+//    }
+//
+//
+//    @Override
+//    public void onBindViewHolder(final PhotoViewHolder holder, final int position) {
+//
+//        if (getItemViewType(position) == TYPE_PHOTO) {
+//            Uri uri = Uri.fromFile(new File(photoPaths.get(position)));
+//
+//            boolean canLoadImage = AndroidLifecycleUtils.canLoadImage(holder.ivPhoto.getContext());
+//
+//            if (canLoadImage) {
+//                final RequestOptions options = new RequestOptions();
+//                options.centerCrop()
+//                        .placeholder(R.drawable.__picker_ic_photo_black_48dp)
+//                        .error(R.drawable.__picker_ic_broken_image_black_48dp);
+//                Glide.with(mContext)
+//                        .load(uri)
+//                        .apply(options)
+//                        .thumbnail(0.1f)
+//                        .into(holder.ivPhoto);
+//            }
+//        }
+//    }
+//
+//
+//    @Override
+//    public int getItemCount() {
+//        int count = photoPaths.size() + 1;
+//        if (count > MAX) {
+//            count = MAX;
+//        }
+//        return count;
+//    }
+//
+//    @Override
+//    public int getItemViewType(int position) {
+//        return (position == photoPaths.size() && position != MAX) ? TYPE_ADD : TYPE_PHOTO;
+//    }
+//
+//    public static class PhotoViewHolder extends RecyclerView.ViewHolder {
+//        private ImageView ivPhoto;
+//        private View vSelected;
+//
+//        public PhotoViewHolder(View itemView) {
+//            super(itemView);
+//            ivPhoto = (ImageView) itemView.findViewById(me.iwf.photopicker.R.id.iv_photo);
+//            vSelected = itemView.findViewById(me.iwf.photopicker.R.id.v_selected);
+//            if (vSelected != null) vSelected.setVisibility(View.GONE);
+//        }
+//    }
+//}

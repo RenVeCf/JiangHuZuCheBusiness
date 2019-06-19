@@ -146,13 +146,13 @@ public class OrderSumActivity extends BaseActivity<OrderSumContract.View, OrderS
 
     @Override
     public void initData() {
+//        TreeMap<String, String> repairOrderMap = new TreeMap<>();
+//        repairOrderMap.put("userId", SPUtil.get(this, USER_ID, "") + "");
+//        getPresenter().getRepairOrder(repairOrderMap, false, false);
+
         TreeMap<String, String> carRentalOrderMap = new TreeMap<>();
         carRentalOrderMap.put("userId", SPUtil.get(this, USER_ID, "") + "");
-        getPresenter().getCarRentalOrder(carRentalOrderMap, false, false);
-
-        TreeMap<String, String> repairOrderMap = new TreeMap<>();
-        repairOrderMap.put("userId", SPUtil.get(this, USER_ID, "") + "");
-        getPresenter().getRepairOrder(repairOrderMap, false, false);
+        getPresenter().getCarRentalOrder(carRentalOrderMap, true, false);
     }
 
     //时间选择器
@@ -238,24 +238,24 @@ public class OrderSumActivity extends BaseActivity<OrderSumContract.View, OrderS
                 carRentalOrderMap.put("userId", SPUtil.get(this, USER_ID, "") + "");
                 carRentalOrderMap.put("params[beginTime]", tvOrderSumStart.getText().toString().trim());
                 carRentalOrderMap.put("params[endTime]", tvOrderSumEnd.getText().toString().trim());
-                getPresenter().getCarRentalOrder(carRentalOrderMap, false, false);
+                getPresenter().getCarRentalOrder(carRentalOrderMap, true, false);
                 break;
             case 1:
                 TreeMap<String, String> repairOrderMap = new TreeMap<>();
                 repairOrderMap.put("userId", SPUtil.get(this, USER_ID, "") + "");
                 repairOrderMap.put("params[beginTime]", tvOrderSumStart.getText().toString().trim());
                 repairOrderMap.put("params[endTime]", tvOrderSumEnd.getText().toString().trim());
-                getPresenter().getRepairOrder(repairOrderMap, false, false);
+                getPresenter().getRepairOrder(repairOrderMap, true, false);
                 break;
             case 2:
                 TreeMap<String, String> carRentalOrderMap1 = new TreeMap<>();
                 carRentalOrderMap1.put("userId", SPUtil.get(this, USER_ID, "") + "");
-                getPresenter().getCarRentalOrder(carRentalOrderMap1, false, false);
+                getPresenter().getCarRentalOrder(carRentalOrderMap1, true, false);
                 break;
             case 3:
                 TreeMap<String, String> repairOrderMap1 = new TreeMap<>();
                 repairOrderMap1.put("userId", SPUtil.get(this, USER_ID, "") + "");
-                getPresenter().getRepairOrder(repairOrderMap1, false, false);
+                getPresenter().getRepairOrder(repairOrderMap1, true, false);
                 break;
         }
     }
