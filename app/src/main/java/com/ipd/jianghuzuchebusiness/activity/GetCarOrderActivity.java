@@ -273,6 +273,7 @@ public class GetCarOrderActivity extends BaseActivity<GetCarOrderContract.View, 
             getCarOrderBean.clear();
             getCarOrderBean.addAll(data.getData().getOrderList());
             getCarOrderAdapter.setNewData(getCarOrderBean);
+            getCarOrderAdapter.notifyDataSetChanged();
             if (data.getData().getOrderList().size() > 0) {
                 page += 1;
                 getCarOrderAdapter.setOnLoadMoreListener(this, rvGetCarOrder);
@@ -298,6 +299,7 @@ public class GetCarOrderActivity extends BaseActivity<GetCarOrderContract.View, 
             getCarOrderBean.clear();
             getCarOrderBean.addAll(data.getData().getOrderList());
             getCarOrderAdapter.setNewData(getCarOrderBean);
+            getCarOrderAdapter.notifyDataSetChanged();
             if (data.getData().getOrderList().size() > 0) {
                 page += 1;
                 getCarOrderAdapter.setOnLoadMoreListener(this, rvGetCarOrder);

@@ -179,8 +179,9 @@ public interface ApiService {
     Observable<RepairProjectHorizontalBean> getRepairProjectHorizontal(@FieldMap Map<String, String> map);
 
     //维修保养-充电下拉数据
+    @FormUrlEncoded
     @POST(CHARGE)
-    Observable<ChargeBean> getCharge();
+    Observable<ChargeBean> getCharge(@FieldMap Map<String, String> map);
 
     //门店资料
     @FormUrlEncoded

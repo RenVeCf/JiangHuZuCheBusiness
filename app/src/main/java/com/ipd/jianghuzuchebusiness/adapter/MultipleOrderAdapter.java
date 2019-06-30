@@ -45,7 +45,7 @@ public class MultipleOrderAdapter extends BaseMultiItemQuickAdapter<VehicleCondi
         switch (helper.getItemViewType()) {
             case 0:
                 Glide.with(ApplicationUtil.getContext()).load(R.mipmap.ic_test).apply(new RequestOptions().placeholder(R.mipmap.ic_test)).into((ImageView) helper.getView(R.id.iv_order_type));
-                helper.setText(R.id.tv_order_time, "今日订单")
+                helper.setText(R.id.tv_order_time, "全部订单")
                         .setText(R.id.tv_order_num, "1231421432433")
                         .setText(R.id.tv_order_type_brand, "雅迪")
                         .setText(R.id.tv_order_type_introduce, "新款锐致电动车 20AH")
@@ -60,7 +60,7 @@ public class MultipleOrderAdapter extends BaseMultiItemQuickAdapter<VehicleCondi
                 break;
             case 1:
                 Glide.with(ApplicationUtil.getContext()).load(R.mipmap.ic_test).apply(new RequestOptions().placeholder(R.mipmap.ic_test)).into((ImageView) helper.getView(R.id.iv_order_type));
-                helper.setText(R.id.tv_order_time, "今日订单")
+                helper.setText(R.id.tv_order_time, "全部订单")
                         .setText(R.id.tv_order_num, "1231421432433")
                         .setText(R.id.tv_order_type_brand, "雅迪")
                         .setText(R.id.tv_order_type_introduce, "新款锐致电动车 20AH")

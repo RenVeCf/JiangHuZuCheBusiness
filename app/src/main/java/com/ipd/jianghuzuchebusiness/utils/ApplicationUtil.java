@@ -6,6 +6,7 @@ import android.content.Context;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.xuexiang.xui.XUI;
 //import com.guoxiaoxing.phoenix.core.listener.ImageLoader;
 //import com.guoxiaoxing.phoenix.picker.Phoenix;
 
@@ -27,21 +28,13 @@ public class ApplicationUtil extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        XUI.init(this); //初始化UI框架
+        XUI.debug(true);  //开启UI框架调试日志
+
         mContext = getApplicationContext();
 
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
-
-//        Phoenix.config()
-//                .imageLoader(new ImageLoader() {
-//                    @Override
-//                    public void loadImage(Context mContext, ImageView imageView
-//                            , String imagePath, int type) {
-//                        Glide.with(mContext)
-//                                .load(imagePath)
-//                                .into(imageView);
-//                    }
-//                });
     }
 
     public static Context getContext() {

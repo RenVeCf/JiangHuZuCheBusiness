@@ -20,8 +20,9 @@ import com.ipd.jianghuzuchebusiness.utils.ApplicationUtil;
 import com.ipd.jianghuzuchebusiness.utils.BDLocationUtils;
 import com.ipd.jianghuzuchebusiness.utils.SPUtil;
 import com.ipd.jianghuzuchebusiness.utils.ToastUtil;
-import com.ryane.banner.AdPageInfo;
-import com.ryane.banner.AdPlayBanner;
+import com.xuexiang.xui.widget.banner.widget.banner.BannerItem;
+import com.xuexiang.xui.widget.banner.widget.banner.SimpleImageBanner;
+import com.xuexiang.xui.widget.banner.widget.banner.base.BaseBanner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,6 @@ import static com.ipd.jianghuzuchebusiness.common.config.IConstants.FIRST_APP;
 import static com.ipd.jianghuzuchebusiness.common.config.IConstants.JPUSH_SEQUENCE;
 import static com.ipd.jianghuzuchebusiness.common.config.IConstants.STORE_ID;
 import static com.ipd.jianghuzuchebusiness.common.config.UrlConfig.BASE_LOCAL_URL;
-import static com.ryane.banner.AdPlayBanner.ImageLoaderType.GLIDE;
 
 /**
  * Description ：首页
@@ -48,8 +48,8 @@ public class MainActivity extends BaseActivity<StoreImgContract.View, StoreImgCo
 
     @BindView(R.id.tv_main_top)
     TopView tvMainTop;
-    @BindView(R.id.ab_main)
-    AdPlayBanner abMain;
+    @BindView(R.id.sib_main)
+    SimpleImageBanner sibMain;
     @BindView(R.id.ll_store_infor)
     LinearLayout llStoreInfor;
     @BindView(R.id.ll_get_car_order)
@@ -65,7 +65,7 @@ public class MainActivity extends BaseActivity<StoreImgContract.View, StoreImgCo
     @BindView(R.id.bt_out)
     Button btOut;
 
-    private List<AdPageInfo> images;
+    private List<BannerItem> images;
     private long firstTime = 0;
     private static final int PERMISSIONS_REQUEST_CODE = 1003;
     //定位相关
@@ -210,19 +210,20 @@ public class MainActivity extends BaseActivity<StoreImgContract.View, StoreImgCo
 
     @Override
     public void resultStoreImg(StoreImgBean data) {
-        String[] picPath = null;
-        try {
-            picPath = data.getData().getPicPath().getPicPath().split(",");
-            for (int i = 0; i < picPath.length; i++) {
-                AdPageInfo info1 = new AdPageInfo("", BASE_LOCAL_URL + picPath[i], "", i + 1);
-                images.add(info1);
-            }
-            abMain.setInfoList(images)
-                    .setImageLoadType(GLIDE)
-                    .setUp();
-        } catch (NullPointerException e) {
-
+        String[] picPath = data.getData().getPicPath().getPicPath().split(",");
+        for (int i = 0; i < picPath.length; i++) {
+            BannerItem info1 = new BannerItem();
+            info1.setImgUrl(BASE_LOCAL_URL + picPath[i]);
+            images.add(info1);
         }
+        sibMain.setSource(images)
+                .setOnItemClickL(new BaseBanner.OnItemClickL() {
+                    @Override
+                    public void onItemClick(int position) {
+//                        ToastUtil.showShortToast("position--->" + position);
+                    }
+                })
+                .setIsOnePageLoop(false).startScroll();
     }
 
     @Override

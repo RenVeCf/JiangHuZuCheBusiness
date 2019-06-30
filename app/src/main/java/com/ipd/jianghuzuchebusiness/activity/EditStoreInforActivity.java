@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -14,24 +13,26 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
 import com.ipd.jianghuzuchebusiness.R;
-import com.ipd.jianghuzuchebusiness.adapter.VehiclePhotoAdapter;
+import com.ipd.jianghuzuchebusiness.adapter.ImageSelectGridAdapter;
 import com.ipd.jianghuzuchebusiness.base.BaseActivity;
 import com.ipd.jianghuzuchebusiness.bean.CaptchaBean;
 import com.ipd.jianghuzuchebusiness.bean.ChargeBean;
 import com.ipd.jianghuzuchebusiness.bean.StoreInforBean;
 import com.ipd.jianghuzuchebusiness.bean.UploadImgBean;
-import com.ipd.jianghuzuchebusiness.bean.VehiclePhotoBean;
 import com.ipd.jianghuzuchebusiness.common.view.TopView;
 import com.ipd.jianghuzuchebusiness.contract.EditStoreInforContract;
 import com.ipd.jianghuzuchebusiness.presenter.EditStoreInforPresenter;
 import com.ipd.jianghuzuchebusiness.utils.ApplicationUtil;
+import com.ipd.jianghuzuchebusiness.utils.LogUtils;
 import com.ipd.jianghuzuchebusiness.utils.SPUtil;
 import com.ipd.jianghuzuchebusiness.utils.ToastUtil;
 import com.ipd.jianghuzuchebusiness.utils.isClickUtil;
-import com.wildma.pictureselector.PictureSelector;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.config.PictureMimeType;
+import com.luck.picture.lib.entity.LocalMedia;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +49,7 @@ import static com.ipd.jianghuzuchebusiness.common.config.IConstants.REQUEST_CODE
 import static com.ipd.jianghuzuchebusiness.common.config.IConstants.REQUEST_CODE_95;
 import static com.ipd.jianghuzuchebusiness.common.config.IConstants.STORE_ID;
 import static com.ipd.jianghuzuchebusiness.common.config.IConstants.USER_ID;
+import static com.ipd.jianghuzuchebusiness.common.config.UrlConfig.BASE_LOCAL_URL;
 
 /**
  * Description ：编辑门店资料
@@ -55,7 +57,7 @@ import static com.ipd.jianghuzuchebusiness.common.config.IConstants.USER_ID;
  * Email ： 942685687@qq.com
  * Time ： 2019/5/13.
  */
-public class EditStoreInforActivity extends BaseActivity<EditStoreInforContract.View, EditStoreInforContract.Presenter> implements EditStoreInforContract.View {
+public class EditStoreInforActivity extends BaseActivity<EditStoreInforContract.View, EditStoreInforContract.Presenter> implements EditStoreInforContract.View, ImageSelectGridAdapter.OnAddPicClickListener {
 
     @BindView(R.id.tv_edit_store_infor_top)
     TopView tvEditStoreInforTop;
@@ -86,12 +88,9 @@ public class EditStoreInforActivity extends BaseActivity<EditStoreInforContract.
 
     private StoreInforBean.DataBean.SelectStoreBean selectStoreBean = new StoreInforBean.DataBean.SelectStoreBean();
     private List<ChargeBean.DataBean.ChargeListBean> chargeListBean;
-    private String imgPath;
-    private VehiclePhotoAdapter vehiclePhotoAdapter;
-    private List<VehiclePhotoBean> list = new ArrayList<>();
     private StringBuffer imgPaths = new StringBuffer();
     private StringBuffer chargePaths = new StringBuffer();
-    private VehiclePhotoBean clickDataBean = new VehiclePhotoBean();
+    private ImageSelectGridAdapter mAdapter;
 
     @Override
     public int getLayoutId() {
@@ -154,36 +153,25 @@ public class EditStoreInforActivity extends BaseActivity<EditStoreInforContract.
         rvEditStoreInfor.setHasFixedSize(true); //item如果一样的大小，可以设置为true让RecyclerView避免重新计算大小
         rvEditStoreInfor.setItemAnimator(new DefaultItemAnimator()); //默认动画
 
+        mAdapter = new ImageSelectGridAdapter(this, this);
         //初始化数据
         String[] strs = selectStoreBean.getPicPath().split(",");
         for (int i = 0; i < strs.length; i++) {
-            clickDataBean.setName(strs[i].toString());
-            list.add(clickDataBean);
+            LocalMedia localMedia = new LocalMedia();
+            localMedia.setCompressed(true);
+            localMedia.setCompressPath(BASE_LOCAL_URL + strs[i].toString());
+            mAdapter.setSelectList(localMedia);
         }
-        list.add(getImageData());
-        vehiclePhotoAdapter = new VehiclePhotoAdapter(list);
-        rvEditStoreInfor.setAdapter(vehiclePhotoAdapter);
+        mAdapter.setSelectMax(9);
+        rvEditStoreInfor.setAdapter(mAdapter);
     }
 
     @Override
     public void initListener() {
-        vehiclePhotoAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+        mAdapter.setOnItemClickListener(new ImageSelectGridAdapter.OnItemClickListener() {
             @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                clickDataBean = list.get(position);
-                switch (view.getId()) {
-                    case R.id.iv_household_registration:
-                        if (TextUtils.isEmpty(clickDataBean.getName())) {
-                            selectPhoto();
-                        } else {
-                            BigImageActivity.launch(EditStoreInforActivity.this, clickDataBean.getName());
-                        }
-                        break;
-                    case R.id.iv_household_registration_del:
-                        list.remove(position);
-                        vehiclePhotoAdapter.notifyItemRemoved(position);
-                        break;
-                }
+            public void onItemClick(int position, View v) {
+                PictureSelector.create(EditStoreInforActivity.this).themeStyle(R.style.picture_default_style).openExternalPreview(position, mAdapter.mList);
             }
         });
     }
@@ -207,35 +195,20 @@ public class EditStoreInforActivity extends BaseActivity<EditStoreInforContract.
                 case REQUEST_CODE_95:
                     tvStorePhone.setText(data.getStringExtra("inputResult"));
                     break;
-                case PictureSelector.SELECT_REQUEST_CODE:
-                    String picturePath = data.getStringExtra(PictureSelector.PICTURE_PATH);
-                    TreeMap<String, RequestBody> map = new TreeMap<>();
-                    map.put("file\";filename=\"" + ".jpeg", getImageRequestBody(picturePath));
-                    getPresenter().getUploadImg("3", map, true, false);
+                case PictureConfig.CHOOSE_REQUEST:
+                    for (int i = 0; i < PictureSelector.obtainMultipleResult(data).size(); i++) {
+                        TreeMap<String, RequestBody> map = new TreeMap<>();
+                        map.put("file\";filename=\"" + ".jpeg", getImageRequestBody(PictureSelector.obtainMultipleResult(data).get(i).getCompressPath()));
+                        getPresenter().getUploadImg("3", map, true, false);
+                    }
                     break;
             }
         }
     }
 
-    private VehiclePhotoBean getImageData() {
-        //初始化数据
-        VehiclePhotoBean dataBean = new VehiclePhotoBean();
-        return dataBean;
-    }
-
-    private void selectPhoto() {
-        /**
-         * create()方法参数一是上下文，在activity中传activity.this，在fragment中传fragment.this。参数二为请求码，用于结果回调onActivityResult中判断
-         * selectPicture()方法参数分别为 是否裁剪、裁剪后图片的宽(单位px)、裁剪后图片的高、宽比例、高比例。都不传则默认为裁剪，宽200，高200，宽高比例为1：1。
-         */
-        PictureSelector.create(this, PictureSelector.SELECT_REQUEST_CODE)
-                .selectPicture(false, 200, 200, 1, 1);
-    }
-
     @Override
     public void resultEditStoreInfor(CaptchaBean data) {
         ToastUtil.showShortToast(data.getMsg());
-//        setResult(RESULT_OK, new Intent().putExtra("refresh", 1));
         startActivity(new Intent(this, StoreInforActivity.class));
         finish();
     }
@@ -251,10 +224,11 @@ public class EditStoreInforActivity extends BaseActivity<EditStoreInforContract.
 
     @Override
     public void resultUploadImg(UploadImgBean data) {
-        imgPath = data.getData();
-        clickDataBean.setName(imgPath);
-        list.add(getImageData());
-        vehiclePhotoAdapter.notifyDataSetChanged();
+        LocalMedia localMedia = new LocalMedia();
+        localMedia.setCompressed(true);
+        localMedia.setCompressPath(BASE_LOCAL_URL + data.getData());
+        mAdapter.setSelectList(localMedia);
+        mAdapter.notifyDataSetChanged();
     }
 
     @OnClick({R.id.ll_store_name, R.id.ll_store_path, R.id.ll_store_phone, R.id.bt_edit_store_infor})
@@ -277,15 +251,14 @@ public class EditStoreInforActivity extends BaseActivity<EditStoreInforContract.
                 break;
             case R.id.bt_edit_store_infor:
                 if (isClickUtil.isFastClick()) {
-                    if (list.size() < 4 || list.size() > 10) {
+                    if (mAdapter.mList.size() < 3 || mAdapter.mList.size() > 9) {
                         ToastUtil.showShortToast("最小上传图片为3张，最大为9张！");
                     } else {
-                        list.remove(list.size() - 1);
-                        for (int i = 0; i < list.size(); i++) {
-                            if (i < list.size() - 1)
-                                imgPaths.append(list.get(i).getName() + ",");
+                        for (int i = 0; i < mAdapter.mList.size(); i++) {
+                            if (i < mAdapter.mList.size() - 1)
+                                imgPaths.append((mAdapter.mList.get(i).getCompressPath() + ",").replaceAll(BASE_LOCAL_URL, ""));
                             else
-                                imgPaths.append(list.get(i).getName());
+                                imgPaths.append((mAdapter.mList.get(i).getCompressPath()).replaceAll(BASE_LOCAL_URL, ""));
                         }
 
                         List<String> charge = new ArrayList<>();
@@ -320,5 +293,16 @@ public class EditStoreInforActivity extends BaseActivity<EditStoreInforContract.
     @Override
     public <T> ObservableTransformer<T, T> bindLifecycle() {
         return this.bindToLifecycle();
+    }
+
+    @Override
+    public void onAddPicClick() {
+        PictureSelector.create(EditStoreInforActivity.this)
+                .openGallery(PictureMimeType.ofImage())
+                .maxSelectNum(9)// 最大图片选择数量 int
+                .isCamera(true)
+                .compress(true)
+                .minimumCompressSize(100)
+                .forResult(PictureConfig.CHOOSE_REQUEST);
     }
 }

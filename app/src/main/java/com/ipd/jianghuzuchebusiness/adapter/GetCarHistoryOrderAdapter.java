@@ -41,7 +41,7 @@ public class GetCarHistoryOrderAdapter extends BaseMultiItemQuickAdapter<GetCarO
                 LogUtils.i("rmy", item.getOrderNo());
                 Glide.with(ApplicationUtil.getContext()).load(BASE_LOCAL_URL + item.getVehicleLogo()).apply(new RequestOptions().placeholder(R.mipmap.ic_test)).into((ImageView) helper.getView(R.id.iv_order_type));
 
-                helper.setText(R.id.tv_order_time, "今日订单") //FIXME
+                helper.setText(R.id.tv_order_time, "全部订单") //FIXME
                         .setText(R.id.tv_order_num, item.getOrderNo())
                         .setText(R.id.tv_order_type_brand, item.getVehicleName())
                         .setText(R.id.tv_order_type_introduce, item.getVehicleModel())
@@ -68,7 +68,7 @@ public class GetCarHistoryOrderAdapter extends BaseMultiItemQuickAdapter<GetCarO
             case 1:
                 Glide.with(ApplicationUtil.getContext()).load(BASE_LOCAL_URL + item.getVehicleLogo()).apply(new RequestOptions().placeholder(R.mipmap.ic_test)).into((ImageView) helper.getView(R.id.iv_order_type));
 
-                helper.setText(R.id.tv_order_time, "今日订单") //FIXME
+                helper.setText(R.id.tv_order_time, "全部订单") //FIXME
                         .setText(R.id.tv_order_num, item.getOrderNo())
                         .setText(R.id.tv_order_type_brand, item.getVehicleName())
                         .setText(R.id.tv_order_type_introduce, item.getVehicleModel())

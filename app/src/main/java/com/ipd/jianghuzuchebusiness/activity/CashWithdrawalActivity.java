@@ -131,13 +131,11 @@ public class CashWithdrawalActivity extends BaseActivity<CashWithdrawalFeeContra
         switch (view.getId()) {
             case R.id.ll_select_bank_card:
                 if (isClickUtil.isFastClick()) {
-
                     startActivityForResult(new Intent(this, SelectBankActivity.class), REQUEST_CODE_105);
                 }
                 break;
             case R.id.ll_last_bank_card:
                 if (isClickUtil.isFastClick()) {
-
                     startActivityForResult(new Intent(this, SelectBankActivity.class), REQUEST_CODE_105);
                 }
                 break;
@@ -147,7 +145,7 @@ public class CashWithdrawalActivity extends BaseActivity<CashWithdrawalFeeContra
                         if (Integer.parseInt(etHowMoney.getText().toString().trim()) > putConfBean.getMaxMoney() || Integer.parseInt(etHowMoney.getText().toString().trim()) < putConfBean.getMinMoney())
                             ToastUtil.showLongToast("单笔最高金额为: " + putConfBean.getMaxMoney() + ", 单笔最低金额为: " + putConfBean.getMinMoney());
                         else {
-                            if (bankId == 0) {
+                            if (bankId != 0) {
                                 TreeMap<String, String> cashWithdrawalMap = new TreeMap<>();
                                 cashWithdrawalMap.put("userId", SPUtil.get(this, USER_ID, "") + "");
                                 cashWithdrawalMap.put("bankId", bankId + "");

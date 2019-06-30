@@ -28,10 +28,10 @@ import com.ipd.jianghuzuchebusiness.fragment.MultipleOrderFragment;
 import com.ipd.jianghuzuchebusiness.presenter.StoreDetailsPresenter;
 import com.ipd.jianghuzuchebusiness.utils.ApplicationUtil;
 import com.ipd.jianghuzuchebusiness.utils.SPUtil;
-import com.ipd.jianghuzuchebusiness.utils.ToastUtil;
 import com.ipd.jianghuzuchebusiness.utils.isClickUtil;
-import com.ryane.banner.AdPageInfo;
-import com.ryane.banner.AdPlayBanner;
+import com.xuexiang.xui.widget.banner.widget.banner.BannerItem;
+import com.xuexiang.xui.widget.banner.widget.banner.SimpleImageBanner;
+import com.xuexiang.xui.widget.banner.widget.banner.base.BaseBanner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,10 +41,9 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.ObservableTransformer;
 
-import static com.ipd.jianghuzuchebusiness.common.config.IConstants.CITY;
+import static com.ipd.jianghuzuchebusiness.common.config.IConstants.STORE_ID;
 import static com.ipd.jianghuzuchebusiness.common.config.IConstants.USER_ID;
 import static com.ipd.jianghuzuchebusiness.common.config.UrlConfig.BASE_LOCAL_URL;
-import static com.ryane.banner.AdPlayBanner.ImageLoaderType.GLIDE;
 
 /**
  * Description ：门店资料
@@ -56,8 +55,8 @@ public class StoreInforActivity extends BaseActivity<StoreDetailsContract.View, 
 
     @BindView(R.id.tv_store_infor_top)
     TopView tvStoreInforTop;
-    @BindView(R.id.ab_store_details)
-    AdPlayBanner abStoreDetails;
+    @BindView(R.id.sib_store_details)
+    SimpleImageBanner sibStoreDetails;
     @BindView(R.id.tv_store_name)
     TextView tvStoreName;
     @BindView(R.id.tv_store_phone)
@@ -101,7 +100,7 @@ public class StoreInforActivity extends BaseActivity<StoreDetailsContract.View, 
 
     private ViewPagerAdapter viewPagerAdapter;
     private List<Fragment> fragments;
-    private List<AdPageInfo> images;
+    private List<BannerItem> images;
     private List<ChargeBean.DataBean.ChargeListBean> chargeListBean;
     private StoreInforBean.DataBean.SelectStoreBean selectStoreBean;
     private int storeInfor_positions = 0;
@@ -161,21 +160,21 @@ public class StoreInforActivity extends BaseActivity<StoreDetailsContract.View, 
 
             }
         });
-        vpStoreInfor.resetHeight(0, 0);
+        vpStoreInfor.resetHeight(0, 1);
     }
 
     @Override
     public void initData() {
-        if (!SPUtil.get(this, CITY, "").equals("")) {
-            TreeMap<String, String> storeInforMap = new TreeMap<>();
-            storeInforMap.put("userId", SPUtil.get(this, USER_ID, "") + "");
-            getPresenter().getStoreInfor(storeInforMap, false, false);
+//        if (!SPUtil.get(this, CITY, "").equals("")) {
+        TreeMap<String, String> storeInforMap = new TreeMap<>();
+        storeInforMap.put("userId", SPUtil.get(this, USER_ID, "") + "");
+        getPresenter().getStoreInfor(storeInforMap, false, false);
 
-            TreeMap<String, String> repairProjectHorizontalMap = new TreeMap<>();
-            repairProjectHorizontalMap.put("city", SPUtil.get(this, CITY, "") + "");
-            getPresenter().getRepairProjectHorizontal(repairProjectHorizontalMap, false, false);
-        } else
-            ToastUtil.showShortToast("请重新获取定位...");
+        TreeMap<String, String> repairProjectHorizontalMap = new TreeMap<>();
+        repairProjectHorizontalMap.put("storeId", SPUtil.get(this, STORE_ID, "") + "");
+        getPresenter().getRepairProjectHorizontal(repairProjectHorizontalMap, true, false);
+//        } else
+//            ToastUtil.showShortToast("请重新获取定位...");
     }
 
     @OnClick(R.id.bt_store_infor)
@@ -184,8 +183,7 @@ public class StoreInforActivity extends BaseActivity<StoreDetailsContract.View, 
             if (repairProjectHorizontalBean.size() > 0) {
                 startActivity(new Intent(this, EditStoreInforActivity.class).putExtra("select_store_bean", selectStoreBean).putParcelableArrayListExtra("charge_list", (ArrayList<? extends Parcelable>) chargeListBean));
                 finish();
-            } else
-                ToastUtil.showShortToast("请重新获取定位...");
+            }
         }
     }
 
@@ -196,21 +194,24 @@ public class StoreInforActivity extends BaseActivity<StoreDetailsContract.View, 
         tvStorePhone.setText("联系电话：" + selectStoreBean.getContactsPhone());
         tvStorePath.setText("地址：" + selectStoreBean.getDescAddress());
 
-        getPresenter().getCharge(false, false);
+        TreeMap<String, String> chargeMap = new TreeMap<>();
+        chargeMap.put("storeId", SPUtil.get(this, STORE_ID, "") + "");
+        getPresenter().getCharge(chargeMap, false, false);
 
-        String[] picPath = null;
-        try {
-            picPath = selectStoreBean.getPicPath().split(",");
-            for (int i = 0; i < picPath.length; i++) {
-                AdPageInfo info1 = new AdPageInfo("", BASE_LOCAL_URL + picPath[i], "", i + 1);
-                images.add(info1);
-            }
-            abStoreDetails.setInfoList(images)
-                    .setImageLoadType(GLIDE)
-                    .setUp();
-        } catch (NullPointerException e) {
-
+        String[] picPath = selectStoreBean.getPicPath().split(",");
+        for (int i = 0; i < picPath.length; i++) {
+            BannerItem info1 = new BannerItem();
+            info1.setImgUrl(BASE_LOCAL_URL + picPath[i]);
+            images.add(info1);
         }
+        sibStoreDetails.setSource(images)
+                .setOnItemClickL(new BaseBanner.OnItemClickL() {
+                    @Override
+                    public void onItemClick(int position) {
+//                        ToastUtil.showShortToast("position--->" + position);
+                    }
+                })
+                .setIsOnePageLoop(false).startScroll();
     }
 
     @Override

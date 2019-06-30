@@ -72,8 +72,8 @@ public class StoreDetailsPresenter extends StoreDetailsContract.Presenter {
     }
 
     @Override
-    public void getCharge(boolean isDialog, boolean cancelable) {
-        model.getCharge(context, isDialog, cancelable, new ObserverResponseListener() {
+    public void getCharge(TreeMap<String, String> map, boolean isDialog, boolean cancelable) {
+        model.getCharge(context, map, isDialog, cancelable, getView().bindLifecycle(), new ObserverResponseListener() {
             @Override
             public void onNext(Object o) {
                 //这一步是必须的，判断view是否已经被销毁

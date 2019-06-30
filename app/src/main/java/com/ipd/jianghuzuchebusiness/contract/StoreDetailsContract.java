@@ -34,6 +34,6 @@ public interface StoreDetailsContract {
 
         public abstract void getRepairProjectHorizontal(TreeMap<String, String> map, boolean isDialog, boolean cancelable);
 
-        public abstract void getCharge(boolean isDialog, boolean cancelable);
+        public abstract void getCharge(TreeMap<String, String> map, boolean isDialog, boolean cancelable);
     }
 }

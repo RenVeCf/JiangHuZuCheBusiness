@@ -162,5 +162,6 @@
     <color name="bg_fine_line">#CCCCCC</color><!--细线色 -->
     <color name="tx_select_fragment">#0076FF</color><!-- Fragment选中字体 -->
     <color name="order_type">#FFBA6B</color><!-- Fragment选中字体 -->
+    <color name="color_f4">#f4f4f4</color>
 
 </resources>
