@@ -95,7 +95,8 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_vehicle_photo"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y30" />
     </LinearLayout>
 
     <View

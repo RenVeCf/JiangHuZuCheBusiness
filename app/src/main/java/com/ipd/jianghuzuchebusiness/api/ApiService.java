@@ -30,7 +30,9 @@ import com.ipd.jianghuzuchebusiness.bean.UploadImgBean;
 import com.ipd.jianghuzuchebusiness.bean.VehicleConditionHorizontalBean;
 import com.ipd.jianghuzuchebusiness.bean.VehicleConditionVerticalBean;
 
+import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
@@ -129,9 +131,9 @@ public interface ApiService {
     Observable<VehicleConditionVerticalBean> getVehicleConditionVertical(@FieldMap Map<String, String> map);
 
     //填写去取车单-提交推送
-    @FormUrlEncoded
+    @Multipart
     @POST(GET_CAR_COMMIT)
-    Observable<GetCarCommitBean> getGetCarCommit(@FieldMap Map<String, String> map);
+    Observable<GetCarCommitBean> getGetCarCommit(@PartMap Map<String, Object> map);
 
     //订单查看-详情-查看车辆-取车单
     @FormUrlEncoded

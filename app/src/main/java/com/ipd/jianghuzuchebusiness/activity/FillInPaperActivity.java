@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
 import com.ipd.jianghuzuchebusiness.R;
 import com.ipd.jianghuzuchebusiness.adapter.ImageSelectGridAdapter;
@@ -21,6 +22,7 @@ import com.ipd.jianghuzuchebusiness.common.view.TopView;
 import com.ipd.jianghuzuchebusiness.contract.FillInPaperContract;
 import com.ipd.jianghuzuchebusiness.presenter.FillInPaperPresenter;
 import com.ipd.jianghuzuchebusiness.utils.ApplicationUtil;
+import com.ipd.jianghuzuchebusiness.utils.LogUtils;
 import com.ipd.jianghuzuchebusiness.utils.SPUtil;
 import com.ipd.jianghuzuchebusiness.utils.ToastUtil;
 import com.ipd.jianghuzuchebusiness.utils.isClickUtil;
@@ -30,19 +32,29 @@ import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 
 import java.io.File;
-import java.util.TreeMap;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.reactivex.ObservableTransformer;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.Response;
 
 import static com.ipd.jianghuzuchebusiness.common.config.IConstants.REQUEST_CODE_90;
 import static com.ipd.jianghuzuchebusiness.common.config.IConstants.REQUEST_CODE_91;
 import static com.ipd.jianghuzuchebusiness.common.config.IConstants.STORE_ID;
 import static com.ipd.jianghuzuchebusiness.common.config.IConstants.USER_ID;
 import static com.ipd.jianghuzuchebusiness.common.config.UrlConfig.BASE_LOCAL_URL;
+import static com.ipd.jianghuzuchebusiness.common.config.UrlConfig.BASE_URL;
 
 /**
  * Description ：填写取/退车单
@@ -71,9 +83,11 @@ public class FillInPaperActivity extends BaseActivity<FillInPaperContract.View, 
     private String orderId;
     private String licensePlateNum = ""; //车牌号
     private String statusIds = ""; //车辆状况
+    private SweetAlertDialog sad;
 
     private StringBuffer imgPaths = new StringBuffer();
     private ImageSelectGridAdapter mAdapter;
+    private List<RequestBody> requestBodyList = new ArrayList<>();
 
     @Override
     public int getLayoutId() {
@@ -137,6 +151,25 @@ public class FillInPaperActivity extends BaseActivity<FillInPaperContract.View, 
 
     }
 
+    private void show() {
+        if (sad == null) {
+            sad = new SweetAlertDialog(this);
+            sad.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
+            sad.setTitleText(getResources().getString(R.string.loading));
+
+            if (!sad.isShowing()) {
+                sad.show();
+            }
+        }
+    }
+
+    private void dismissProgressDialog() {
+        if (sad != null) {
+            sad.dismiss();
+            sad = null;
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -151,9 +184,14 @@ public class FillInPaperActivity extends BaseActivity<FillInPaperContract.View, 
                     break;
                 case PictureConfig.CHOOSE_REQUEST:
                     for (int i = 0; i < PictureSelector.obtainMultipleResult(data).size(); i++) {
-                        TreeMap<String, RequestBody> map = new TreeMap<>();
-                        map.put("file\";filename=\"" + ".jpeg", getImageRequestBody(PictureSelector.obtainMultipleResult(data).get(i).getCompressPath()));
-                        getPresenter().getUploadImg("3", map, true, false);
+                        LocalMedia localMedia = new LocalMedia();
+                        localMedia.setCompressed(true);
+                        localMedia.setCompressPath(PictureSelector.obtainMultipleResult(data).get(i).getCompressPath());
+                        mAdapter.setSelectList(localMedia);
+                        mAdapter.notifyDataSetChanged();
+                        //                        TreeMap<String, RequestBody> map = new TreeMap<>();
+                        //                        map.put("file\";filename=\"" + ".jpeg", getImageRequestBody(PictureSelector.obtainMultipleResult(data).get(i).getCompressPath()));
+                        //                        getPresenter().getUploadImg("3", map, true, false);
                     }
                     break;
             }
@@ -189,6 +227,7 @@ public class FillInPaperActivity extends BaseActivity<FillInPaperContract.View, 
                         switch (paperType) {
                             case 0:
                                 if (!licensePlateNum.equals("") && !statusIds.equals("")) {
+                                    show();
                                     for (int i = 0; i < mAdapter.mList.size(); i++) {
                                         if (i < mAdapter.mList.size() - 1)
                                             imgPaths.append((mAdapter.mList.get(i).getCompressPath() + ",").replaceAll(BASE_LOCAL_URL, ""));
@@ -196,19 +235,51 @@ public class FillInPaperActivity extends BaseActivity<FillInPaperContract.View, 
                                             imgPaths.append((mAdapter.mList.get(i).getCompressPath()).replaceAll(BASE_LOCAL_URL, ""));
                                     }
 
-                                    TreeMap<String, String> loginMap = new TreeMap<>();
-                                    loginMap.put("userId", SPUtil.get(this, USER_ID, "") + "");
-                                    loginMap.put("orderId", orderId + "");
-                                    loginMap.put("plateNumber", licensePlateNum);
-                                    loginMap.put("statusIds", statusIds);
-                                    loginMap.put("picPath", imgPaths + "");
-                                    loginMap.put("storeId", SPUtil.get(this, STORE_ID, "") + "");
-                                    getPresenter().getGetCarCommit(loginMap, true, false);
+                                    MultipartBody.Builder bbb = new MultipartBody.Builder().setType(MultipartBody.FORM);
+                                    for (int i = 0; i < mAdapter.mList.size(); i++) {
+                                        File f = new File(mAdapter.mList.get(i).getCompressPath());
+                                        if (f != null) {
+                                            LogUtils.i("rmy", "f.getName() = " + f.getName());
+                                            bbb.addFormDataPart("file", f.getName(), getImageRequestBody(mAdapter.mList.get(i).getCompressPath()));
+                                        }
+                                    }
+                                    bbb.addFormDataPart("userId", SPUtil.get(this, USER_ID, "") + "");
+                                    bbb.addFormDataPart("orderId", orderId);
+                                    bbb.addFormDataPart("plateNumber", licensePlateNum);
+                                    bbb.addFormDataPart("statusIds", statusIds);
+                                    bbb.addFormDataPart("storeId", SPUtil.get(this, STORE_ID, "") + "");
+
+                                    MultipartBody rrr = bbb.build();
+                                    Request r = new Request.Builder()
+                                            .url(BASE_URL + "appStore/pickOrder/addPickOrder")
+                                            .post(rrr)
+                                            .build();
+                                    OkHttpClient client = new OkHttpClient();
+                                    client.newCall(r).enqueue(new Callback() {
+                                        @Override
+                                        public void onFailure(Call call, IOException e) {
+                                            ToastUtil.showShortToast(e + "");
+                                            dismissProgressDialog();
+                                        }
+
+                                        @Override
+                                        public void onResponse(Call call, Response response) throws IOException {
+                                            GetCarCommitBean jsonTopicsBean = new Gson().fromJson(response.body().string(), GetCarCommitBean.class);
+                                            ToastUtil.showLongToast(jsonTopicsBean.getMsg());
+                                            if (jsonTopicsBean.getCode() == 200) {
+                                                dismissProgressDialog();
+                                                setResult(RESULT_OK, new Intent()
+                                                        .putExtra("get_car_result", "1"));
+                                                finish();
+                                            }
+                                        }
+                                    });
                                 } else
                                     ToastUtil.showShortToast("请将资料填写完整");
                                 break;
                             case 1:
                                 if (!statusIds.equals("")) {
+                                    show();
                                     for (int i = 0; i < mAdapter.mList.size(); i++) {
                                         if (i < mAdapter.mList.size() - 1)
                                             imgPaths.append((mAdapter.mList.get(i).getCompressPath() + ",").replaceAll(BASE_LOCAL_URL, ""));
@@ -216,13 +287,51 @@ public class FillInPaperActivity extends BaseActivity<FillInPaperContract.View, 
                                             imgPaths.append((mAdapter.mList.get(i).getCompressPath()).replaceAll(BASE_LOCAL_URL, ""));
                                     }
 
-                                    TreeMap<String, String> returnCarMap = new TreeMap<>();
-                                    returnCarMap.put("userId", SPUtil.get(this, USER_ID, "") + "");
-                                    returnCarMap.put("orderId", orderId + "");
-                                    returnCarMap.put("statusIds", statusIds);
-                                    returnCarMap.put("picPath", imgPaths + "");
-                                    returnCarMap.put("storeId", SPUtil.get(this, STORE_ID, "") + "");
-                                    getPresenter().getReturnCarCommit(returnCarMap, true, false);
+                                    //                                    TreeMap<String, String> returnCarMap = new TreeMap<>();
+                                    //                                    returnCarMap.put("userId", SPUtil.get(this, USER_ID, "") + "");
+                                    //                                    returnCarMap.put("orderId", orderId + "");
+                                    //                                    returnCarMap.put("statusIds", statusIds);
+                                    //                                    returnCarMap.put("picPath", imgPaths + "");
+                                    //                                    returnCarMap.put("storeId", SPUtil.get(this, STORE_ID, "") + "");
+                                    //                                    getPresenter().getReturnCarCommit(returnCarMap, true, false);
+
+                                    MultipartBody.Builder bbb = new MultipartBody.Builder().setType(MultipartBody.FORM);
+                                    for (int i = 0; i < mAdapter.mList.size(); i++) {
+                                        File f = new File(mAdapter.mList.get(i).getCompressPath());
+                                        if (f != null) {
+                                            bbb.addFormDataPart("file", f.getName(), getImageRequestBody(mAdapter.mList.get(i).getCompressPath()));
+                                        }
+                                    }
+                                    bbb.addFormDataPart("userId", SPUtil.get(this, USER_ID, "") + "");
+                                    bbb.addFormDataPart("orderId", orderId);
+                                    bbb.addFormDataPart("plateNumber", licensePlateNum);
+                                    bbb.addFormDataPart("statusIds", statusIds);
+                                    bbb.addFormDataPart("storeId", SPUtil.get(this, STORE_ID, "") + "");
+
+                                    MultipartBody rrr = bbb.build();
+                                    Request r = new Request.Builder()
+                                            .url(BASE_URL + "appStore/carReturn/addReturnOrder")
+                                            .post(rrr)
+                                            .build();
+                                    OkHttpClient client = new OkHttpClient();
+                                    client.newCall(r).enqueue(new Callback() {
+                                        @Override
+                                        public void onFailure(Call call, IOException e) {
+                                            ToastUtil.showShortToast(e + "");
+                                        }
+
+                                        @Override
+                                        public void onResponse(Call call, Response response) throws IOException {
+                                            GetCarCommitBean jsonTopicsBean = new Gson().fromJson(response.body().string(), GetCarCommitBean.class);
+                                            ToastUtil.showLongToast(jsonTopicsBean.getMsg());
+                                            if (jsonTopicsBean.getCode() == 200) {
+                                                dismissProgressDialog();
+                                                setResult(RESULT_OK, new Intent()
+                                                        .putExtra("get_car_result", "1"));
+                                                finish();
+                                            }
+                                        }
+                                    });
                                 } else
                                     ToastUtil.showShortToast("请将资料填写完整");
                                 break;

@@ -13,6 +13,8 @@ import com.ipd.jianghuzuchebusiness.contract.ForgetPwdContract;
 import com.ipd.jianghuzuchebusiness.presenter.ForgetPwdPresenter;
 import com.ipd.jianghuzuchebusiness.utils.ApplicationUtil;
 import com.ipd.jianghuzuchebusiness.utils.CountDownUtil;
+import com.ipd.jianghuzuchebusiness.utils.MD5Utils;
+import com.ipd.jianghuzuchebusiness.utils.StringUtils;
 import com.ipd.jianghuzuchebusiness.utils.ToastUtil;
 import com.ipd.jianghuzuchebusiness.utils.VerifyUtils;
 import com.ipd.jianghuzuchebusiness.utils.isClickUtil;
@@ -110,6 +112,7 @@ public class ForgetPasswordActivity extends BaseActivity<ForgetPwdContract.View,
                         registerMap.put("telPhone", etForgetPasswordPhone.getText().toString().trim());
                         registerMap.put("password", etRegisterPwd.getText().toString().trim());
                         registerMap.put("smsCode", etForgetPasswordVerificationCode.getText().toString().trim());
+                        registerMap.put("sign", StringUtils.toUpperCase(MD5Utils.encodeMD5(registerMap.toString().replaceAll(" ", "") + "f9a75bb045d75998e1509b75ed3a5225")));
                         getPresenter().getForgetPwd(registerMap, true, false);
                     } else if (etForgetPasswordPhone.getText().toString().trim().length() != 11 || !VerifyUtils.isMobileNumber(etForgetPasswordPhone.getText().toString().trim())) {
                         ToastUtil.showShortToast(getString(R.string.error_phone_num));

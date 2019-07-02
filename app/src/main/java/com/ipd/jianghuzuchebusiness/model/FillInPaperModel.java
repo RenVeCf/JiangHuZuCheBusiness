@@ -6,6 +6,8 @@ import com.ipd.jianghuzuchebusiness.api.Api;
 import com.ipd.jianghuzuchebusiness.base.BaseModel;
 import com.ipd.jianghuzuchebusiness.progress.ObserverResponseListener;
 
+import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
 import io.reactivex.ObservableTransformer;
@@ -19,7 +21,7 @@ import okhttp3.RequestBody;
  */
 public class FillInPaperModel<T> extends BaseModel {
 
-    public void getGetCarCommit(Context context, TreeMap<String, String> map, boolean isDialog, boolean cancelable,
+    public void getGetCarCommit(Context context, TreeMap<String, Object> map, boolean isDialog, boolean cancelable,
                                 ObservableTransformer<T, T> transformer, ObserverResponseListener observerListener) {
 
         //当不需要指定是否由dialog时，可以调用这个方法

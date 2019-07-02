@@ -10,6 +10,8 @@ import com.ipd.jianghuzuchebusiness.progress.ObserverResponseListener;
 import com.ipd.jianghuzuchebusiness.utils.ExceptionHandle;
 import com.ipd.jianghuzuchebusiness.utils.ToastUtil;
 
+import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
 import okhttp3.RequestBody;
@@ -31,7 +33,7 @@ public class FillInPaperPresenter extends FillInPaperContract.Presenter {
     }
 
     @Override
-    public void getGetCarCommit(TreeMap<String, String> map, boolean isDialog, boolean cancelable) {
+    public void getGetCarCommit(TreeMap<String, Object> map, boolean isDialog, boolean cancelable) {
         model.getGetCarCommit(context, map, isDialog, cancelable, getView().bindLifecycle(), new ObserverResponseListener() {
             @Override
             public void onNext(Object o) {

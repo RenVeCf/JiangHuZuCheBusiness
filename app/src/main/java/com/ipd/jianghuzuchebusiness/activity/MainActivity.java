@@ -157,7 +157,7 @@ public class MainActivity extends BaseActivity<StoreImgContract.View, StoreImgCo
                 }
 
                 // 所需的权限均正常获取
-//                ToastUtil.showShortToast(getString(R.string.permission_granted));
+                //                ToastUtil.showShortToast(getString(R.string.permission_granted));
                 break;
         }
     }
@@ -220,7 +220,7 @@ public class MainActivity extends BaseActivity<StoreImgContract.View, StoreImgCo
                 .setOnItemClickL(new BaseBanner.OnItemClickL() {
                     @Override
                     public void onItemClick(int position) {
-//                        ToastUtil.showShortToast("position--->" + position);
+                        //                        ToastUtil.showShortToast("position--->" + position);
                     }
                 })
                 .setIsOnePageLoop(false).startScroll();

@@ -30,7 +30,7 @@ public interface FillInPaperContract {
     }
 
     abstract class Presenter extends BasePresenter<View> {
-        public abstract void getGetCarCommit(TreeMap<String, String> map, boolean isDialog, boolean cancelable);
+        public abstract void getGetCarCommit(TreeMap<String, Object> map, boolean isDialog, boolean cancelable);
 
         public abstract void getReturnCarCommit(TreeMap<String, String> map, boolean isDialog, boolean cancelable);
 

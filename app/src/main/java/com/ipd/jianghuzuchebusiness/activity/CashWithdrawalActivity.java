@@ -22,7 +22,9 @@ import com.ipd.jianghuzuchebusiness.common.view.TopView;
 import com.ipd.jianghuzuchebusiness.contract.CashWithdrawalFeeContract;
 import com.ipd.jianghuzuchebusiness.presenter.CashWithdrawalFeePresenter;
 import com.ipd.jianghuzuchebusiness.utils.ApplicationUtil;
+import com.ipd.jianghuzuchebusiness.utils.MD5Utils;
 import com.ipd.jianghuzuchebusiness.utils.SPUtil;
+import com.ipd.jianghuzuchebusiness.utils.StringUtils;
 import com.ipd.jianghuzuchebusiness.utils.ToastUtil;
 import com.ipd.jianghuzuchebusiness.utils.isClickUtil;
 
@@ -150,6 +152,7 @@ public class CashWithdrawalActivity extends BaseActivity<CashWithdrawalFeeContra
                                 cashWithdrawalMap.put("userId", SPUtil.get(this, USER_ID, "") + "");
                                 cashWithdrawalMap.put("bankId", bankId + "");
                                 cashWithdrawalMap.put("putMoney", etHowMoney.getText().toString().trim());
+                                cashWithdrawalMap.put("sign", StringUtils.toUpperCase(MD5Utils.encodeMD5(cashWithdrawalMap.toString().replaceAll(" ", "") + "f9a75bb045d75998e1509b75ed3a5225")));
                                 getPresenter().getCashWithdrawal(cashWithdrawalMap, false, false);
                             } else
                                 ToastUtil.showShortToast("请选择银行卡");
