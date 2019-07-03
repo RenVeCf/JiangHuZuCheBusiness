@@ -369,7 +369,7 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsContract.View
         tvUseCarTime.setText(data.getData().getOrder().getRentDuration() + "个月");
         tvEndTime.setText(data.getData().getOrder().getExpireTime());
 
-        tvUseCarServiceTime.setText(data.getData().getOrder().getRentDuration() + "x" + data.getData().getVehicleCost().get(0).getVehicleRent());
+        tvUseCarServiceTime.setText(data.getData().getVehicleCost().get(0).getRentDuration() + "x" + data.getData().getVehicleCost().get(0).getVehicleRent());
         tvUseCarServiceCharge.setText(data.getData().getVehicleCost().get(0).getTenancyService() + "元");
         tvUseCarEquipmentCost.setText(data.getData().getVehicleCost().get(0).getEquipCost() + "元");
         tvUseCarDeposit.setText(data.getData().getVehicleCost().get(0).getDeposit() + "元");
@@ -425,6 +425,7 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsContract.View
         tvUseCarDeposit.setText(data.getData().getVehicleCost().getDeposit() + "元");
         tvUseCarCouponMoney.setText(data.getData().getVehicleCost().getCoupon() + "元");
         tvUseCarMoneySum.setText(data.getData().getVehicleCost().getTotal() + "元");
+        tvCarCode.setText(data.getData().getVehiclePic().getPlateNumber());
 
         if (returnOrderDescBean.size() > 0) {
             llCarStatus.setVisibility(View.VISIBLE);
@@ -434,11 +435,11 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsContract.View
                 vehicleOrstatusBean.add(new SelectCarBean.DataBean.VehicleOrstatusBean());
                 vehicleOrstatusBean.get(i).setVestatusName(returnOrderDescBean.get(i).getVestatusName());
                 vehicleOrstatusBean.get(i).setStatus(returnOrderDescBean.get(i).getStatus());
+                vehicleOrstatusBean.get(i).setDamagedCost(returnOrderDescBean.get(i).getDamagedCost());
                 vehicleOrstatusBean.get(i).setVehicleType(2);//退车单
             }
             vehicleConditionAdapter.setNewData(vehicleOrstatusBean);
 
-            tvCarCode.setText(data.getData().getVehiclePic().getPlateNumber());
             String[] strs = data.getData().getVehiclePic().getPicPath().split(",");
             for (int i = 0, len = strs.length; i < len; i++) {
                 imgList.add(strs[i].toString());
