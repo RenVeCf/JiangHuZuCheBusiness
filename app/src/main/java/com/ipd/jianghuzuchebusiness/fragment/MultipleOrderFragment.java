@@ -158,24 +158,24 @@ public class MultipleOrderFragment extends BaseFragment<MultipleOrderContract.Vi
             rvMultipleOrder.setHasFixedSize(true); //item如果一样的大小，可以设置为true让RecyclerView避免重新计算大小
             rvMultipleOrder.setItemAnimator(new DefaultItemAnimator()); //默认动画
 
-//            vehicleTypeBean = new ArrayList<>();
-//            for (int i = 0; i < repairTypeBean.size(); i++) {
-//                int m = 0;
-//                for (int j = 0; j < statusPosition + 1; j++) {
-//                    vehicleTypeBean.add(new VehicleConditionHorizontalBean.DataBean.VehicleTypeBean());
-//                }
-//                vehicleTypeBean.get(statusPosition).setAppVehicleStatus(appVehicleStatusBean);
-//                appVehicleStatusBean.add(new VehicleConditionHorizontalBean.DataBean.VehicleTypeBean.AppVehicleStatusBean());
-//                vehicleTypeBean.get(statusPosition).getAppVehicleStatus().get(i).setItemType(multipleFmType);
-//                if (repairTypeBean.get(statusPosition).getAppRepairs().size() > 0 && repairTypeBean.get(statusPosition).getAppRepairs().size() > i) {
-//                    vehicleTypeBean.get(statusPosition).getAppVehicleStatus().get(i).setStatusName(repairTypeBean.get(statusPosition).getAppRepairs().get(i).getRepairName());
-//                    m++;
-//                }
-//            }
-//            LogUtils.i("rmy", "size = " + vehicleTypeBean.get(statusPosition).getAppVehicleStatus().size());
-//            multipleOrderAdapter = new MultipleOrderAdapter(vehicleTypeBean.get(statusPosition).getAppVehicleStatus());
-//            rvMultipleOrder.setAdapter(multipleOrderAdapter);
-//            returnCarAdapter = new ReturnCarAdapter(vehicleTypeBean.get(statusPosition).getVehicleOrstatus());
+            //            vehicleTypeBean = new ArrayList<>();
+            //            for (int i = 0; i < repairTypeBean.size(); i++) {
+            //                int m = 0;
+            //                for (int j = 0; j < statusPosition + 1; j++) {
+            //                    vehicleTypeBean.add(new VehicleConditionHorizontalBean.DataBean.VehicleTypeBean());
+            //                }
+            //                vehicleTypeBean.get(statusPosition).setAppVehicleStatus(appVehicleStatusBean);
+            //                appVehicleStatusBean.add(new VehicleConditionHorizontalBean.DataBean.VehicleTypeBean.AppVehicleStatusBean());
+            //                vehicleTypeBean.get(statusPosition).getAppVehicleStatus().get(i).setItemType(multipleFmType);
+            //                if (repairTypeBean.get(statusPosition).getAppRepairs().size() > 0 && repairTypeBean.get(statusPosition).getAppRepairs().size() > i) {
+            //                    vehicleTypeBean.get(statusPosition).getAppVehicleStatus().get(i).setStatusName(repairTypeBean.get(statusPosition).getAppRepairs().get(i).getRepairName());
+            //                    m++;
+            //                }
+            //            }
+            //            LogUtils.i("rmy", "size = " + vehicleTypeBean.get(statusPosition).getAppVehicleStatus().size());
+            //            multipleOrderAdapter = new MultipleOrderAdapter(vehicleTypeBean.get(statusPosition).getAppVehicleStatus());
+            //            rvMultipleOrder.setAdapter(multipleOrderAdapter);
+            //            returnCarAdapter = new ReturnCarAdapter(vehicleTypeBean.get(statusPosition).getVehicleOrstatus());
             storeInfoRepairAdapter = new StoreInfoRepairAdapter(repairTypeBean.get(statusPosition).getAppRepairs());
             rvMultipleOrder.setAdapter(storeInfoRepairAdapter);
             storeInforActivity = (StoreInforActivity) getActivity();
@@ -364,9 +364,12 @@ public class MultipleOrderFragment extends BaseFragment<MultipleOrderContract.Vi
                         getCarOrderMap.put("status", "5");
                         break;
                     case 2:
-                        getCarOrderMap.put("status", "4");
+                        getCarOrderMap.put("status", "7");
                         break;
                     case 3:
+                        getCarOrderMap.put("status", "4");
+                        break;
+                    case 4:
                         getCarOrderMap.put("status", "2");
                         break;
                 }
@@ -392,9 +395,12 @@ public class MultipleOrderFragment extends BaseFragment<MultipleOrderContract.Vi
                         carReturnOrderMap.put("status", "8");
                         break;
                     case 2:
-                        carReturnOrderMap.put("status", "5");
+                        carReturnOrderMap.put("status", "7");
                         break;
                     case 3:
+                        carReturnOrderMap.put("status", "5");
+                        break;
+                    case 4:
                         carReturnOrderMap.put("status", "2");
                         break;
                 }

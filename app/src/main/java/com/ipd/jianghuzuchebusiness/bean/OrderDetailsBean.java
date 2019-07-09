@@ -50,6 +50,7 @@ public class OrderDetailsBean {
          * vehicleCost : [{"costId":37,"deposit":1000,"equipCost":100,"tenancyService":300,"total":1350,"orderId":32,"coupon":"50.00","createTime":"2019-05-22 15:15:31","vehicleRent":50,"chargeMoney":null,"rentDuration":1}]
          * storeStatus : 2
          * order : {"orderId":32,"userId":7,"orderNo":"1933144987","successTime":"2019-05-22 15:15:31","payWay":2,"payTime":"2019-05-22 15:15:31","payStatus":2,"vehicleId":11,"storeId":7,"takevehicleTime":"2019-05-22","rentDuration":1,"status":4,"createTime":"2019-05-22","telPhone":"18502994087","week":"周三","takeStatus":2,"descStatus":null,"vehicleName":"小刀电动车","vehicleModel":"xs25445","vehicleLogo":"picture/profile/JYJY192842740420190522151444.jpg","storeName":"阳阳车行","descAddress":"上海市青浦区明珠路","payMoney":1350,"revehicleTime":null,"expireTime":"2019-06-21","storeStatus":null,"city":"上海市","params":{}}
+         * user : {"userId":7,"telPhone":"18502994087","password":"74e4e50701161c4d481d41ca837f1864","userName":"jhzc427601","userCall":"","parentId":0,"balance":3600.0,"invitationCode":"dogj6yvx","avatar":"picture/profile/JYJY191039252520190702125143.jpeg","userType":1,"status":2,"idPositive":"picture/profileID/JYJY192701404720190520174110.jpeg","idOpposite":"picture/profileID/JYJY192734900920190520174113.jpeg","idHold":"picture/profileID/JYJY192775710020190520174117.jpeg","createTime":"2019-05-20 17:41:04","telPhones":null,"oppenId":null,"params":{},"storeId":0}
          */
 
         private PicPathBean picPath;
@@ -57,6 +58,8 @@ public class OrderDetailsBean {
         private OrderBean order;
         private List<VehicleOrstatusBean> vehicleOrstatus;
         private List<VehicleCostBean> vehicleCost;
+        private List<VehicleEndcostBean> vehicleEndcost;
+        private UserBean user;
 
         public PicPathBean getPicPath() {
             return picPath;
@@ -82,6 +85,14 @@ public class OrderDetailsBean {
             this.order = order;
         }
 
+        public List<VehicleEndcostBean> getVehicleEndcost() {
+            return vehicleEndcost;
+        }
+
+        public void setVehicleEndcost(List<VehicleEndcostBean> vehicleEndcost) {
+            this.vehicleEndcost = vehicleEndcost;
+        }
+
         public List<VehicleOrstatusBean> getVehicleOrstatus() {
             return vehicleOrstatus;
         }
@@ -96,6 +107,14 @@ public class OrderDetailsBean {
 
         public void setVehicleCost(List<VehicleCostBean> vehicleCost) {
             this.vehicleCost = vehicleCost;
+        }
+
+        public UserBean getUser() {
+            return user;
+        }
+
+        public void setUser(UserBean user) {
+            this.user = user;
         }
 
         public static class PicPathBean {
@@ -574,8 +593,17 @@ public class OrderDetailsBean {
             private String createTime;
             private double vehicleRent;
             private Object chargeMoney;
+            private double overdueMoney;
             private int rentDuration;
             private String couponTitle;
+
+            public double getOverdueMoney() {
+                return overdueMoney;
+            }
+
+            public void setOverdueMoney(double overdueMoney) {
+                this.overdueMoney = overdueMoney;
+            }
 
             public String getCouponTitle() {
                 return couponTitle;
@@ -671,6 +699,331 @@ public class OrderDetailsBean {
 
             public void setRentDuration(int rentDuration) {
                 this.rentDuration = rentDuration;
+            }
+        }
+
+        public static class VehicleEndcostBean {
+            /**
+             * endcostId : 3
+             * deposit : null
+             * equipCost : null
+             * tenancyService : 300.0
+             * total : 1280.6
+             * orderId : 35
+             * coupon : 20.0
+             * vehicleRent : null
+             * rentDuration : 3
+             * chargeMoney : 998.0
+             * lateMoney : 2.6
+             * createTime : 2019-05-27 15:13:18
+             */
+
+            private int endcostId;
+            private Object deposit;
+            private Object equipCost;
+            private double tenancyService;
+            private double total;
+            private int orderId;
+            private double coupon;
+            private Object vehicleRent;
+            private int rentDuration;
+            private double chargeMoney;
+            private double lateMoney;
+            private String createTime;
+
+            public int getEndcostId() {
+                return endcostId;
+            }
+
+            public void setEndcostId(int endcostId) {
+                this.endcostId = endcostId;
+            }
+
+            public Object getDeposit() {
+                return deposit;
+            }
+
+            public void setDeposit(Object deposit) {
+                this.deposit = deposit;
+            }
+
+            public Object getEquipCost() {
+                return equipCost;
+            }
+
+            public void setEquipCost(Object equipCost) {
+                this.equipCost = equipCost;
+            }
+
+            public double getTenancyService() {
+                return tenancyService;
+            }
+
+            public void setTenancyService(double tenancyService) {
+                this.tenancyService = tenancyService;
+            }
+
+            public double getTotal() {
+                return total;
+            }
+
+            public void setTotal(double total) {
+                this.total = total;
+            }
+
+            public int getOrderId() {
+                return orderId;
+            }
+
+            public void setOrderId(int orderId) {
+                this.orderId = orderId;
+            }
+
+            public double getCoupon() {
+                return coupon;
+            }
+
+            public void setCoupon(double coupon) {
+                this.coupon = coupon;
+            }
+
+            public Object getVehicleRent() {
+                return vehicleRent;
+            }
+
+            public void setVehicleRent(Object vehicleRent) {
+                this.vehicleRent = vehicleRent;
+            }
+
+            public int getRentDuration() {
+                return rentDuration;
+            }
+
+            public void setRentDuration(int rentDuration) {
+                this.rentDuration = rentDuration;
+            }
+
+            public double getChargeMoney() {
+                return chargeMoney;
+            }
+
+            public void setChargeMoney(double chargeMoney) {
+                this.chargeMoney = chargeMoney;
+            }
+
+            public double getLateMoney() {
+                return lateMoney;
+            }
+
+            public void setLateMoney(double lateMoney) {
+                this.lateMoney = lateMoney;
+            }
+
+            public String getCreateTime() {
+                return createTime;
+            }
+
+            public void setCreateTime(String createTime) {
+                this.createTime = createTime;
+            }
+        }
+
+        public static class UserBean {
+            /**
+             * userId : 7
+             * telPhone : 18502994087
+             * password : 74e4e50701161c4d481d41ca837f1864
+             * userName : jhzc427601
+             * userCall :
+             * parentId : 0
+             * balance : 3600.0
+             * invitationCode : dogj6yvx
+             * avatar : picture/profile/JYJY191039252520190702125143.jpeg
+             * userType : 1
+             * status : 2
+             * idPositive : picture/profileID/JYJY192701404720190520174110.jpeg
+             * idOpposite : picture/profileID/JYJY192734900920190520174113.jpeg
+             * idHold : picture/profileID/JYJY192775710020190520174117.jpeg
+             * createTime : 2019-05-20 17:41:04
+             * telPhones : null
+             * oppenId : null
+             * params : {}
+             * storeId : 0
+             */
+
+            private int userId;
+            private String telPhone;
+            private String password;
+            private String userName;
+            private String userCall;
+            private int parentId;
+            private double balance;
+            private String invitationCode;
+            private String avatar;
+            private int userType;
+            private int status;
+            private String idPositive;
+            private String idOpposite;
+            private String idHold;
+            private String createTime;
+            private Object telPhones;
+            private Object oppenId;
+            private TestBean.UserBean.ParamsBean params;
+            private int storeId;
+
+            public int getUserId() {
+                return userId;
+            }
+
+            public void setUserId(int userId) {
+                this.userId = userId;
+            }
+
+            public String getTelPhone() {
+                return telPhone;
+            }
+
+            public void setTelPhone(String telPhone) {
+                this.telPhone = telPhone;
+            }
+
+            public String getPassword() {
+                return password;
+            }
+
+            public void setPassword(String password) {
+                this.password = password;
+            }
+
+            public String getUserName() {
+                return userName;
+            }
+
+            public void setUserName(String userName) {
+                this.userName = userName;
+            }
+
+            public String getUserCall() {
+                return userCall;
+            }
+
+            public void setUserCall(String userCall) {
+                this.userCall = userCall;
+            }
+
+            public int getParentId() {
+                return parentId;
+            }
+
+            public void setParentId(int parentId) {
+                this.parentId = parentId;
+            }
+
+            public double getBalance() {
+                return balance;
+            }
+
+            public void setBalance(double balance) {
+                this.balance = balance;
+            }
+
+            public String getInvitationCode() {
+                return invitationCode;
+            }
+
+            public void setInvitationCode(String invitationCode) {
+                this.invitationCode = invitationCode;
+            }
+
+            public String getAvatar() {
+                return avatar;
+            }
+
+            public void setAvatar(String avatar) {
+                this.avatar = avatar;
+            }
+
+            public int getUserType() {
+                return userType;
+            }
+
+            public void setUserType(int userType) {
+                this.userType = userType;
+            }
+
+            public int getStatus() {
+                return status;
+            }
+
+            public void setStatus(int status) {
+                this.status = status;
+            }
+
+            public String getIdPositive() {
+                return idPositive;
+            }
+
+            public void setIdPositive(String idPositive) {
+                this.idPositive = idPositive;
+            }
+
+            public String getIdOpposite() {
+                return idOpposite;
+            }
+
+            public void setIdOpposite(String idOpposite) {
+                this.idOpposite = idOpposite;
+            }
+
+            public String getIdHold() {
+                return idHold;
+            }
+
+            public void setIdHold(String idHold) {
+                this.idHold = idHold;
+            }
+
+            public String getCreateTime() {
+                return createTime;
+            }
+
+            public void setCreateTime(String createTime) {
+                this.createTime = createTime;
+            }
+
+            public Object getTelPhones() {
+                return telPhones;
+            }
+
+            public void setTelPhones(Object telPhones) {
+                this.telPhones = telPhones;
+            }
+
+            public Object getOppenId() {
+                return oppenId;
+            }
+
+            public void setOppenId(Object oppenId) {
+                this.oppenId = oppenId;
+            }
+
+            public TestBean.UserBean.ParamsBean getParams() {
+                return params;
+            }
+
+            public void setParams(TestBean.UserBean.ParamsBean params) {
+                this.params = params;
+            }
+
+            public int getStoreId() {
+                return storeId;
+            }
+
+            public void setStoreId(int storeId) {
+                this.storeId = storeId;
+            }
+
+            public static class ParamsBean {
             }
         }
     }

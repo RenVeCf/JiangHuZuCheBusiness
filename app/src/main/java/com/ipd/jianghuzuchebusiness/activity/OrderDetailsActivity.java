@@ -2,6 +2,9 @@ package com.ipd.jianghuzuchebusiness.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,6 +25,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
 import com.ipd.jianghuzuchebusiness.R;
 import com.ipd.jianghuzuchebusiness.adapter.CarPhotoAdapter;
+import com.ipd.jianghuzuchebusiness.adapter.ExtendTimeAdapter;
 import com.ipd.jianghuzuchebusiness.adapter.VehicleConditionAdapter;
 import com.ipd.jianghuzuchebusiness.base.BaseActivity;
 import com.ipd.jianghuzuchebusiness.bean.GetCarCancelOrderBean;
@@ -36,6 +40,7 @@ import com.ipd.jianghuzuchebusiness.utils.ApplicationUtil;
 import com.ipd.jianghuzuchebusiness.utils.SPUtil;
 import com.ipd.jianghuzuchebusiness.utils.ToastUtil;
 import com.ipd.jianghuzuchebusiness.utils.isClickUtil;
+import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +50,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.ObservableTransformer;
 
+import static android.Manifest.permission.CALL_PHONE;
 import static com.ipd.jianghuzuchebusiness.common.config.IConstants.STORE_ID;
 import static com.ipd.jianghuzuchebusiness.common.config.IConstants.USER_ID;
 import static com.ipd.jianghuzuchebusiness.common.config.UrlConfig.BASE_LOCAL_URL;
@@ -65,12 +71,14 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsContract.View
     TextView tvCarName;
     @BindView(R.id.tv_car_model)
     TextView tvCarModel;
-    @BindView(R.id.tv_store_name)
-    TextView tvStoreName;
-    @BindView(R.id.tv_store_path)
-    TextView tvStorePath;
-    @BindView(R.id.tv_get_car_time)
-    TextView tvGetCarTime;
+    //    @BindView(R.id.tv_store_name)
+    //    TextView tvStoreName;
+    //    @BindView(R.id.tv_store_path)
+    //    TextView tvStorePath;
+    //    @BindView(R.id.tv_get_car_time)
+    //    TextView tvGetCarTime;
+    @BindView(R.id.stv_contact)
+    SuperTextView stvContact;
     @BindView(R.id.tv_use_car_time)
     TextView tvUseCarTime;
     @BindView(R.id.tv_use_car_service_time)
@@ -125,6 +133,10 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsContract.View
     LinearLayout llCarCode;
     @BindView(R.id.view_car_code)
     View viewCarCode;
+    @BindView(R.id.rv_extended_fee)
+    RecyclerView rvExtendedFee;
+    @BindView(R.id.ll_extended_fee)
+    LinearLayout llExtendedFee;
 
     private int type;
     private String orderId;
@@ -138,6 +150,9 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsContract.View
     private VehicleConditionAdapter vehicleConditionAdapter;
     private CarPhotoAdapter carPhotoAdapter;
     private List<String> imgList;
+    private List<OrderDetailsBean.DataBean.VehicleEndcostBean> vehicleEndcostBean = new ArrayList<>();
+    private ExtendTimeAdapter extendTimeAdapter;
+    private String phoneNum = "";
 
     @Override
     public int getLayoutId() {
@@ -177,7 +192,7 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsContract.View
                     btSelectOrder.setText("填写取车单");
                 } else if (statusGet == 2)
                     btSelectOrder.setText("查看车辆");
-                if (status == 5 || status == 2) {
+                if (status == 5 || status == 7 || status == 2) {
                     llBottomTwo.setVisibility(View.GONE);
                 }
                 break;
@@ -188,7 +203,7 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsContract.View
                     btSelectOrder.setText("填写退车单");
                 else if (statusOut == 2)
                     btSelectOrder.setText("查看车辆");
-                if (status == 8 || status == 2) {
+                if (status == 8 || status == 7 || status == 2) {
                     llBottomTwo.setVisibility(View.GONE);
                 }
                 break;
@@ -221,6 +236,16 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsContract.View
         carPhotoAdapter = new CarPhotoAdapter(imgList);
         rvCarPhoto.setAdapter(carPhotoAdapter);
 
+        // 延长租期
+        LinearLayoutManager layoutManager1 = new LinearLayoutManager(this);
+        layoutManager1.setOrientation(LinearLayoutManager.VERTICAL);
+        rvExtendedFee.setLayoutManager(layoutManager1);
+        rvExtendedFee.setNestedScrollingEnabled(false);
+        rvExtendedFee.setHasFixedSize(true);
+        rvExtendedFee.setItemAnimator(new DefaultItemAnimator());
+
+        extendTimeAdapter = new ExtendTimeAdapter(vehicleEndcostBean);
+        rvExtendedFee.setAdapter(extendTimeAdapter);
     }
 
     @Override
@@ -231,6 +256,64 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsContract.View
                 BigImageActivity.launch(OrderDetailsActivity.this, imgList.get(position));
             }
         });
+
+        stvContact.setRightTvClickListener(new SuperTextView.OnRightTvClickListener() {
+            @Override
+            public void onClickListener() {
+                setCenterDialog();
+            }
+        });
+    }
+
+    //拨打电话
+    private void setCenterDialog() {
+        TextView tv;
+        final Dialog mCameraDialog = new Dialog(this, R.style.BottomDialog);
+        //Dialog布局
+        LinearLayout root = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.dialog_center, null);
+        root.findViewById(R.id.tv_dialog_center_start).setVisibility(View.VISIBLE);
+        tv = root.findViewById(R.id.tv_dialog_center_end);
+        tv.setText(phoneNum);
+        //初始化视图
+        root.findViewById(R.id.dialog_center_confirm).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_CALL);
+                Uri data = Uri.parse("tel:" + phoneNum);
+                intent.setData(data);
+                if (ActivityCompat.checkSelfPermission(OrderDetailsActivity.this, CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
+                startActivity(intent);
+                mCameraDialog.dismiss();
+            }
+        });
+        root.findViewById(R.id.dialog_center_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCameraDialog.dismiss();
+            }
+        });
+        mCameraDialog.setContentView(root);
+        Window dialogWindow = mCameraDialog.getWindow();
+        dialogWindow.setGravity(Gravity.CENTER); //设置弹出方式
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+        lp.x = 0; // 新位置X坐标
+        lp.y = 0; // 新位置Y坐标
+        lp.width = 700;
+        root.measure(0, 0);
+        lp.height = 320;
+
+        lp.alpha = 9f; // 透明度
+        dialogWindow.setAttributes(lp);
+        mCameraDialog.show();
     }
 
     @Override
@@ -281,12 +364,6 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsContract.View
                             returnCarCancelOrderMap.put("orderId", orderId);
                             returnCarCancelOrderMap.put("storeId", SPUtil.get(OrderDetailsActivity.this, STORE_ID, "") + "");
                             getPresenter().getReturnCarCancelOrder(returnCarCancelOrderMap, false, false);
-                            break;
-                        case 2:
-                            break;
-                        case 3:
-                            break;
-                        case 4:
                             break;
                     }
                     mCameraDialog.dismiss();
@@ -363,9 +440,13 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsContract.View
         Glide.with(ApplicationUtil.getContext()).load(BASE_LOCAL_URL + data.getData().getOrder().getVehicleLogo()).apply(new RequestOptions().placeholder(R.mipmap.ic_launcher)).into(ivOrderDetails);
         tvCarName.setText(data.getData().getOrder().getVehicleName());
         tvCarModel.setText(data.getData().getOrder().getVehicleModel());
-        tvStoreName.setText(data.getData().getOrder().getStoreName());
-        tvStorePath.setText(data.getData().getOrder().getDescAddress());
-        tvGetCarTime.setText(data.getData().getOrder().getTakevehicleTime() + "（" + data.getData().getOrder().getWeek() + "）");
+        //        tvStoreName.setText(data.getData().getOrder().getStoreName());
+        //        tvStorePath.setText(data.getData().getOrder().getDescAddress());
+        //        tvGetCarTime.setText(data.getData().getOrder().getTakevehicleTime() + "（" + data.getData().getOrder().getWeek() + "）");
+        Glide.with(ApplicationUtil.getContext()).load(BASE_LOCAL_URL + data.getData().getUser().getAvatar()).apply(new RequestOptions()).into(stvContact.getLeftIconIV());
+        stvContact.setLeftTopString(data.getData().getUser().getUserName())
+                .setLeftBottomString(data.getData().getUser().getTelPhone());
+        phoneNum = data.getData().getUser().getTelPhone();
         tvUseCarTime.setText(data.getData().getOrder().getRentDuration() + "个月");
         tvEndTime.setText(data.getData().getOrder().getExpireTime());
 
@@ -376,6 +457,21 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsContract.View
         tvUseCarCouponName.setText(data.getData().getVehicleCost().get(0).getCouponTitle());
         tvUseCarCouponMoney.setText(data.getData().getVehicleCost().get(0).getCoupon() + "元");
         tvUseCarMoneySum.setText(data.getData().getVehicleCost().get(0).getTotal() + "元");
+
+        vehicleEndcostBean.clear();
+        if (data.getData().getVehicleEndcost().size() > 0) {
+            llExtendedFee.setVisibility(View.VISIBLE);
+            vehicleEndcostBean.addAll(data.getData().getVehicleEndcost());
+            for (int i = 0; i < vehicleEndcostBean.size(); i++) {
+                vehicleEndcostBean.get(i).setVehicleRent(data.getData().getVehicleCost().get(0).getVehicleRent());
+            }
+            extendTimeAdapter.setNewData(vehicleEndcostBean);
+        }
+
+        if (status == 7) {
+            llOverdueFee.setVisibility(View.VISIBLE);
+            tvOverdueFee.setText(data.getData().getVehicleCost().get(0).getOverdueMoney() + "元");
+        }
 
         if (orderDetailsBean.size() > 0) {
             llCarStatus.setVisibility(View.VISIBLE);
@@ -413,9 +509,13 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsContract.View
         Glide.with(ApplicationUtil.getContext()).load(BASE_LOCAL_URL + data.getData().getOrder().getVehicleLogo()).apply(new RequestOptions().placeholder(R.mipmap.ic_launcher)).into(ivOrderDetails);
         tvCarName.setText(data.getData().getOrder().getVehicleName());
         tvCarModel.setText(data.getData().getOrder().getVehicleModel());
-        tvStoreName.setText(data.getData().getOrder().getStoreName());
-        tvStorePath.setText(data.getData().getOrder().getDescAddress());
-        tvGetCarTime.setText(data.getData().getOrder().getTakevehicleTime() + "（" + data.getData().getOrder().getWeek() + "）");
+        //        tvStoreName.setText(data.getData().getOrder().getStoreName());
+        //        tvStorePath.setText(data.getData().getOrder().getDescAddress());
+        //        tvGetCarTime.setText(data.getData().getOrder().getTakevehicleTime() + "（" + data.getData().getOrder().getWeek() + "）");
+        Glide.with(ApplicationUtil.getContext()).load(BASE_LOCAL_URL + data.getData().getUser().getAvatar()).apply(new RequestOptions()).into(stvContact.getLeftIconIV());
+        stvContact.setLeftTopString(data.getData().getUser().getUserName())
+                .setLeftBottomString(data.getData().getUser().getTelPhone());
+        phoneNum = data.getData().getUser().getTelPhone();
         tvUseCarTime.setText(data.getData().getOrder().getRentDuration() + "个月");
         tvEndTime.setText(data.getData().getOrder().getExpireTime());
 

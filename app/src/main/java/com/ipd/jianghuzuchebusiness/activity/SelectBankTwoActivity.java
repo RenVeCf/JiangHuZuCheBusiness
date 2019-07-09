@@ -118,7 +118,6 @@ public class SelectBankTwoActivity extends BaseActivity<SelectBankContract.View,
     @OnClick(R.id.bt_select_bank_two)
     public void onViewClicked() {
         if (isClickUtil.isFastClick()) {
-
             startActivityForResult(new Intent(this, AddBankAvtivity.class), REQUEST_CODE_100);
         }
     }

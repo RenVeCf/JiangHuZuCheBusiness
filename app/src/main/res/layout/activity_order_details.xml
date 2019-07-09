@@ -83,70 +83,85 @@
                 android:layout_marginStart="@dimen/x50"
                 android:background="@color/bg_fine_line" />
 
-            <LinearLayout
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="@dimen/y250"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:paddingEnd="@dimen/x50"-->
+            <!--android:paddingStart="@dimen/x50">-->
+
+            <!--<ImageView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--app:srcCompat="@drawable/ic_car_store" />-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginStart="@dimen/x30"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<TextView-->
+            <!--android:id="@+id/tv_store_name"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="0dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="bottom"-->
+            <!--android:textColor="@color/black"-->
+            <!--android:textSize="16sp" />-->
+
+            <!--<TextView-->
+            <!--android:id="@+id/tv_store_path"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="0dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:textColor="@color/tx_bottom_navigation"-->
+            <!--android:textSize="16sp" />-->
+            <!--</LinearLayout>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:gravity="center_vertical|end"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<TextView-->
+            <!--android:id="@+id/tv_get_car_time"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="0dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="bottom"-->
+            <!--android:textColor="@color/tx_bottom_navigation"-->
+            <!--android:textSize="16sp" />-->
+
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="0dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:text="@string/go_choice_store"-->
+            <!--android:textColor="@color/tx_bottom_navigation_select"-->
+            <!--android:textSize="16sp"-->
+            <!--android:visibility="invisible" />-->
+            <!--</LinearLayout>-->
+            <!--</LinearLayout>-->
+
+            <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
+                android:id="@+id/stv_contact"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/y250"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingEnd="@dimen/x50"
-                android:paddingStart="@dimen/x50">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_car_store" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="@dimen/x30"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tv_store_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:gravity="bottom"
-                        android:textColor="@color/black"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/tv_store_path"
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:textColor="@color/tx_bottom_navigation"
-                        android:textSize="16sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical|end"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tv_get_car_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:gravity="bottom"
-                        android:textColor="@color/tx_bottom_navigation"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:text="@string/go_choice_store"
-                        android:textColor="@color/tx_bottom_navigation_select"
-                        android:textSize="16sp"
-                        android:visibility="invisible" />
-                </LinearLayout>
-            </LinearLayout>
+                android:layout_height="@dimen/y150"
+                android:layout_marginEnd="@dimen/x30"
+                android:layout_marginStart="@dimen/x30"
+                app:sLeftBottomTextColor="@color/tx_bottom_navigation"
+                app:sLeftIconHeight="@dimen/y100"
+                app:sLeftIconWidth="@dimen/x100"
+                app:sLeftTopTextColor="@color/black"
+                app:sLeftViewGravity="left_center"
+                app:sRightTextColor="@color/tx_bottom_navigation_select"
+                app:sRightTextString="@string/call_phone"
+                app:sUseShape="true" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -171,9 +186,15 @@
 
                 <TextView
                     android:id="@+id/tv_use_car_time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="16sp" />
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp" />
+                    android:text="租赁时长：1年" />
             </LinearLayout>
 
             <View
@@ -450,6 +471,34 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/black" />
                 </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_extended_fee"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="7dp"
+                    android:background="@color/bg_crude_line" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/y50"
+                    android:layout_marginStart="@dimen/x50"
+                    android:layout_marginTop="@dimen/y50"
+                    android:text="延长费用"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_extended_fee"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <LinearLayout

@@ -87,12 +87,12 @@ public class MultipleOrderActivity extends BaseActivity {
         switch (multipleType) {
             case 0:
                 tvTopTitle.setText("历史订单");
-                titles = new String[]{"全部", "已取车", "未取车", "已取消"};
+                titles = new String[]{"全部", "已取车", "已到期", "未取车", "已取消"};
                 viewLine.setVisibility(View.GONE);
                 break;
             case 1:
                 tvTopTitle.setText("历史订单");
-                titles = new String[]{"全部", "已退车", "未退车", "已取消"};
+                titles = new String[]{"全部", "已退车", "已到期", "未退车", "已取消"};
                 viewLine.setVisibility(View.GONE);
                 break;
             case 2:

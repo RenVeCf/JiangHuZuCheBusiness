@@ -38,7 +38,6 @@ public class GetCarHistoryOrderAdapter extends BaseMultiItemQuickAdapter<GetCarO
     protected void convert(BaseViewHolder helper, GetCarOrderBean.DataBean.OrderListBean item) {
         switch (helper.getItemViewType()) {
             case 0:
-                LogUtils.i("rmy", item.getOrderNo());
                 Glide.with(ApplicationUtil.getContext()).load(BASE_LOCAL_URL + item.getVehicleLogo()).apply(new RequestOptions().placeholder(R.mipmap.ic_test)).into((ImageView) helper.getView(R.id.iv_order_type));
 
                 helper.setText(R.id.tv_order_time, "全部订单") //FIXME
@@ -60,7 +59,7 @@ public class GetCarHistoryOrderAdapter extends BaseMultiItemQuickAdapter<GetCarO
                     helper.setText(R.id.bt_order_type_end, "填写取车单");
                 else if (item.getPickStatus() == 2)
                     helper.setText(R.id.bt_order_type_end, "查看车辆");
-                if (item.getStatus() == 5 || item.getStatus() == 2) {
+                if (item.getStatus() == 5 || item.getStatus() == 7 || item.getStatus() == 2) {
                     btOrderTypeStart.setVisibility(View.GONE);
                     btOrderTypeEnd.setVisibility(View.GONE);
                 }
@@ -88,7 +87,7 @@ public class GetCarHistoryOrderAdapter extends BaseMultiItemQuickAdapter<GetCarO
                 else if (item.getStoreStatus() == 2)
                     helper.setText(R.id.bt_order_type_end, "查看车辆");
 
-                if (item.getStatus() == 8 || item.getStatus() == 2) {
+                if (item.getStatus() == 8 || item.getStatus() == 7 || item.getStatus() == 2) {
                     btOrderTypeStart1.setVisibility(View.GONE);
                     btOrderTypeEnd1.setVisibility(View.GONE);
                 }
