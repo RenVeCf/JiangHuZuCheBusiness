@@ -85,4 +85,9 @@ public interface UrlConfig {
     String REPAIR_DETAILS = "appStore/repairOrder/orderDetails"; //维修保养订单-列表详情数据
     String REPAIR_FINISH = "appStore/repairOrder/completeOrder"; //维修保养订单-维修完毕
     String REPAIR_CANCEL = "appStore/repairOrder/cancelOrder"; //维修保养订单-取消订单
+
+    /**
+     * 版本更新
+     */
+    String MODIFY_VERSION = "appUser/version/versionInfo"; //版本更新
 }

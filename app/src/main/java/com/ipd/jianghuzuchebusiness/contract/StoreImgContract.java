@@ -2,14 +2,12 @@ package com.ipd.jianghuzuchebusiness.contract;
 
 import com.ipd.jianghuzuchebusiness.base.BasePresenter;
 import com.ipd.jianghuzuchebusiness.base.BaseView;
-import com.ipd.jianghuzuchebusiness.bean.CaptchaBean;
+import com.ipd.jianghuzuchebusiness.bean.ModifyVersionBean;
 import com.ipd.jianghuzuchebusiness.bean.StoreImgBean;
-import com.ipd.jianghuzuchebusiness.bean.UploadImgBean;
 
 import java.util.TreeMap;
 
 import io.reactivex.ObservableTransformer;
-import okhttp3.RequestBody;
 
 /**
  * Description ：MemberCenterContract  V 、P契约类
@@ -23,10 +21,14 @@ public interface StoreImgContract {
         //不同的Bean单独处理
         void resultStoreImg(StoreImgBean data);
 
+        void resultModifyVersion(ModifyVersionBean data);
+
         <T> ObservableTransformer<T, T> bindLifecycle();
     }
 
     abstract class Presenter extends BasePresenter<View> {
         public abstract void getStoreImg(TreeMap<String, String> map, boolean isDialog, boolean cancelable);
+
+        public abstract void getModifyVersion(TreeMap<String, String> map, boolean isDialog, boolean cancelable);
     }
 }

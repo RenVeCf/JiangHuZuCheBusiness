@@ -2,7 +2,9 @@ package com.ipd.jianghuzuchebusiness.activity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.LinearLayout;
 import com.gyf.barlibrary.ImmersionBar;
 import com.ipd.jianghuzuchebusiness.R;
 import com.ipd.jianghuzuchebusiness.base.BaseActivity;
+import com.ipd.jianghuzuchebusiness.bean.ModifyVersionBean;
 import com.ipd.jianghuzuchebusiness.bean.StoreImgBean;
 import com.ipd.jianghuzuchebusiness.common.view.TopView;
 import com.ipd.jianghuzuchebusiness.contract.StoreImgContract;
@@ -35,8 +38,10 @@ import io.reactivex.ObservableTransformer;
 
 import static com.ipd.jianghuzuchebusiness.common.config.IConstants.FIRST_APP;
 import static com.ipd.jianghuzuchebusiness.common.config.IConstants.JPUSH_SEQUENCE;
+import static com.ipd.jianghuzuchebusiness.common.config.IConstants.PACKAGE_NAME;
 import static com.ipd.jianghuzuchebusiness.common.config.IConstants.STORE_ID;
 import static com.ipd.jianghuzuchebusiness.common.config.UrlConfig.BASE_LOCAL_URL;
+import static com.ipd.jianghuzuchebusiness.utils.AppUtils.getAppVersionName;
 
 /**
  * Description ：首页
@@ -113,6 +118,11 @@ public class MainActivity extends BaseActivity<StoreImgContract.View, StoreImgCo
         TreeMap<String, String> returnCarMap = new TreeMap<>();
         returnCarMap.put("storeId", SPUtil.get(this, STORE_ID, "") + "");
         getPresenter().getStoreImg(returnCarMap, true, false);
+
+        TreeMap<String, String> modifyVersionMap = new TreeMap<>();
+        modifyVersionMap.put("platform", "1");
+        modifyVersionMap.put("type", "2");
+        getPresenter().getModifyVersion(modifyVersionMap, false, false);
     }
 
     /**
@@ -224,6 +234,44 @@ public class MainActivity extends BaseActivity<StoreImgContract.View, StoreImgCo
                     }
                 })
                 .setIsOnePageLoop(false).startScroll();
+    }
+
+    /**
+     * 检测程序是否安装
+     *
+     * @param packageName
+     * @return
+     */
+    private boolean isInstalled(String packageName) {
+        PackageManager manager = this.getPackageManager();
+        //获取所有已安装程序的包信息
+        List<PackageInfo> installedPackages = manager.getInstalledPackages(0);
+        if (installedPackages != null) {
+            for (PackageInfo info : installedPackages) {
+                if (info.packageName.equals(packageName))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void resultModifyVersion(ModifyVersionBean data) {
+        if (data.getCode() == 200) {
+            if (!getAppVersionName(this, PACKAGE_NAME).equals(data.getData().getVersionYes().getVersionNo())) {
+                if (!isInstalled("com.baidu.appsearch")) {
+                    ToastUtil.showShortToast("请先安装百度手机助手客户端");
+                    return;
+                }
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                Uri uri = Uri.parse("market://details?id=" + PACKAGE_NAME);//app包名
+                intent.setData(uri);
+                intent.setPackage("com.baidu.appsearch");//百度手机助手包名
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        } else
+            ToastUtil.showLongToast(data.getMsg());
     }
 
     @Override

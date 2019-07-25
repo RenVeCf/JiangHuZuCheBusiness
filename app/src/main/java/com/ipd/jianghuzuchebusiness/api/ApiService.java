@@ -13,6 +13,7 @@ import com.ipd.jianghuzuchebusiness.bean.GetCarCommitBean;
 import com.ipd.jianghuzuchebusiness.bean.GetCarOrderBean;
 import com.ipd.jianghuzuchebusiness.bean.LastBankBean;
 import com.ipd.jianghuzuchebusiness.bean.LoginBean;
+import com.ipd.jianghuzuchebusiness.bean.ModifyVersionBean;
 import com.ipd.jianghuzuchebusiness.bean.OrderDetailsBean;
 import com.ipd.jianghuzuchebusiness.bean.RepairCancelBean;
 import com.ipd.jianghuzuchebusiness.bean.RepairDetailsBean;
@@ -58,6 +59,7 @@ import static com.ipd.jianghuzuchebusiness.common.config.UrlConfig.GET_CAR_ORDER
 import static com.ipd.jianghuzuchebusiness.common.config.UrlConfig.LAST_BANK;
 import static com.ipd.jianghuzuchebusiness.common.config.UrlConfig.LOGIN;
 import static com.ipd.jianghuzuchebusiness.common.config.UrlConfig.MODIFY_STORE_INFOR;
+import static com.ipd.jianghuzuchebusiness.common.config.UrlConfig.MODIFY_VERSION;
 import static com.ipd.jianghuzuchebusiness.common.config.UrlConfig.REPAIR_CANCEL;
 import static com.ipd.jianghuzuchebusiness.common.config.UrlConfig.REPAIR_DETAILS;
 import static com.ipd.jianghuzuchebusiness.common.config.UrlConfig.REPAIR_FINISH;
@@ -248,4 +250,9 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(CASH_WITHDRAWAL)
     Observable<CashWithdrawalBean> getCashWithdrawal(@FieldMap Map<String, String> map);
+
+    //版本更新
+    @FormUrlEncoded
+    @POST(MODIFY_VERSION)
+    Observable<ModifyVersionBean> getModifyVersion(@FieldMap Map<String, String> map);
 }
