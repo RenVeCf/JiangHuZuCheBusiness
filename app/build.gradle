@@ -201,4 +201,8 @@ dependencies {
     // 此处以JCore 1.1.9 版本为例。
     implementation 'cn.jiguang.sdk:jcore:1.1.9'
     implementation files('libs/BaiduLBS_Android.jar')
+
+    implementation 'com.zhy:okhttputils:2.6.2'
+    //版本更新
+    implementation 'com.github.xuexiangjys:XUpdate:1.0.9'
 }

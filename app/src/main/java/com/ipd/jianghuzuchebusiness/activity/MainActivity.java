@@ -16,6 +16,7 @@ import com.ipd.jianghuzuchebusiness.R;
 import com.ipd.jianghuzuchebusiness.base.BaseActivity;
 import com.ipd.jianghuzuchebusiness.bean.ModifyVersionBean;
 import com.ipd.jianghuzuchebusiness.bean.StoreImgBean;
+import com.ipd.jianghuzuchebusiness.common.view.CustomUpdateParser;
 import com.ipd.jianghuzuchebusiness.common.view.TopView;
 import com.ipd.jianghuzuchebusiness.contract.StoreImgContract;
 import com.ipd.jianghuzuchebusiness.presenter.StoreImgPresenter;
@@ -26,6 +27,7 @@ import com.ipd.jianghuzuchebusiness.utils.ToastUtil;
 import com.xuexiang.xui.widget.banner.widget.banner.BannerItem;
 import com.xuexiang.xui.widget.banner.widget.banner.SimpleImageBanner;
 import com.xuexiang.xui.widget.banner.widget.banner.base.BaseBanner;
+import com.xuexiang.xupdate.XUpdate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +43,8 @@ import static com.ipd.jianghuzuchebusiness.common.config.IConstants.JPUSH_SEQUEN
 import static com.ipd.jianghuzuchebusiness.common.config.IConstants.PACKAGE_NAME;
 import static com.ipd.jianghuzuchebusiness.common.config.IConstants.STORE_ID;
 import static com.ipd.jianghuzuchebusiness.common.config.UrlConfig.BASE_LOCAL_URL;
+import static com.ipd.jianghuzuchebusiness.common.config.UrlConfig.BASE_URL;
+import static com.ipd.jianghuzuchebusiness.common.config.UrlConfig.MODIFY_VERSION;
 import static com.ipd.jianghuzuchebusiness.utils.AppUtils.getAppVersionName;
 
 /**
@@ -119,10 +123,16 @@ public class MainActivity extends BaseActivity<StoreImgContract.View, StoreImgCo
         returnCarMap.put("storeId", SPUtil.get(this, STORE_ID, "") + "");
         getPresenter().getStoreImg(returnCarMap, true, false);
 
-        TreeMap<String, String> modifyVersionMap = new TreeMap<>();
-        modifyVersionMap.put("platform", "1");
-        modifyVersionMap.put("type", "2");
-        getPresenter().getModifyVersion(modifyVersionMap, false, false);
+        //版本更新
+        XUpdate.newBuild(this)
+                .updateUrl(BASE_URL + MODIFY_VERSION)
+                .isAutoMode(true) //如果需要完全无人干预，自动更新，需要root权限【静默安装需要】
+                .updateParser(new CustomUpdateParser()) //设置自定义的版本更新解析器
+                .update();
+//        TreeMap<String, String> modifyVersionMap = new TreeMap<>();
+//        modifyVersionMap.put("platform", "1");
+//        modifyVersionMap.put("type", "2");
+//        getPresenter().getModifyVersion(modifyVersionMap, false, false);
     }
 
     /**
