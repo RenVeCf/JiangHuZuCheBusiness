@@ -299,7 +299,7 @@ public class MultipleOrderFragment extends BaseFragment<MultipleOrderContract.Vi
                                 repairFinishMap.put("userId", SPUtil.get(getActivity(), USER_ID, "") + "");
                                 repairFinishMap.put("orderId", repairOrderListBean.get(position).getOrderId() + "");
                                 repairFinishMap.put("storeId", SPUtil.get(getActivity(), STORE_ID, "") + "");
-                                getPresenter().getRepairFinish(repairFinishMap, true, false);
+                                getPresenter().getRepairFinish(repairFinishMap, false, false);
                                 break;
                         }
                     }
@@ -427,7 +427,7 @@ public class MultipleOrderFragment extends BaseFragment<MultipleOrderContract.Vi
                         break;
                 }
                 returnCarMap.put("storeId", SPUtil.get(getActivity(), STORE_ID, "") + "");
-                getPresenter().getRepairOrderList(returnCarMap, true, false);
+                getPresenter().getRepairOrderList(returnCarMap, false, false);
                 break;
         }
     }
