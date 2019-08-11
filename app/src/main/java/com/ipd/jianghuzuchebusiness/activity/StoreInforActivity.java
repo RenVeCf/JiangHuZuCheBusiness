@@ -27,7 +27,9 @@ import com.ipd.jianghuzuchebusiness.contract.StoreDetailsContract;
 import com.ipd.jianghuzuchebusiness.fragment.MultipleOrderFragment;
 import com.ipd.jianghuzuchebusiness.presenter.StoreDetailsPresenter;
 import com.ipd.jianghuzuchebusiness.utils.ApplicationUtil;
+import com.ipd.jianghuzuchebusiness.utils.LogUtils;
 import com.ipd.jianghuzuchebusiness.utils.SPUtil;
+import com.ipd.jianghuzuchebusiness.utils.ToastUtil;
 import com.ipd.jianghuzuchebusiness.utils.isClickUtil;
 import com.xuexiang.xui.widget.banner.widget.banner.BannerItem;
 import com.xuexiang.xui.widget.banner.widget.banner.SimpleImageBanner;
@@ -136,31 +138,7 @@ public class StoreInforActivity extends BaseActivity<StoreDetailsContract.View, 
 
     @Override
     public void initListener() {
-        vpStoreInfor.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-            }
-
-            @Override
-            public void onPageSelected(final int position) {
-                int o;
-                if (repairProjectHorizontalBean.get(position).getAppRepairs().size() > 4)
-                    o = repairProjectHorizontalBean.get(position).getAppRepairs().size() % 4;
-                else if (repairProjectHorizontalBean.get(position).getAppRepairs().size() < 4 && repairProjectHorizontalBean.get(position).getAppRepairs().size() != 0)
-                    o = 1;
-                else
-                    o = 0;
-                // 切换到当前页面，重置高度
-                vpStoreInfor.resetHeight(position, o);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-        vpStoreInfor.resetHeight(0, 1);
     }
 
     @Override
@@ -216,36 +194,69 @@ public class StoreInforActivity extends BaseActivity<StoreDetailsContract.View, 
 
     @Override
     public void resultRepairProjectHorizontal(RepairProjectHorizontalBean data) {
-        repairProjectHorizontalBean.clear();
-        repairProjectHorizontalBean.addAll(data.getData().getRepairType());
-        if (repairProjectHorizontalBean.size() > 0) {
-            List<String> list = new ArrayList<>();
-            for (int i = 0; i < repairProjectHorizontalBean.size(); i++) {
-                list.add(repairProjectHorizontalBean.get(i).getRepairName());
-            }
-            String[] titles = list.toArray(new String[list.size()]);
+        if (data.getCode() == 200) {
 
-            //向集合添加Fragment
-            for (int i = 0; i < titles.length; i++) {
-                final MultipleOrderFragment fm = new MultipleOrderFragment();
-                Bundle args = new Bundle();
-                args.putInt("multiple_fm_type", 4);
-                args.putParcelableArrayList("store_infor", (ArrayList<? extends Parcelable>) repairProjectHorizontalBean);
-                args.putInt("status_position", i);
-                args.putInt("storeInfor_positions", storeInfor_positions);
-                fm.setArguments(args);
-                fragments.add(fm);
-            }
-            //设置导航条
-            nlStoreInfor.setViewPager(this, titles, vpStoreInfor, R.color.tx_bottom_navigation, R.color.tx_bottom_navigation_select, 16, 16, 0, 45, true);
-            nlStoreInfor.setBgLine(this, 0, R.color.whitesmoke);
-            nlStoreInfor.setNavLine(this, 3, R.color.tx_bottom_navigation_select, 0);
+            repairProjectHorizontalBean.clear();
+            repairProjectHorizontalBean.addAll(data.getData().getRepairType());
+            if (repairProjectHorizontalBean.size() > 0) {
+                List<String> list = new ArrayList<>();
+                for (int i = 0; i < repairProjectHorizontalBean.size(); i++) {
+                    list.add(repairProjectHorizontalBean.get(i).getRepairName());
+                }
+                String[] titles = list.toArray(new String[list.size()]);
 
-            viewPagerAdapter = new ViewPagerAdapter(this.getSupportFragmentManager(), fragments);
-            vpStoreInfor.setAdapter(viewPagerAdapter);
-            vpStoreInfor.setOffscreenPageLimit(titles.length);
+                //向集合添加Fragment
+                for (int i = 0; i < titles.length; i++) {
+                    final MultipleOrderFragment fm = new MultipleOrderFragment();
+                    Bundle args = new Bundle();
+                    args.putInt("multiple_fm_type", 4);
+                    args.putParcelableArrayList("store_infor", (ArrayList<? extends Parcelable>) repairProjectHorizontalBean);
+                    args.putInt("status_position", i);
+                    args.putInt("storeInfor_positions", storeInfor_positions);
+                    fm.setArguments(args);
+                    fragments.add(fm);
+                }
+                //设置导航条
+                nlStoreInfor.setViewPager(this, titles, vpStoreInfor, R.color.tx_bottom_navigation, R.color.tx_bottom_navigation_select, 16, 16, 0, 45, true);
+                nlStoreInfor.setBgLine(this, 0, R.color.whitesmoke);
+                nlStoreInfor.setNavLine(this, 3, R.color.tx_bottom_navigation_select, 0);
+
+                viewPagerAdapter = new ViewPagerAdapter(this.getSupportFragmentManager(), fragments);
+                vpStoreInfor.setAdapter(viewPagerAdapter);
+                vpStoreInfor.setOffscreenPageLimit(titles.length);
+            } else
+                llMaintanenceProject.setVisibility(View.GONE);
+
+            vpStoreInfor.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(final int position) {
+                    int o = 0;
+                    if (repairProjectHorizontalBean.get(position).getAppRepairs().size() > 4)
+                        o = repairProjectHorizontalBean.get(0).getAppRepairs().size() % 4 == 0 ? repairProjectHorizontalBean.get(0).getAppRepairs().size() / 4 : repairProjectHorizontalBean.get(0).getAppRepairs().size() / 4 + 1;
+                    else if (repairProjectHorizontalBean.get(position).getAppRepairs().size() <= 4 && repairProjectHorizontalBean.get(position).getAppRepairs().size() != 0)
+                        o = 1;
+                    // 切换到当前页面，重置高度
+                    vpStoreInfor.resetHeight(position, o);
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
+            int o = 0;
+            if (repairProjectHorizontalBean.get(0).getAppRepairs().size() > 4)
+                o = repairProjectHorizontalBean.get(0).getAppRepairs().size() % 4 == 0 ? repairProjectHorizontalBean.get(0).getAppRepairs().size() / 4 : repairProjectHorizontalBean.get(0).getAppRepairs().size() / 4 + 1;
+            else if (repairProjectHorizontalBean.get(0).getAppRepairs().size() <= 4 && repairProjectHorizontalBean.get(0).getAppRepairs().size() != 0)
+                o = 1;
+            vpStoreInfor.resetHeight(0, o);
         } else
-            llMaintanenceProject.setVisibility(View.GONE);
+            ToastUtil.showLongToast(data.getMsg());
     }
 
     @Override

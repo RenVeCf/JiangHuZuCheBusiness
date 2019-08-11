@@ -7,8 +7,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import com.ipd.jianghuzuchebusiness.utils.LogUtils;
-
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
