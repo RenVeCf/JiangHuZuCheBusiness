@@ -136,31 +136,7 @@ public class StoreInforActivity extends BaseActivity<StoreDetailsContract.View, 
 
     @Override
     public void initListener() {
-        vpStoreInfor.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-            }
-
-            @Override
-            public void onPageSelected(final int position) {
-                int o;
-                if (repairProjectHorizontalBean.get(position).getAppRepairs().size() > 4)
-                    o = repairProjectHorizontalBean.get(position).getAppRepairs().size() % 4;
-                else if (repairProjectHorizontalBean.get(position).getAppRepairs().size() < 4 && repairProjectHorizontalBean.get(position).getAppRepairs().size() != 0)
-                    o = 1;
-                else
-                    o = 0;
-                // 切换到当前页面，重置高度
-                vpStoreInfor.resetHeight(position, o);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-        vpStoreInfor.resetHeight(0, 1);
     }
 
     @Override
@@ -246,6 +222,36 @@ public class StoreInforActivity extends BaseActivity<StoreDetailsContract.View, 
             vpStoreInfor.setOffscreenPageLimit(titles.length);
         } else
             llMaintanenceProject.setVisibility(View.GONE);
+
+        vpStoreInfor.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(final int position) {
+                int o = 0;
+                if (repairProjectHorizontalBean.get(position).getAppRepairs().size() > 4)
+                    o = repairProjectHorizontalBean.get(0).getAppRepairs().size() % 4 == 0 ? repairProjectHorizontalBean.get(0).getAppRepairs().size() / 4 : repairProjectHorizontalBean.get(0).getAppRepairs().size() / 4 + 1;
+                else if (repairProjectHorizontalBean.get(position).getAppRepairs().size() <= 4 && repairProjectHorizontalBean.get(position).getAppRepairs().size() != 0)
+                    o = 1;
+                // 切换到当前页面，重置高度
+                vpStoreInfor.resetHeight(position, o);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+        int o = 0;
+        if (repairProjectHorizontalBean.get(0).getAppRepairs().size() > 4)
+            o = repairProjectHorizontalBean.get(0).getAppRepairs().size() % 4 == 0 ? repairProjectHorizontalBean.get(0).getAppRepairs().size() / 4 : repairProjectHorizontalBean.get(0).getAppRepairs().size() / 4 + 1;
+        else if (repairProjectHorizontalBean.get(0).getAppRepairs().size() <= 4 && repairProjectHorizontalBean.get(0).getAppRepairs().size() != 0)
+            o = 1;
+        vpStoreInfor.resetHeight(0, o);
     }
 
     @Override
