@@ -233,7 +233,7 @@ public class StoreInforActivity extends BaseActivity<StoreDetailsContract.View, 
             public void onPageSelected(final int position) {
                 int o = 0;
                 if (repairProjectHorizontalBean.get(position).getAppRepairs().size() > 4)
-                    o = repairProjectHorizontalBean.get(0).getAppRepairs().size() % 4 == 0 ? repairProjectHorizontalBean.get(0).getAppRepairs().size() / 4 : repairProjectHorizontalBean.get(0).getAppRepairs().size() / 4 + 1;
+                    o = repairProjectHorizontalBean.get(position).getAppRepairs().size() % 4 == 0 ? repairProjectHorizontalBean.get(position).getAppRepairs().size() / 4 : repairProjectHorizontalBean.get(position).getAppRepairs().size() / 4 + 1;
                 else if (repairProjectHorizontalBean.get(position).getAppRepairs().size() <= 4 && repairProjectHorizontalBean.get(position).getAppRepairs().size() != 0)
                     o = 1;
                 // 切换到当前页面，重置高度

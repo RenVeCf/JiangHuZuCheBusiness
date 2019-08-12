@@ -28,13 +28,13 @@ android {
         config {
             keyAlias 'jianghuzuche_business'
             keyPassword '123456'
-            storeFile file('D:/android_jks/jianghuzuche_business.jks')
+            storeFile file('../jianghuzuche_business.jks')
             storePassword '123456'
         }
         test {
             keyAlias 'jianghuzuche_business'
             keyPassword '123456'
-            storeFile file('D:/android_jks/jianghuzuche_business.jks')
+            storeFile file('../jianghuzuche_business.jks')
             storePassword '123456'
         }
     }
