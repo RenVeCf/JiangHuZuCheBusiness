@@ -138,7 +138,6 @@
                         android:text="维修项目"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
-
                 </LinearLayout>
 
                 <com.ipd.jianghuzuchebusiness.common.view.NavitationLayout
