@@ -216,8 +216,8 @@ public class ReturnOrderDescBean {
             private int rentDuration;
             private Object lateMoney;
             private int overdueMoney;
-            private int refundMoney;
-            private int defaultMoney;
+            private double refundMoney;
+            private double defaultMoney;
 
             public int getCostId() {
                 return costId;
@@ -323,19 +323,19 @@ public class ReturnOrderDescBean {
                 this.overdueMoney = overdueMoney;
             }
 
-            public int getRefundMoney() {
+            public double getRefundMoney() {
                 return refundMoney;
             }
 
-            public void setRefundMoney(int refundMoney) {
+            public void setRefundMoney(double refundMoney) {
                 this.refundMoney = refundMoney;
             }
 
-            public int getDefaultMoney() {
+            public double getDefaultMoney() {
                 return defaultMoney;
             }
 
-            public void setDefaultMoney(int defaultMoney) {
+            public void setDefaultMoney(double defaultMoney) {
                 this.defaultMoney = defaultMoney;
             }
         }

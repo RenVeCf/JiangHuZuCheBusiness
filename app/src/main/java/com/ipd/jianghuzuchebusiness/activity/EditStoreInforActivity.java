@@ -25,7 +25,6 @@ import com.ipd.jianghuzuchebusiness.common.view.TopView;
 import com.ipd.jianghuzuchebusiness.contract.EditStoreInforContract;
 import com.ipd.jianghuzuchebusiness.presenter.EditStoreInforPresenter;
 import com.ipd.jianghuzuchebusiness.utils.ApplicationUtil;
-import com.ipd.jianghuzuchebusiness.utils.LogUtils;
 import com.ipd.jianghuzuchebusiness.utils.SPUtil;
 import com.ipd.jianghuzuchebusiness.utils.ToastUtil;
 import com.ipd.jianghuzuchebusiness.utils.isClickUtil;
@@ -33,6 +32,7 @@ import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +41,11 @@ import java.util.TreeMap;
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.ObservableTransformer;
+import io.reactivex.functions.Consumer;
 import okhttp3.RequestBody;
 
+import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static com.ipd.jianghuzuchebusiness.activity.FillInPaperActivity.getImageRequestBody;
 import static com.ipd.jianghuzuchebusiness.common.config.IConstants.REQUEST_CODE_93;
 import static com.ipd.jianghuzuchebusiness.common.config.IConstants.REQUEST_CODE_94;
@@ -171,7 +174,18 @@ public class EditStoreInforActivity extends BaseActivity<EditStoreInforContract.
         mAdapter.setOnItemClickListener(new ImageSelectGridAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position, View v) {
-                PictureSelector.create(EditStoreInforActivity.this).themeStyle(R.style.picture_default_style).openExternalPreview(position, mAdapter.mList);
+                RxPermissions rxPermissions = new RxPermissions(EditStoreInforActivity.this);
+                rxPermissions.request(CAMERA, WRITE_EXTERNAL_STORAGE).subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean granted) throws Exception {
+                        if (granted) {
+                            PictureSelector.create(EditStoreInforActivity.this).themeStyle(R.style.picture_default_style).openExternalPreview(position, mAdapter.mList);
+                        } else {
+                            // 权限被拒绝
+                            ToastUtil.showLongToast(R.string.permission_rejected);
+                        }
+                    }
+                });
             }
         });
     }
@@ -297,12 +311,23 @@ public class EditStoreInforActivity extends BaseActivity<EditStoreInforContract.
 
     @Override
     public void onAddPicClick() {
-        PictureSelector.create(EditStoreInforActivity.this)
-                .openGallery(PictureMimeType.ofImage())
-                .maxSelectNum(9)// 最大图片选择数量 int
-                .isCamera(true)
-                .compress(true)
-                .minimumCompressSize(100)
-                .forResult(PictureConfig.CHOOSE_REQUEST);
+        RxPermissions rxPermissions = new RxPermissions(EditStoreInforActivity.this);
+        rxPermissions.request(CAMERA, WRITE_EXTERNAL_STORAGE).subscribe(new Consumer<Boolean>() {
+            @Override
+            public void accept(Boolean granted) throws Exception {
+                if (granted) {
+                    PictureSelector.create(EditStoreInforActivity.this)
+                            .openGallery(PictureMimeType.ofImage())
+                            .maxSelectNum(9)// 最大图片选择数量 int
+                            .isCamera(true)
+                            .compress(true)
+                            .minimumCompressSize(100)
+                            .forResult(PictureConfig.CHOOSE_REQUEST);
+                } else {
+                    // 权限被拒绝
+                    ToastUtil.showLongToast(R.string.permission_rejected);
+                }
+            }
+        });
     }
 }

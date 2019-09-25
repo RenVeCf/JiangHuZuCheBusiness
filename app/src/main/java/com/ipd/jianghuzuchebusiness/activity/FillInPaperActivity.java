@@ -30,6 +30,7 @@ import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,6 +41,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.reactivex.ObservableTransformer;
+import io.reactivex.functions.Consumer;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -49,6 +51,8 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static com.ipd.jianghuzuchebusiness.common.config.IConstants.REQUEST_CODE_90;
 import static com.ipd.jianghuzuchebusiness.common.config.IConstants.REQUEST_CODE_91;
 import static com.ipd.jianghuzuchebusiness.common.config.IConstants.STORE_ID;
@@ -141,7 +145,18 @@ public class FillInPaperActivity extends BaseActivity<FillInPaperContract.View, 
         mAdapter.setOnItemClickListener(new ImageSelectGridAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position, View v) {
-                PictureSelector.create(FillInPaperActivity.this).themeStyle(R.style.picture_default_style).openExternalPreview(position, mAdapter.mList);
+                RxPermissions rxPermissions = new RxPermissions(FillInPaperActivity.this);
+                rxPermissions.request(CAMERA, WRITE_EXTERNAL_STORAGE).subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean granted) throws Exception {
+                        if (granted) {
+                            PictureSelector.create(FillInPaperActivity.this).themeStyle(R.style.picture_default_style).openExternalPreview(position, mAdapter.mList);
+                        } else {
+                            // 权限被拒绝
+                            ToastUtil.showLongToast(R.string.permission_rejected);
+                        }
+                    }
+                });
             }
         });
     }
@@ -226,6 +241,7 @@ public class FillInPaperActivity extends BaseActivity<FillInPaperContract.View, 
                     } else {
                         switch (paperType) {
                             case 0:
+                                LogUtils.i("rmy", "111 = " + statusIds);
                                 if (!licensePlateNum.equals("") && !statusIds.equals("")) {
                                     show();
                                     for (int i = 0; i < mAdapter.mList.size(); i++) {
@@ -278,6 +294,7 @@ public class FillInPaperActivity extends BaseActivity<FillInPaperContract.View, 
                                     ToastUtil.showShortToast("请将资料填写完整");
                                 break;
                             case 1:
+                                LogUtils.i("rmy", "statusIds = " + statusIds);
                                 if (!statusIds.equals("")) {
                                     show();
                                     for (int i = 0; i < mAdapter.mList.size(); i++) {
@@ -304,7 +321,7 @@ public class FillInPaperActivity extends BaseActivity<FillInPaperContract.View, 
                                     }
                                     bbb.addFormDataPart("userId", SPUtil.get(this, USER_ID, "") + "");
                                     bbb.addFormDataPart("orderId", orderId);
-                                    bbb.addFormDataPart("plateNumber", licensePlateNum);
+//                                    bbb.addFormDataPart("plateNumber", licensePlateNum);
                                     bbb.addFormDataPart("statusIds", statusIds);
                                     bbb.addFormDataPart("storeId", SPUtil.get(this, STORE_ID, "") + "");
 
@@ -373,13 +390,24 @@ public class FillInPaperActivity extends BaseActivity<FillInPaperContract.View, 
 
     @Override
     public void onAddPicClick() {
-        PictureSelector.create(FillInPaperActivity.this)
-                .openGallery(PictureMimeType.ofImage())
-                .maxSelectNum(9)// 最大图片选择数量 int
-                .isCamera(true)
-                .compress(true)
-                .minimumCompressSize(100)
-                .forResult(PictureConfig.CHOOSE_REQUEST);
+        RxPermissions rxPermissions = new RxPermissions(FillInPaperActivity.this);
+        rxPermissions.request(CAMERA, WRITE_EXTERNAL_STORAGE).subscribe(new Consumer<Boolean>() {
+            @Override
+            public void accept(Boolean granted) throws Exception {
+                if (granted) {
+                    PictureSelector.create(FillInPaperActivity.this)
+                            .openGallery(PictureMimeType.ofImage())
+                            .maxSelectNum(9)// 最大图片选择数量 int
+                            .isCamera(true)
+                            .compress(true)
+                            .minimumCompressSize(100)
+                            .forResult(PictureConfig.CHOOSE_REQUEST);
+                } else {
+                    // 权限被拒绝
+                    ToastUtil.showLongToast(R.string.permission_rejected);
+                }
+            }
+        });
     }
 
     @Override
