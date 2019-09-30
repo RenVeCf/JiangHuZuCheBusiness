@@ -594,8 +594,26 @@ public class OrderDetailsBean {
             private double vehicleRent;
             private Object chargeMoney;
             private double overdueMoney;
+            private double refundMoney;
+            private double defaultMoney;
             private int rentDuration;
             private String couponTitle;
+
+            public double getRefundMoney() {
+                return refundMoney;
+            }
+
+            public void setRefundMoney(double refundMoney) {
+                this.refundMoney = refundMoney;
+            }
+
+            public double getDefaultMoney() {
+                return defaultMoney;
+            }
+
+            public void setDefaultMoney(double defaultMoney) {
+                this.defaultMoney = defaultMoney;
+            }
 
             public double getOverdueMoney() {
                 return overdueMoney;

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -40,6 +41,7 @@ import com.ipd.jianghuzuchebusiness.utils.ApplicationUtil;
 import com.ipd.jianghuzuchebusiness.utils.SPUtil;
 import com.ipd.jianghuzuchebusiness.utils.ToastUtil;
 import com.ipd.jianghuzuchebusiness.utils.isClickUtil;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
 
 import java.util.ArrayList;
@@ -49,6 +51,7 @@ import java.util.TreeMap;
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.ObservableTransformer;
+import io.reactivex.functions.Consumer;
 
 import static android.Manifest.permission.CALL_PHONE;
 import static com.ipd.jianghuzuchebusiness.common.config.IConstants.STORE_ID;
@@ -137,6 +140,10 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsContract.View
     RecyclerView rvExtendedFee;
     @BindView(R.id.ll_extended_fee)
     LinearLayout llExtendedFee;
+    @BindView(R.id.ll_default_fee)
+    LinearLayout llDefaultFee;
+    @BindView(R.id.tv_default_fee)
+    TextView tvDefaultFee;
 
     private int type;
     private String orderId;
@@ -265,6 +272,39 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsContract.View
         });
     }
 
+    private void rxPermissionCall() {
+        RxPermissions rxPermissions = new RxPermissions((FragmentActivity)this);
+        rxPermissions.request(CALL_PHONE).subscribe(new Consumer<Boolean>() {
+            @Override
+            public void accept(Boolean granted) throws Exception {
+                if (granted) {
+                    callPhone();
+                } else {
+                    // 权限被拒绝
+                    ToastUtil.showLongToast("权限被拒绝");
+                }
+            }
+        });
+    }
+
+    //打电话
+    private void callPhone() {
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        Uri data = Uri.parse("tel:" + phoneNum);
+        intent.setData(data);
+        if (ActivityCompat.checkSelfPermission(this, CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        startActivity(intent);
+    }
+
     //拨打电话
     private void setCenterDialog() {
         TextView tv;
@@ -278,20 +318,7 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsContract.View
         root.findViewById(R.id.dialog_center_confirm).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_CALL);
-                Uri data = Uri.parse("tel:" + phoneNum);
-                intent.setData(data);
-                if (ActivityCompat.checkSelfPermission(OrderDetailsActivity.this, CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
-                }
-                startActivity(intent);
+                rxPermissionCall();
                 mCameraDialog.dismiss();
             }
         });
@@ -470,7 +497,9 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsContract.View
 
         if (status == 7) {
             llOverdueFee.setVisibility(View.VISIBLE);
+            llDefaultFee.setVisibility(View.VISIBLE);
             tvOverdueFee.setText(data.getData().getVehicleCost().get(0).getOverdueMoney() + "元");
+            tvDefaultFee.setText(data.getData().getVehicleCost().get(0).getDefaultMoney() + "元");
         }
 
         if (orderDetailsBean.size() > 0) {
@@ -530,7 +559,9 @@ public class OrderDetailsActivity extends BaseActivity<OrderDetailsContract.View
         if (returnOrderDescBean.size() > 0) {
             llCarStatus.setVisibility(View.VISIBLE);
             llOverdueFee.setVisibility(View.VISIBLE);
+            llDefaultFee.setVisibility(View.VISIBLE);
             tvOverdueFee.setText(data.getData().getVehicleCost().getOverdueMoney() + "元");
+            tvDefaultFee.setText(data.getData().getVehicleCost().getDefaultMoney() + "元");
             for (int i = 0; i < returnOrderDescBean.size(); i++) {
                 vehicleOrstatusBean.add(new SelectCarBean.DataBean.VehicleOrstatusBean());
                 vehicleOrstatusBean.get(i).setVestatusName(returnOrderDescBean.get(i).getVestatusName());

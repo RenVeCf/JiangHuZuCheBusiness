@@ -2,7 +2,11 @@ package com.ipd.jianghuzuchebusiness.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,6 +37,7 @@ import com.ipd.jianghuzuchebusiness.utils.ApplicationUtil;
 import com.ipd.jianghuzuchebusiness.utils.SPUtil;
 import com.ipd.jianghuzuchebusiness.utils.ToastUtil;
 import com.ipd.jianghuzuchebusiness.utils.isClickUtil;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +46,9 @@ import java.util.TreeMap;
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.ObservableTransformer;
+import io.reactivex.functions.Consumer;
 
+import static android.Manifest.permission.CALL_PHONE;
 import static com.ipd.jianghuzuchebusiness.common.config.IConstants.REQUEST_CODE_104;
 import static com.ipd.jianghuzuchebusiness.common.config.IConstants.STORE_ID;
 import static com.ipd.jianghuzuchebusiness.common.config.IConstants.USER_ID;
@@ -144,6 +151,39 @@ public class MaintenanceOrderDetailsActivity extends BaseActivity<MultipleOrderC
         getPresenter().getRepairDetails(repairFinishMap, true, false);
     }
 
+    private void rxPermissionCall() {
+        RxPermissions rxPermissions = new RxPermissions((FragmentActivity) this);
+        rxPermissions.request(CALL_PHONE).subscribe(new Consumer<Boolean>() {
+            @Override
+            public void accept(Boolean granted) throws Exception {
+                if (granted) {
+                    callPhone();
+                } else {
+                    // 权限被拒绝
+                    ToastUtil.showLongToast("权限被拒绝");
+                }
+            }
+        });
+    }
+
+    //打电话
+    private void callPhone() {
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        Uri data = Uri.parse("tel:" + "400-806-7299");
+        intent.setData(data);
+        if (ActivityCompat.checkSelfPermission(this, CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        startActivity(intent);
+    }
+
     private void setCenterDialog() {
         TextView tv;
         final Dialog mCameraDialog = new Dialog(this, R.style.BottomDialog);
@@ -156,6 +196,7 @@ public class MaintenanceOrderDetailsActivity extends BaseActivity<MultipleOrderC
         root.findViewById(R.id.dialog_center_confirm).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                rxPermissionCall();
                 mCameraDialog.dismiss();
             }
         });
